@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Prestige Architectural Development Home</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#c6a758",
+                        "primary-dark": "#b09348",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#1e1b14", // Very dark brown/black foundation
+                        "navy-dark": "#0B1120", // Specific requested deep navy
+                        "off-white": "#F9FAFB",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    spacing: {
+                        '128': '32rem',
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom serif override for specific headers as requested */
+        .font-serif-heading {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Glass effect for navbar */
+        .glass-nav {
+            background: rgba(30, 27, 20, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(198, 167, 88, 0.1);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 font-display selection:bg-primary selection:text-white overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-24">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <span class="material-icons text-primary text-3xl">temple_hindu</span>
+                    <span
+                        class="font-serif-heading font-bold text-2xl tracking-widest text-white uppercase">Prestige</span>
+                </div>
+                <div class="hidden md:flex space-x-12">
+                    <a class="text-sm uppercase tracking-widest text-gray-300 hover:text-primary transition-colors duration-300"
+                        href="#projects">Projects</a>
+                    <a class="text-sm uppercase tracking-widest text-gray-300 hover:text-primary transition-colors duration-300"
+                        href="#expertise">Expertise</a>
+                    <a class="text-sm uppercase tracking-widest text-gray-300 hover:text-primary transition-colors duration-300"
+                        href="#about">About</a>
+                    <a class="text-sm uppercase tracking-widest text-gray-300 hover:text-primary transition-colors duration-300"
+                        href="#contact">Contact</a>
+                </div>
+                <div class="hidden md:block">
+                    <a class="px-6 py-3 border border-primary/30 text-primary hover:bg-primary hover:text-white transition-all duration-300 text-xs uppercase tracking-widest rounded-sm"
+                        href="#contact">
+                        Inquire Now
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-300 hover:text-white focus:outline-none">
+                        <span class="material-icons">menu</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <header class="relative h-screen min-h-[800px] flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img alt="Modern luxury villa facade with pool at dusk" class="w-full h-full object-cover"
+                data-alt="Cinematic modern luxury villa at twilight"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5jTlARCDX4H4MlnZAdTV50vSESvBAlIwo4MCAqFwrAPxM5itmLXTnJAOe4SoQBtc83uFNDPSxXBxQV9Dc6lM9eA4pRL3F2s6Yeo8TXLf6NkRag3s_4RgeFYsjTG2MshhpIoZs1e-fDTM83nACr6cpzi9yIxH5BQo4w7xb4oVb5k8Inj4l1kbbP4A_24g8n8qOx4gQfsG1R1IjspJIOU87VygjaFFnuQndWZXg7EvG6zBLMEs58pLdbclrAGFDk-oxw-0ajiIOFNpN" />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-background-dark"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-16">
+            <p class="text-primary tracking-[0.3em] uppercase text-sm mb-6 font-medium animate-fade-in-up">Est. 1998 •
+                Global Development</p>
+            <h1 class="font-serif-heading text-5xl md:text-7xl lg:text-8xl text-white font-medium leading-tight mb-8">
+                Architectural <br />
+                <span class="italic text-primary/90">Excellence</span> Defined
+            </h1>
+            <p class="text-gray-300 text-lg md:text-xl font-light max-w-2xl mx-auto mb-12 leading-relaxed">
+                Crafting bespoke residential environments for the world's most discerning clients. Where vision meets
+                uncompromising precision.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a class="bg-primary hover:bg-primary-dark text-white px-10 py-4 rounded text-sm uppercase tracking-widest transition-all duration-300 shadow-lg shadow-primary/20"
+                    href="#projects">
+                    View Portfolio
+                </a>
+                <a class="group flex items-center justify-center gap-2 text-white px-10 py-4 rounded text-sm uppercase tracking-widest border border-white/20 hover:bg-white/5 transition-all duration-300"
+                    href="#contact">
+                    <span>Our Process</span>
+                    <span
+                        class="material-icons text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
+            <span class="material-icons text-4xl">keyboard_arrow_down</span>
+        </div>
+    </header>
+    <!-- Brand Statement Section -->
+    <section class="bg-off-white py-32 md:py-48 px-4 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <span class="block w-px h-24 bg-primary/40 mx-auto mb-12"></span>
+            <h2 class="font-serif-heading text-4xl md:text-6xl text-background-dark leading-snug">
+                "We do not just build structures; <br />
+                <span class="text-primary italic">we curate legacies.</span>"
+            </h2>
+            <div class="mt-12 flex justify-center">
+                <img alt="CEO Signature" class="h-16 opacity-60 grayscale" data-alt="Artistic signature of the founder"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSAJapG6QMrdcRjha2pkqXLa0gs2hU1v373RuxmKGlXk_OhCUE93o26bEP9JVyXiLIcnOrpTMRxrI7rHo3PM3mnBzHqh70mgOXtpf8Fhi6evgC5bRYgnOZtSC_W9JbQcBMMjy1-88-nOMPY-gvfZrZmI7JDUaDKshRDFQ_VpeHdZmEjpsU48pjuG9TzPdOufdCbbje1ufa5NsmyVnWHYFvoISYCrJddZQRZAdPRV-CxB2B14fFs7pXJLvdgHUM9wEzZLxgPdSPNApR" />
+            </div>
+        </div>
+        <!-- Decorative subtle pattern -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
+            style="background-image: radial-gradient(#1e1b14 1px, transparent 1px); background-size: 32px 32px;">
+        </div>
+    </section>
+    <!-- Signature Projects -->
+    <section class="py-32 bg-background-dark relative" id="projects">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+            <div class="flex flex-col md:flex-row justify-between items-end border-b border-white/10 pb-8">
+                <div>
+                    <h3 class="text-primary tracking-widest uppercase text-sm font-semibold mb-2">Selected Works</h3>
+                    <h2 class="font-serif-heading text-4xl md:text-5xl text-white">Signature Projects</h2>
+                </div>
+                <div class="mt-6 md:mt-0">
+                    <a class="text-white hover:text-primary transition-colors flex items-center gap-2 text-sm uppercase tracking-widest"
+                        href="#">
+                        View All Works <span class="material-icons text-sm">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col gap-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Project 1 -->
+            <div class="group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 relative overflow-hidden rounded-lg">
+                    <div class="aspect-[4/3] overflow-hidden">
+                        <img alt="Modern obsidian cliffside mansion exterior"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                            data-alt="Luxury obsidian cliffside mansion architecture"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMHBG1yvNrxS2CnFfrigJMTdNT6777uJMwgMQMKj-6hKsrTVT-3rMnh5DknmubddgiwtSnj0Ypb4B9Smg--TBLX8ci4jWNujqUuSTLr3M5GqW95jHGiku_yPHxJ5lUtUFxgq37X6jGFsybtYiSGciRREUZt01lBodOF-7s58MUMnNKpqzHaDlzohhXbBcGygg3K5w56r14OL3Soby1LohFwtdsSlZVQZngkC7suIdZcQOC1Xhr_saTeQOUVZh5LgXDJ83FMsL2z-QC" />
+                    </div>
+                </div>
+                <div class="lg:col-span-5 lg:-ml-12 z-10">
+                    <div class="bg-background-dark/95 backdrop-blur-sm p-8 lg:p-12 border-l border-primary/30">
+                        <span class="text-primary text-xs uppercase tracking-widest mb-2 block">Malibu,
+                            California</span>
+                        <h3 class="font-serif-heading text-3xl md:text-4xl text-white mb-6">The Obsidian Villa</h3>
+                        <p class="text-gray-400 mb-8 font-light leading-relaxed">
+                            A masterpiece of cantilevered concrete and glass, suspended above the Pacific. This
+                            residence redefines coastal living with seamless indoor-outdoor integration.
+                        </p>
+                        <a class="inline-flex items-center text-primary border-b border-primary/30 pb-1 hover:text-white hover:border-white transition-all uppercase text-xs tracking-widest"
+                            href="#">
+                            Explore Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Project 2 (Alternating Layout) -->
+            <div class="group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5 lg:order-1 lg:-mr-12 z-10 order-2">
+                    <div
+                        class="bg-background-dark/95 backdrop-blur-sm p-8 lg:p-12 border-r border-primary/30 text-right">
+                        <span class="text-primary text-xs uppercase tracking-widest mb-2 block">Manhattan, New
+                            York</span>
+                        <h3 class="font-serif-heading text-3xl md:text-4xl text-white mb-6">Azure Skyline Penthouse</h3>
+                        <p class="text-gray-400 mb-8 font-light leading-relaxed">
+                            Floating above the city that never sleeps, this triplex penthouse features bespoke marble
+                            interiors and a private rooftop garden oasis.
+                        </p>
+                        <a class="inline-flex items-center justify-end text-primary border-b border-primary/30 pb-1 hover:text-white hover:border-white transition-all uppercase text-xs tracking-widest ml-auto"
+                            href="#">
+                            Explore Project
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-7 lg:order-2 order-1 relative overflow-hidden rounded-lg">
+                    <div class="aspect-[4/3] overflow-hidden">
+                        <img alt="Luxury penthouse interior with city view"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                            data-alt="High-end penthouse living room interior"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEj6hxl6hBgnsrH-qwtk2xouqR1NL4GvWEJ2wFcqN6-EyxpHx1yuk3Q7fT03m1O2Pya850Bq_OriMICZNwI2P7WdtqvnYRbrb504yq5tHs9AvgQGjelv30lub7eeTgMhP80TZmQ31fsCUFz8J8yVVEPGgf06rV9hlnwES5HT_rpzn6YzRD4iuOzRlbbKBdWekr-zQmkJ6tl6WS_lL72I55ejItjz4_QyclYACmLEFMb7Ox7gqbC1IHIFZfEBQgcEGcy3U_sgPtGo9O" />
+                    </div>
+                </div>
+            </div>
+            <!-- Project 3 -->
+            <div class="group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 relative overflow-hidden rounded-lg">
+                    <div class="aspect-[4/3] overflow-hidden">
+                        <img alt="Minimalist white geometric home exterior"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                            data-alt="Minimalist geometric luxury home exterior"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqd3GU3kxXan57zYw_gI6VvHanG7bX43l5U7ZNXkw-aFq4vI1CH8TLvZjG4tYo1-dcwho1WStF2pmA6XMV_7zH41WLXfa7GjA7J_pKgzaBPKjGumMxGeF3Q4dgekAHTVZUzZYDtBqpBZoSTcI0Yqhq9JG-yKMsXgknbd6Lcdde9-TXMhiU68EdyO8cbPTsvfMJ2tUgau93L88f5Rx0a41QtEgoUQfHTam_yayz3sx4TnvZlSCqYBm6kHRspr6UfR3jgOx1l01VQUSD" />
+                    </div>
+                </div>
+                <div class="lg:col-span-5 lg:-ml-12 z-10">
+                    <div class="bg-background-dark/95 backdrop-blur-sm p-8 lg:p-12 border-l border-primary/30">
+                        <span class="text-primary text-xs uppercase tracking-widest mb-2 block">Kyoto, Japan</span>
+                        <h3 class="font-serif-heading text-3xl md:text-4xl text-white mb-6">Zenith Retreat</h3>
+                        <p class="text-gray-400 mb-8 font-light leading-relaxed">
+                            Merging traditional Japanese aesthetics with modern brutalism. A sanctuary designed for
+                            meditation, featuring a central water courtyard.
+                        </p>
+                        <a class="inline-flex items-center text-primary border-b border-primary/30 pb-1 hover:text-white hover:border-white transition-all uppercase text-xs tracking-widest"
+                            href="#">
+                            Explore Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Prestige Metrics -->
+    <section class="py-24 bg-navy-dark border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
+                <div class="p-6">
+                    <span class="block font-serif-heading text-5xl md:text-6xl text-primary mb-4">25</span>
+                    <span class="text-gray-400 text-xs uppercase tracking-[0.2em]">Years of Legacy</span>
+                </div>
+                <div class="p-6">
+                    <span class="block font-serif-heading text-5xl md:text-6xl text-primary mb-4">500k+</span>
+                    <span class="text-gray-400 text-xs uppercase tracking-[0.2em]">Sq Ft Developed</span>
+                </div>
+                <div class="p-6">
+                    <span class="block font-serif-heading text-5xl md:text-6xl text-primary mb-4">$1B+</span>
+                    <span class="text-gray-400 text-xs uppercase tracking-[0.2em]">Portfolio Value</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Why Choose Us -->
+    <section class="py-32 bg-background-dark" id="expertise">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-24">
+                <h2 class="font-serif-heading text-4xl text-white mb-6">The Prestige Standard</h2>
+                <div class="w-16 h-0.5 bg-primary mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Item 1 -->
+                <div
+                    class="group p-8 border border-white/5 hover:border-primary/30 transition-colors duration-500 rounded bg-white/[0.02]">
+                    <div
+                        class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-icons text-primary">architecture</span>
+                    </div>
+                    <h3 class="font-serif-heading text-xl text-white mb-4">Uncompromising Craftsmanship</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-light">
+                        We collaborate with the world's finest artisans. Every joint, finish, and material is selected
+                        with obsessive attention to detail.
+                    </p>
+                </div>
+                <!-- Item 2 -->
+                <div
+                    class="group p-8 border border-white/5 hover:border-primary/30 transition-colors duration-500 rounded bg-white/[0.02]">
+                    <div
+                        class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-icons text-primary">precision_manufacturing</span>
+                    </div>
+                    <h3 class="font-serif-heading text-xl text-white mb-4">Precision Engineering</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-light">
+                        Utilizing state-of-the-art construction technologies to ensure structural integrity that
+                        withstands the test of time and elements.
+                    </p>
+                </div>
+                <!-- Item 3 -->
+                <div
+                    class="group p-8 border border-white/5 hover:border-primary/30 transition-colors duration-500 rounded bg-white/[0.02]">
+                    <div
+                        class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-icons text-primary">hourglass_empty</span>
+                    </div>
+                    <h3 class="font-serif-heading text-xl text-white mb-4">Timeless Design</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-light">
+                        We don't follow trends. We create spaces that remain aesthetically relevant and emotionally
+                        resonant for generations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Pre-Footer CTA -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img alt="Detail of luxury marble staircase" class="w-full h-full object-cover opacity-20 grayscale"
+                data-alt="Abstract marble texture background"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-JUjlqt7HFKrLzFo49NkXpMzi1kUb8SUyTcq57MndgH4Cr29Ro8lED-UrQIeEWQbyZAU37Q-av8BAtSjENC0E8WVBN_H8vshgtN39tO5cBOfjBGDgjkntmkzlrZ-doNmqlnQyr-DVEGch7t6tIOh_0WZOy1pecKmKO09F8uBlOcIaVS4XBwzAgx6LHfgM7g4MSMVgjHnMKhzlf-LI8hdIRzvRIWXgCUwac0MWI7BEqagg-SSd-6rHI-nMk462QLf7YobK2FQVe6s8" />
+            <div class="absolute inset-0 bg-background-dark/80"></div>
+        </div>
+        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
+            <h2 class="font-serif-heading text-4xl md:text-5xl text-white mb-8">Begin Your Legacy</h2>
+            <p class="text-gray-300 mb-10 font-light text-lg">
+                Let us discuss how we can bring your architectural vision to life.
+            </p>
+            <a class="inline-block bg-primary hover:bg-primary-dark text-white px-12 py-5 rounded text-sm uppercase tracking-widest transition-all duration-300"
+                href="#contact">
+                Schedule a Consultation
+            </a>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-navy-dark pt-20 pb-10 border-t border-white/10" id="contact">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-24 mb-16">
+                <!-- Brand Col -->
+                <div class="md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <span class="material-icons text-primary text-2xl">temple_hindu</span>
+                        <span
+                            class="font-serif-heading font-bold text-xl tracking-widest text-white uppercase">Prestige</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Redefining the landscape of luxury real estate development through architectural excellence.
+                    </p>
+                    <div class="flex gap-4">
+                        <a class="text-gray-400 hover:text-primary transition-colors" href="#"><i
+                                class="material-icons text-lg">facebook</i></a>
+                        <a class="text-gray-400 hover:text-primary transition-colors" href="#"><i
+                                class="material-icons text-lg">camera_alt</i></a>
+                        <a class="text-gray-400 hover:text-primary transition-colors" href="#"><i
+                                class="material-icons text-lg">alternate_email</i></a>
+                    </div>
+                </div>
+                <!-- Navigation Col -->
+                <div>
+                    <h4 class="text-white text-xs uppercase tracking-widest font-semibold mb-6">Company</h4>
+                    <ul class="space-y-4">
+                        <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">About Us</a>
+                        </li>
+                        <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Our Team</a>
+                        </li>
+                        <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Careers</a>
+                        </li>
+                        <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Press</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Projects Col -->
+                <div>
+                    <h4 class="text-white text-xs uppercase tracking-widest font-semibold mb-6">Collections</h4>
+                    <ul class="space-y-4">
+                        <li><a class="text-gray-400 hover:text-primary transition-colors text-sm"
+                                href="#">Residential</a></li>
+                        <li><a class="text-gray-400 hover:text-primary transition-colors text-sm"
+                                href="#">Commercial</a></li>
+                        <li><a class="text-gray-400 hover:text-primary transition-colors text-sm"
+                                href="#">Hospitality</a></li>
+                        <li><a class="text-gray-400 hover:text-primary transition-colors text-sm"
+                                href="#">Sustainable</a></li>
+                    </ul>
+                </div>
+                <!-- Contact Col -->
+                <div>
+                    <h4 class="text-white text-xs uppercase tracking-widest font-semibold mb-6">Contact</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <span class="material-icons text-primary text-sm mt-1">place</span>
+                            <span class="text-gray-400 text-sm">1200 Architecture Ave,<br />Beverly Hills, CA
+                                90210</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="material-icons text-primary text-sm">phone</span>
+                            <span class="text-gray-400 text-sm">+1 (310) 555-0123</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="material-icons text-primary text-sm">email</span>
+                            <span class="text-gray-400 text-sm">inquiry@prestige.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-xs">
+                    © 2023 Prestige Architectural Development. All rights reserved.
+                </p>
+                <div class="flex gap-6">
+                    <a class="text-gray-500 hover:text-white text-xs transition-colors" href="#">Privacy Policy</a>
+                    <a class="text-gray-500 hover:text-white text-xs transition-colors" href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
