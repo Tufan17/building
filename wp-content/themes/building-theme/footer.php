@@ -10,7 +10,7 @@
 ?>
 
 <!-- Footer -->
-<footer class="bg-navy-dark pt-20 pb-10 border-t border-white/10" id="contact">
+<footer class="bg-navy-dark pt-28 pb-12 border-t border-white/5" id="contact">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-24 mb-16">
             <!-- Brand Col -->
@@ -34,43 +34,43 @@
             </div>
             <!-- Navigation Col -->
             <div>
-                <h4 class="text-white text-xs uppercase tracking-widest font-semibold mb-6">Company</h4>
+                <h4 class="text-white text-[10px] uppercase tracking-[0.3em] font-bold mb-8 opacity-80">Şirket</h4>
                 <ul class="space-y-4">
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">About Us</a></li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Our Team</a></li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Careers</a></li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Press</a></li>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Hakkımızda</a></li>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Ekibimiz</a></li>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Kariyer</a></li>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Basın</a></li>
                 </ul>
             </div>
             <!-- Projects Col -->
             <div>
-                <h4 class="text-white text-xs uppercase tracking-widest font-semibold mb-6">Collections</h4>
+                <h4 class="text-white text-[10px] uppercase tracking-[0.3em] font-bold mb-8 opacity-80">Koleksiyonlar</h4>
                 <ul class="space-y-4">
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Residential</a>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Konut Projeleri</a>
                     </li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Commercial</a>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Ticari Yapılar</a>
                     </li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Hospitality</a>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Konaklama & Turizm</a>
                     </li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-sm" href="#">Sustainable</a>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Sürdürülebilir Mimari</a>
                     </li>
                 </ul>
             </div>
             <!-- Contact Col -->
             <div>
-                <h4 class="text-white text-xs uppercase tracking-widest font-semibold mb-6">Contact</h4>
-                <ul class="space-y-4">
+                <h4 class="text-white text-[10px] uppercase tracking-[0.3em] font-bold mb-8 opacity-80">İletişim</h4>
+                <ul class="space-y-5">
                     <li class="flex items-start gap-3">
-                        <span class="material-icons text-primary text-sm mt-1">place</span>
-                        <span class="text-gray-400 text-sm">1200 Architecture Ave,<br />Beverly Hills, CA 90210</span>
+                        <span class="material-icons text-primary/80 text-sm mt-0.5">place</span>
+                        <span class="text-gray-400 text-xs leading-relaxed tracking-wide">1200 Architecture Ave,<br />Beverly Hills, CA 90210</span>
                     </li>
                     <li class="flex items-center gap-3">
-                        <span class="material-icons text-primary text-sm">phone</span>
-                        <span class="text-gray-400 text-sm">+1 (310) 555-0123</span>
+                        <span class="material-icons text-primary/80 text-sm">phone</span>
+                        <span class="text-gray-400 text-xs tracking-wide">+1 (310) 555-0123</span>
                     </li>
                     <li class="flex items-center gap-3">
-                        <span class="material-icons text-primary text-sm">email</span>
-                        <span class="text-gray-400 text-sm">inquiry@prestige.com</span>
+                        <span class="material-icons text-primary/80 text-sm">email</span>
+                        <span class="text-gray-400 text-xs tracking-wide">inquiry@prestige.com</span>
                     </li>
                 </ul>
             </div>

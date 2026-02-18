@@ -36,11 +36,11 @@ get_header();
             <?php else: ?>
                 <img alt="Hero Background" class="w-full h-full object-cover" src="<?php echo esc_url($hero_media); ?>" />
             <?php endif; ?>
-            <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-background-dark"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-navy-dark/80 via-navy-dark/40 to-background-dark"></div>
         </div>
         <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-16">
             <?php if ($hero_subtitle): ?>
-                <p class="text-primary tracking-[0.3em] uppercase text-sm mb-6 font-medium animate-fade-in-up">
+                <p class="text-primary tracking-[0.4em] uppercase text-xs mb-8 font-bold animate-fade-in-up">
                     <?php echo esc_html($hero_subtitle); ?>
                 </p>
             <?php endif; ?>
@@ -61,12 +61,12 @@ get_header();
                 style="animation-delay: 600ms;">
                 <?php foreach ($hero_buttons as $btn): ?>
                     <?php if ($btn['type'] === 'primary'): ?>
-                        <a class="bg-primary hover:bg-primary-dark text-white px-10 py-4 rounded text-sm uppercase tracking-widest transition-all duration-300 shadow-lg shadow-primary/20"
+                        <a class="bg-primary hover:bg-primary-dark text-navy-dark px-12 py-5 rounded-sm text-xs uppercase tracking-[0.3em] font-bold transition-all duration-500 shadow-2xl shadow-primary/10"
                             href="<?php echo esc_url($btn['link']); ?>">
                             <?php echo esc_html($btn['text']); ?>
                         </a>
                     <?php else: ?>
-                        <a class="group flex items-center justify-center gap-2 text-white px-10 py-4 rounded text-sm uppercase tracking-widest border border-white/20 hover:bg-white/5 transition-all duration-300"
+                        <a class="group flex items-center justify-center gap-2 text-white px-12 py-5 rounded-sm text-xs uppercase tracking-[0.3em] font-bold border border-white/10 hover:bg-white/5 transition-all duration-500"
                             href="<?php echo esc_url($btn['link']); ?>">
                             <span><?php echo esc_html($btn['text']); ?></span>
                             <span
@@ -87,10 +87,10 @@ get_header();
     $brand_quote = get_option('prestige_brand_quote', prestige_get_default('prestige_brand_quote'));
     $brand_signature = get_option('prestige_brand_signature', prestige_get_default('prestige_brand_signature'));
     ?>
-    <section class="bg-off-white py-32 md:py-48 px-4 relative overflow-hidden">
+    <section class="bg-off-white py-40 md:py-60 px-4 relative overflow-hidden">
         <div class="max-w-6xl mx-auto text-center relative z-10">
-            <span class="block w-px h-24 bg-primary/40 mx-auto mb-12"></span>
-            <h2 class="font-serif-heading text-4xl md:text-6xl text-background-dark leading-snug">
+            <span class="block w-px h-24 bg-primary/30 mx-auto mb-16"></span>
+            <h2 class="font-serif-heading text-4xl md:text-6xl text-navy-dark leading-snug tracking-tight">
                 <?php echo wp_kses_post($brand_quote); ?>
             </h2>
             <?php if ($brand_signature): ?>
@@ -140,13 +140,13 @@ get_header();
     $metric_count = count($metrics);
     ?>
     <?php if ($metric_count > 0): ?>
-    <section class="py-24 bg-navy-dark border-y border-white/5">
+    <section class="py-32 bg-navy-dark border-y border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-<?php echo min($metric_count, 4); ?> gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
+            <div class="grid grid-cols-1 md:grid-cols-<?php echo min($metric_count, 4); ?> gap-16 text-center divide-y md:divide-y-0 md:divide-x divide-white/5">
                 <?php foreach ($metrics as $m): ?>
-                    <div class="p-6">
-                        <span class="block font-serif-heading text-5xl md:text-6xl text-primary mb-4"><?php echo esc_html($m['value']); ?></span>
-                        <span class="text-gray-400 text-xs uppercase tracking-[0.2em]"><?php echo esc_html($m['label']); ?></span>
+                    <div class="p-8">
+                        <span class="block font-serif-heading text-5xl md:text-7xl text-primary mb-6"><?php echo esc_html($m['value']); ?></span>
+                        <span class="text-gray-400 text-xs uppercase tracking-[0.3em] font-medium"><?php echo esc_html($m['label']); ?></span>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -163,20 +163,20 @@ get_header();
     $std_count = count($standards);
     ?>
     <?php if ($std_count > 0): ?>
-    <section class="py-32 bg-background-dark" id="expertise">
+    <section class="py-40 bg-navy-dark" id="expertise">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-24">
-                <h2 class="font-serif-heading text-4xl text-white mb-6">
-                    Presij Standartları
+            <div class="text-center mb-28">
+                <h2 class="font-serif-heading text-4xl md:text-5xl text-white mb-8">
+                    Prestij Standartları
                 </h2>
-                <div class="w-16 h-0.5 bg-primary mx-auto"></div>
+                <div class="w-12 h-px bg-primary mx-auto opacity-50"></div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-<?php echo min($std_count, 3); ?> gap-12">
+            <div class="grid grid-cols-1 md:grid-cols-<?php echo min($std_count, 3); ?> gap-16">
                 <?php foreach ($standards as $std): ?>
-                    <div class="group p-8 border border-white/5 hover:border-primary/30 transition-colors duration-500 rounded bg-white/[0.02]">
+                    <div class="group p-10 border border-white/5 hover:border-primary/20 transition-all duration-700 bg-white/[0.01] hover:bg-white/[0.02]">
                         <?php if (!empty($std['icon'])): ?>
-                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
-                                <span class="material-icons text-primary"><?php echo esc_html($std['icon']); ?></span>
+                            <div class="w-14 h-14 rounded-full bg-primary/5 flex items-center justify-center mb-10 group-hover:bg-primary/10 transition-all duration-500">
+                                <span class="material-icons text-primary/80 group-hover:text-primary transition-colors"><?php echo esc_html($std['icon']); ?></span>
                             </div>
                         <?php endif; ?>
                         <h3 class="font-serif-heading text-xl text-white mb-4"><?php echo esc_html($std['title']); ?></h3>
@@ -202,7 +202,7 @@ get_header();
             <p class="text-gray-300 mb-10 font-light text-lg">
                 Bir fincan kahve eşliğinde projenizi konuşmak ister misiniz? Vizyonunuzu dinlemek ve size özel çözümler sunmak için buradayız.
             </p>
-            <a class="inline-block bg-primary hover:bg-primary-dark text-white px-12 py-5 rounded-sm text-sm uppercase tracking-widest transition-all duration-300 shadow-xl shadow-primary/10"
+            <a class="inline-block bg-primary hover:bg-primary-dark text-navy-dark px-14 py-6 rounded-sm text-xs uppercase tracking-[0.3em] font-bold transition-all duration-500 shadow-2xl shadow-primary/10"
                 href="#contact">
                 Hadi Tanışalım ☕
             </a>

@@ -32,13 +32,13 @@
                                 'container' => false,
                                 'items_wrap' => '%3$s',
                                 'fallback_cb' => false,
-                                'walker' => new Building_Theme_Desktop_Walker('text-sm uppercase tracking-widest text-gray-300 hover:text-primary transition-colors duration-300'),
+                                'walker' => new Building_Theme_Desktop_Walker('text-xs uppercase tracking-[0.2em] text-gray-400 hover:text-primary transition-all duration-300'),
                             )
                         );
                         ?>
                     </div>
                     <div class="hidden md:block">
-                        <a class="px-6 py-3 border border-primary/30 text-primary hover:bg-primary hover:text-white transition-all duration-300 text-xs uppercase tracking-widest rounded-sm"
+                        <a class="px-8 py-3 border border-primary/20 text-primary hover:bg-primary hover:text-white transition-all duration-500 text-xs uppercase tracking-[0.2em] rounded-sm"
                             href="/build.com/index.php/iletisim/">
                             İletişime Geç
                         </a>

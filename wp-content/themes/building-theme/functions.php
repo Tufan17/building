@@ -76,10 +76,10 @@ function building_theme_tailwind_config()
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#c6a758",
-                        "primary-dark": "#b09348",
+                        "primary": "#C6A85A",
+                        "primary-dark": "#A68A4A",
                         "background-light": "#f8f7f6",
-                        "background-dark": "#1e1b14",
+                        "background-dark": "#111827",
                         "navy-dark": "#0B1120",
                         "off-white": "#F9FAFB",
                     },
@@ -105,10 +105,10 @@ function building_theme_tailwind_config()
         }
 
         .glass-nav {
-            background: rgba(30, 27, 20, 0.85);
+            background: rgba(11, 17, 32, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(198, 167, 88, 0.1);
+            border-bottom: 1px solid rgba(198, 168, 90, 0.15);
         }
     </style>
     <?php

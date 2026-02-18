@@ -1,9 +1,9 @@
 <?php
 /**
  * Template Name: Projelerimiz
- * 
+ *
  * Projects portfolio page template
- * 
+ *
  * @package Building_Theme
  */
 
@@ -64,7 +64,7 @@ $projects_query = new WP_Query(array(
             <div class="mx-auto max-w-[1440px] px-6 lg:px-12">
                 <div class="flex gap-3 overflow-x-auto no-scrollbar items-center md:justify-center pb-2 md:pb-0">
                     <button
-                        class="project-filter-btn active shrink-0 h-10 px-6 rounded-full bg-primary text-background-dark text-sm font-medium transition-all hover:scale-105"
+                        class="project-filter-btn active shrink-0 h-10 px-6 rounded-full bg-primary text-navy-dark text-xs font-bold uppercase tracking-widest transition-all hover:scale-105"
                         data-filter="all">
                         Tüm Projeler
                     </button>
@@ -200,7 +200,7 @@ $projects_query = new WP_Query(array(
                 </div>
                 <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
                     <a href="<?php echo esc_url(home_url('#contact')); ?>"
-                        class="h-14 px-8 rounded-full bg-primary text-background-dark text-base font-bold hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(198,167,88,0.2)] whitespace-nowrap flex items-center justify-center">
+                        class="h-14 px-10 rounded-sm bg-primary text-navy-dark text-xs font-bold uppercase tracking-[0.3em] hover:bg-primary-dark transition-all duration-500 shadow-2xl shadow-primary/10 whitespace-nowrap flex items-center justify-center">
                         Proje Başlat
                     </a>
                     <a href="<?php echo esc_url(home_url('#contact')); ?>"
