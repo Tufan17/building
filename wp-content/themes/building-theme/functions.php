@@ -51,8 +51,8 @@ function building_theme_scripts()
     // Tailwind CSS via CDN
     wp_enqueue_script('tailwind-cdn', 'https://cdn.tailwindcss.com?plugins=forms,container-queries', array(), null, false);
 
-    // Google Fonts: Manrope & Playfair Display
-    wp_enqueue_style('google-fonts-prestige', 'https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap', array(), null);
+    // Google Fonts: Manrope, Playfair Display, Newsreader, Noto Sans
+    wp_enqueue_style('google-fonts-prestige', 'https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Noto+Sans:wght@300;400;500;700&display=swap', array(), null);
 
     // Material Icons & Symbols
     wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null);
@@ -86,6 +86,8 @@ function building_theme_tailwind_config()
                     fontFamily: {
                         "display": ["Manrope", "sans-serif"],
                         "serif": ["Playfair Display", "serif"],
+                        "newsreader": ["Newsreader", "serif"],
+                        "noto": ["Noto Sans", "sans-serif"],
                     },
                     borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
                     spacing: {
@@ -238,6 +240,11 @@ class Building_Theme_Mobile_Walker extends Walker_Nav_Menu
         }
     }
 }
+/**
+ * Custom Partner CPT & Tax
+ */
+require get_template_directory() . '/inc/partners-cpt.php';
+
 /**
  * Custom Admin Settings
  */

@@ -36,24 +36,45 @@
             <div>
                 <h4 class="text-white text-[10px] uppercase tracking-[0.3em] font-bold mb-8 opacity-80">Şirket</h4>
                 <ul class="space-y-4">
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Hakkımızda</a></li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Ekibimiz</a></li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Kariyer</a></li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Basın</a></li>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider"
+                            href="<?php echo esc_url(home_url('/hakkimizda')); ?>">Hakkımızda</a></li>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider"
+                            href="<?php echo esc_url(home_url('/vizyon')); ?>">Vizyon</a></li>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider"
+                            href="<?php echo esc_url(home_url('/misyon')); ?>">Misyon</a></li>
+                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider"
+                            href="<?php echo esc_url(home_url('/projeler')); ?>">Projeler</a></li>
                 </ul>
             </div>
             <!-- Projects Col -->
             <div>
-                <h4 class="text-white text-[10px] uppercase tracking-[0.3em] font-bold mb-8 opacity-80">Koleksiyonlar</h4>
+                <h4 class="text-white text-[10px] uppercase tracking-[0.3em] font-bold mb-8 opacity-80">Projelerimiz</h4>
                 <ul class="space-y-4">
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Konut Projeleri</a>
-                    </li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Ticari Yapılar</a>
-                    </li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Konaklama & Turizm</a>
-                    </li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="#">Sürdürülebilir Mimari</a>
-                    </li>
+                    <?php
+                    $projeler_cat = get_category_by_slug('projelerimiz');
+                    $projeler_cat_id = $projeler_cat ? $projeler_cat->term_id : 0;
+
+                    $footer_projects = new WP_Query(array(
+                        'posts_per_page' => 5,
+                        'cat'            => $projeler_cat_id,
+                        'post_status'    => 'publish',
+                        'orderby'        => 'date',
+                        'order'          => 'DESC'
+                    ));
+
+                    if ($footer_projects->have_posts()):
+                        while ($footer_projects->have_posts()): $footer_projects->the_post();
+                            ?>
+                            <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                            <?php
+                        endwhile;
+                        wp_reset_postdata();
+                    else:
+                        ?>
+                        <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider" href="<?php echo esc_url(home_url('/projeler')); ?>">Tüm Projeler</a></li>
+                        <?php
+                    endif;
+                    ?>
                 </ul>
             </div>
             <!-- Contact Col -->
@@ -62,7 +83,8 @@
                 <ul class="space-y-5">
                     <li class="flex items-start gap-3">
                         <span class="material-icons text-primary/80 text-sm mt-0.5">place</span>
-                        <span class="text-gray-400 text-xs leading-relaxed tracking-wide">1200 Architecture Ave,<br />Beverly Hills, CA 90210</span>
+                        <span class="text-gray-400 text-xs leading-relaxed tracking-wide">1200 Architecture
+                            Ave,<br />Beverly Hills, CA 90210</span>
                     </li>
                     <li class="flex items-center gap-3">
                         <span class="material-icons text-primary/80 text-sm">phone</span>
@@ -79,10 +101,7 @@
             <p class="text-gray-500 text-xs">
                 © <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All rights reserved.
             </p>
-            <div class="flex gap-6">
-                <a class="text-gray-500 hover:text-white text-xs transition-colors" href="#">Privacy Policy</a>
-                <a class="text-gray-500 hover:text-white text-xs transition-colors" href="#">Terms of Service</a>
-            </div>
+          
         </div>
     </div>
 </footer>

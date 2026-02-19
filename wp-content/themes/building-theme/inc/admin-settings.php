@@ -42,6 +42,17 @@ function prestige_get_default($field_id)
             array('icon' => 'precision_manufacturing', 'title' => 'Precision Engineering', 'desc' => 'Utilizing state-of-the-art construction technologies to ensure structural integrity that withstands the test of time and elements.'),
             array('icon' => 'hourglass_empty', 'title' => 'Timeless Design', 'desc' => 'We don\'t follow trends. We create spaces that remain aesthetically relevant and emotionally resonant for generations.'),
         ),
+        // Hakkımızda Defaults
+        'prestige_about_hero_title' => 'GELECEĞİ <br /> <span class="italic text-primary/90">TASARLIYORUZ</span>',
+        'prestige_about_hero_desc' => 'Çeyrek asırlık tecrübemizle, lüks yaşam alanlarını sanata dönüştürüyoruz.',
+        'prestige_about_story_title' => 'Vizyoner Bir Yolculuk',
+        'prestige_about_story_content' => '1998 yılında kurulan Building, kurulduğu günden beri mimari mükemmellik ve dürüstlük ilkesiyle hareket etmektedir. Her projemizde sadece binalar değil, içinde yaşanacak hikayeler ve kalıcı miraslar inşa ediyoruz.',
+        'prestige_about_story_image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuA5jTlARCDX4H4MlnZAdTV50vSESvBAlIwo4MCAqFwrAPxM5itmLXTnJAOe4SoQBtc83uFNDPSxXBxQV9Dc6lM9eA4pRL3F2s6Yeo8TXLf6NkRag3s_4RgeFYsjTG2MshhpIoZs1e-fDTM83nACr6cpzi9yIxH5BQo4w7xb4oVb5k8Inj4l1kbbP4A_24g8n8qOx4gQfsG1R1IjspJIOU87VygjaFFnuQndWZXg7EvG6zBLMEs58pLdbclrAGFDk-oxw-0ajiIOFNpN',
+        // Kurumsal Defaults
+        'prestige_corp_hero_title' => 'KURUMSAL <br /> <span class="italic text-primary/90">YAPIMIZ</span>',
+        'prestige_corp_hero_desc' => 'Güven, kalite ve inovasyon temelleri üzerine kurulu kurumsal kimliğimiz.',
+        'prestige_corp_profile' => 'Building, inşaat ve gayrimenkul geliştirme sektöründe standartları belirleyen, küresel ölçekte projeler üreten bir kuruluştur. Kurumsal sürdürülebilirlik ve operasyonel mükemmellik odaklarımızdır.',
+        'prestige_corp_policy' => 'Tavizsiz kalite politikamız, tüm paydaşlarımız için değer yaratma sözümüzün temelidir.',
     );
 
     return isset($defaults[$field_id]) ? $defaults[$field_id] : '';
@@ -80,6 +91,24 @@ function prestige_admin_menu()
         'prestige-prestij-settings',
         'prestige_prestij_page'
     );
+
+    add_submenu_page(
+        'prestige-settings',
+        __('Hakkımızda Ayarları', 'building-theme'),
+        __('Hakkımızda Ayarları', 'building-theme'),
+        'manage_options',
+        'prestige-about-settings',
+        'prestige_about_page'
+    );
+
+    add_submenu_page(
+        'prestige-settings',
+        __('Kurumsal Ayarları', 'building-theme'),
+        __('Kurumsal Ayarları', 'building-theme'),
+        'manage_options',
+        'prestige-corporate-settings',
+        'prestige_corporate_page'
+    );
 }
 add_action('admin_menu', 'prestige_admin_menu');
 
@@ -92,7 +121,8 @@ function prestige_homepage_page()
     ?>
     <div class="wrap">
         <h1><?php _e('Anasayfa Ayarları', 'building-theme'); ?></h1>
-        <p style="color:#666;"><?php _e('Hero bölümü, marka ifadesi ve butonları buradan yönetin.', 'building-theme'); ?></p>
+        <p style="color:#666;"><?php _e('Hero bölümü, marka ifadesi ve butonları buradan yönetin.', 'building-theme'); ?>
+        </p>
         <form method="post" action="options.php">
             <?php
             settings_fields('prestige_homepage_group');
@@ -113,7 +143,9 @@ function prestige_prestij_page()
     ?>
     <div class="wrap">
         <h1><?php _e('Prestij Ayarları', 'building-theme'); ?></h1>
-        <p style="color:#666;"><?php _e('Metrik sayaçları ve prestij standartlarını buradan yönetin. İstediğiniz kadar ekleyebilir veya silebilirsiniz.', 'building-theme'); ?></p>
+        <p style="color:#666;">
+                    <?php _e('Metrik sayaçları ve prestij standartlarını buradan yönetin. İstediğiniz kadar ekleyebilir veya silebilirsiniz.', 'building-theme'); ?>
+        </p>
         <form method="post" action="options.php">
             <?php
             settings_fields('prestige_prestij_group');
@@ -123,7 +155,9 @@ function prestige_prestij_page()
             <h2 style="margin-top:30px;padding-bottom:8px;border-bottom:1px solid #ccc;">
                 <?php _e('Prestij Metrikleri (Sayaçlar)', 'building-theme'); ?>
             </h2>
-            <p class="description"><?php _e('Anasayfada görüntülenen performans göstergeleri. İstediğiniz kadar ekleyebilirsiniz.', 'building-theme'); ?></p>
+            <p class="description">
+       <?php _e('Anasayfada görüntülenen performans göstergeleri. İstediğiniz kadar ekleyebilirsiniz.', 'building-theme'); ?>
+            </p>
 
             <?php
             $metrics = get_option('prestige_metrics');
@@ -142,20 +176,28 @@ function prestige_prestij_page()
                 <tbody>
                     <?php foreach ($metrics as $i => $m): ?>
                         <tr>
-                            <td><input type="text" name="prestige_metrics[<?php echo $i; ?>][value]" value="<?php echo esc_attr($m['value']); ?>" class="regular-text" style="width:100%;" placeholder="Örn: 25" /></td>
-                            <td><input type="text" name="prestige_metrics[<?php echo $i; ?>][label]" value="<?php echo esc_attr($m['label']); ?>" class="regular-text" style="width:100%;" placeholder="Örn: Years of Legacy" /></td>
-                            <td><button type="button" class="button prestige-remove-row" style="color:#a00;">&times; Sil</button></td>
+                            <td><input type="text" name="prestige_metrics[<?php echo $i; ?>][value]"
+                                    value="<?php echo esc_attr($m['value']); ?>" class="regular-text" style="width:100%;"
+                                    placeholder="Örn: 25" /></td>
+                            <td><input type="text" name="prestige_metrics[<?php echo $i; ?>][label]"
+                                    value="<?php echo esc_attr($m['label']); ?>" class="regular-text" style="width:100%;"
+                                    placeholder="Örn: Years of Legacy" /></td>
+                            <td><button type="button" class="button prestige-remove-row" style="color:#a00;">&times;
+                                    Sil</button></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <button type="button" class="button button-primary" id="prestige-add-metric" style="margin-top:10px;">+ Yeni Metrik Ekle</button>
+            <button type="button" class="button button-primary" id="prestige-add-metric" style="margin-top:10px;">+ Yeni
+                Metrik Ekle</button>
 
             <!-- STANDARDS REPEATER -->
             <h2 style="margin-top:40px;padding-bottom:8px;border-bottom:1px solid #ccc;">
                 <?php _e('Prestij Standartları', 'building-theme'); ?>
             </h2>
-            <p class="description"><?php _e('Anasayfadaki "Prestij Standartları" kartları. İkon adları için Google Material Icons kullanılmaktadır. İstediğiniz kadar ekleyebilirsiniz.', 'building-theme'); ?></p>
+            <p class="description">
+                        <?php _e('Anasayfadaki "Prestij Standartları" kartları. İkon adları için Google Material Icons kullanılmaktadır. İstediğiniz kadar ekleyebilirsiniz.', 'building-theme'); ?>
+            </p>
 
             <?php
             $standards = get_option('prestige_standards');
@@ -165,24 +207,64 @@ function prestige_prestij_page()
             ?>
             <div id="prestige-standards-list" style="margin-top:15px;">
                 <?php foreach ($standards as $i => $std): ?>
-                    <div class="prestige-standard-card" style="background:#f9f9f9;border:1px solid #ddd;padding:15px 20px;margin-bottom:12px;border-radius:4px;">
+                    <div class="prestige-standard-card"
+                        style="background:#f9f9f9;border:1px solid #ddd;padding:15px 20px;margin-bottom:12px;border-radius:4px;">
                         <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
                             <label style="font-weight:600;min-width:40px;">İkon:</label>
-                            <input type="text" name="prestige_standards[<?php echo $i; ?>][icon]" value="<?php echo esc_attr($std['icon']); ?>" style="width:180px;" placeholder="Örn: architecture" />
+                            <input type="text" name="prestige_standards[<?php echo $i; ?>][icon]"
+                                value="<?php echo esc_attr($std['icon']); ?>" style="width:180px;"
+                                placeholder="Örn: architecture" />
                             <label style="font-weight:600;min-width:50px;">Başlık:</label>
-                            <input type="text" name="prestige_standards[<?php echo $i; ?>][title]" value="<?php echo esc_attr($std['title']); ?>" class="regular-text" style="flex:1;min-width:200px;" />
-                            <button type="button" class="button prestige-remove-standard" style="color:#a00;">&times; Sil</button>
+                            <input type="text" name="prestige_standards[<?php echo $i; ?>][title]"
+                                value="<?php echo esc_attr($std['title']); ?>" class="regular-text"
+                                style="flex:1;min-width:200px;" />
+                            <button type="button" class="button prestige-remove-standard" style="color:#a00;">&times;
+                                Sil</button>
                         </div>
                         <div style="margin-top:10px;">
                             <label style="font-weight:600;display:block;margin-bottom:5px;">Açıklama:</label>
-                            <textarea name="prestige_standards[<?php echo $i; ?>][desc]" rows="2" class="large-text"><?php echo esc_textarea($std['desc']); ?></textarea>
+                            <textarea name="prestige_standards[<?php echo $i; ?>][desc]" rows="2"
+                                class="large-text"><?php echo esc_textarea($std['desc']); ?></textarea>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <button type="button" class="button button-primary" id="prestige-add-standard" style="margin-top:10px;">+ Yeni Standart Ekle</button>
+            <button type="button" class="button button-primary" id="prestige-add-standard" style="margin-top:10px;">+ Yeni
+                Standart Ekle</button>
 
-            <?php submit_button('Değişiklikleri Kaydet'); ?>
+               <?php submit_button('Değişiklikleri Kaydet'); ?>
+            </form>
+        </div>
+        <?php
+}
+
+function prestige_about_page()
+{
+    ?>
+        <div class="wrap">
+            <h1><?php _e('Hakkımızda Sayfası Ayarları', 'building-theme'); ?></h1>
+            <form method="post" action="options.php">
+                <?php
+                settings_fields('prestige_about_group');
+                do_settings_sections('prestige-about-settings');
+                submit_button('Değişiklikleri Kaydet');
+                ?>
+            </form>
+        </div>
+        <?php
+}
+
+function prestige_corporate_page()
+{
+    ?>
+        <div class="wrap">
+            <h1><?php _e('Kurumsal Sayfası Ayarları', 'building-theme'); ?></h1>
+            <form method="post" action="options.php">
+                <?php
+                settings_fields('prestige_corporate_group');
+                do_settings_sections('prestige-corporate-settings');
+                submit_button('Değişiklikleri Kaydet');
+                ?>
         </form>
     </div>
     <?php
@@ -239,6 +321,36 @@ function prestige_register_settings()
         'type' => 'array',
         'sanitize_callback' => 'prestige_sanitize_standards',
     ));
+
+    // --- Hakkımızda group ---
+    register_setting('prestige_about_group', 'prestige_about_hero_title');
+    register_setting('prestige_about_group', 'prestige_about_hero_desc');
+    register_setting('prestige_about_group', 'prestige_about_story_title');
+    register_setting('prestige_about_group', 'prestige_about_story_content');
+    register_setting('prestige_about_group', 'prestige_about_story_image');
+
+    add_settings_section('prestige_about_section', __('Hakkımızda İçerik Ayarları', 'building-theme'), function () {
+        echo '<p>' . __('Hakkımızda sayfası içeriklerini buradan yönetin.', 'building-theme') . '</p>';
+    }, 'prestige-about-settings');
+    add_settings_field('prestige_about_hero_title', __('Hero Başlığı', 'building-theme'), 'prestige_render_textarea_field', 'prestige-about-settings', 'prestige_about_section', array('label_for' => 'prestige_about_hero_title'));
+    add_settings_field('prestige_about_hero_desc', __('Hero Açıklaması', 'building-theme'), 'prestige_render_textarea_field', 'prestige-about-settings', 'prestige_about_section', array('label_for' => 'prestige_about_hero_desc'));
+    add_settings_field('prestige_about_story_title', __('Hikayemiz Başlığı', 'building-theme'), 'prestige_render_text_field', 'prestige-about-settings', 'prestige_about_section', array('label_for' => 'prestige_about_story_title'));
+    add_settings_field('prestige_about_story_content', __('Hikayemiz İçeriği', 'building-theme'), 'prestige_render_textarea_field', 'prestige-about-settings', 'prestige_about_section', array('label_for' => 'prestige_about_story_content'));
+    add_settings_field('prestige_about_story_image', __('Hikayemiz Görseli', 'building-theme'), 'prestige_render_media_field', 'prestige-about-settings', 'prestige_about_section', array('label_for' => 'prestige_about_story_image'));
+
+    // --- Kurumsal group ---
+    register_setting('prestige_corporate_group', 'prestige_corp_hero_title');
+    register_setting('prestige_corporate_group', 'prestige_corp_hero_desc');
+    register_setting('prestige_corporate_group', 'prestige_corp_profile');
+    register_setting('prestige_corporate_group', 'prestige_corp_policy');
+
+    add_settings_section('prestige_corp_section', __('Kurumsal İçerik Ayarları', 'building-theme'), function () {
+        echo '<p>' . __('Kurumsal sayfası içeriklerini buradan yönetin.', 'building-theme') . '</p>';
+    }, 'prestige-corporate-settings');
+    add_settings_field('prestige_corp_hero_title', __('Hero Başlığı', 'building-theme'), 'prestige_render_textarea_field', 'prestige-corporate-settings', 'prestige_corp_section', array('label_for' => 'prestige_corp_hero_title'));
+    add_settings_field('prestige_corp_hero_desc', __('Hero Açıklaması', 'building-theme'), 'prestige_render_textarea_field', 'prestige-corporate-settings', 'prestige_corp_section', array('label_for' => 'prestige_corp_hero_desc'));
+    add_settings_field('prestige_corp_profile', __('Kurumsal Profil', 'building-theme'), 'prestige_render_textarea_field', 'prestige-corporate-settings', 'prestige_corp_section', array('label_for' => 'prestige_corp_profile'));
+    add_settings_field('prestige_corp_policy', __('Kalite Politikası', 'building-theme'), 'prestige_render_textarea_field', 'prestige-corporate-settings', 'prestige_corp_section', array('label_for' => 'prestige_corp_policy'));
 }
 add_action('admin_init', 'prestige_register_settings');
 
@@ -339,9 +451,12 @@ function prestige_render_media_field($args)
     }
     ?>
     <div class="prestige-media-uploader">
-        <input type="text" class="regular-text prestige-media-url" name="<?php echo esc_attr($args['label_for']); ?>" value="<?php echo esc_attr($value); ?>">
-        <button type="button" class="button prestige-media-button"><?php _e('Dosya Seç / Yükle', 'building-theme'); ?></button>
-        <p class="description"><?php _e('Resim veya video URL\'sini buraya ekleyin veya yükleyin.', 'building-theme'); ?></p>
+        <input type="text" class="regular-text prestige-media-url" name="<?php echo esc_attr($args['label_for']); ?>"
+            value="<?php echo esc_attr($value); ?>">
+        <button type="button"
+            class="button prestige-media-button"><?php _e('Dosya Seç / Yükle', 'building-theme'); ?></button>
+        <p class="description"><?php _e('Resim veya video URL\'sini buraya ekleyin veya yükleyin.', 'building-theme'); ?>
+        </p>
     </div>
     <?php
 }
@@ -356,11 +471,14 @@ function prestige_render_buttons_repeater()
     <div id="prestige-buttons-repeater">
         <div id="prestige-buttons-list">
             <?php foreach ($buttons as $i => $btn): ?>
-                <div class="prestige-button-row" style="background:#f9f9f9;border:1px solid #ddd;padding:12px 15px;margin-bottom:10px;border-radius:4px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <div class="prestige-button-row"
+                    style="background:#f9f9f9;border:1px solid #ddd;padding:12px 15px;margin-bottom:10px;border-radius:4px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
                     <label style="font-weight:600;min-width:60px;">Metin:</label>
-                    <input type="text" name="prestige_hero_buttons[<?php echo $i; ?>][text]" value="<?php echo esc_attr($btn['text']); ?>" class="regular-text" style="flex:1;min-width:150px;" />
+                    <input type="text" name="prestige_hero_buttons[<?php echo $i; ?>][text]"
+                        value="<?php echo esc_attr($btn['text']); ?>" class="regular-text" style="flex:1;min-width:150px;" />
                     <label style="font-weight:600;min-width:40px;">Link:</label>
-                    <input type="text" name="prestige_hero_buttons[<?php echo $i; ?>][link]" value="<?php echo esc_attr($btn['link']); ?>" class="regular-text" style="flex:1;min-width:150px;" />
+                    <input type="text" name="prestige_hero_buttons[<?php echo $i; ?>][link]"
+                        value="<?php echo esc_attr($btn['link']); ?>" class="regular-text" style="flex:1;min-width:150px;" />
                     <label style="font-weight:600;min-width:30px;">Tip:</label>
                     <select name="prestige_hero_buttons[<?php echo $i; ?>][type]" style="min-width:100px;">
                         <option value="primary" <?php selected($btn['type'], 'primary'); ?>>Birincil (Dolu)</option>
@@ -370,7 +488,8 @@ function prestige_render_buttons_repeater()
                 </div>
             <?php endforeach; ?>
         </div>
-        <button type="button" class="button button-primary" id="prestige-add-btn" style="margin-top:8px;">+ Yeni Buton Ekle</button>
+        <button type="button" class="button button-primary" id="prestige-add-btn" style="margin-top:8px;">+ Yeni Buton
+            Ekle</button>
         <p class="description" style="margin-top:8px;">Her buton için metin, link ve tip belirleyebilirsiniz.</p>
     </div>
     <?php

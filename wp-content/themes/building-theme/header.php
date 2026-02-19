@@ -45,15 +45,16 @@
                     </div>
                     <!-- Mobile menu button -->
                     <div class="md:hidden flex items-center">
-                        <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none" aria-controls="mobile-menu"
-                            aria-expanded="false">
+                        <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none"
+                            aria-controls="mobile-menu" aria-expanded="false">
                             <span class="material-icons">menu</span>
                         </button>
                     </div>
                 </div>
             </div>
             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden bg-background-dark/95 backdrop-blur-lg border-t border-white/10 px-4 pt-2 pb-6">
+            <div id="mobile-menu"
+                class="hidden md:hidden bg-background-dark/95 backdrop-blur-lg border-t border-white/10 px-4 pt-2 pb-6">
                 <div class="space-y-1">
                     <?php
                     wp_nav_menu(

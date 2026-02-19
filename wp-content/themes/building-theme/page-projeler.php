@@ -35,7 +35,7 @@ $projects_query = new WP_Query(array(
 ));
 ?>
 
-<main class="w-full">
+<main class="w-full bg-background-dark">
     <!-- Hero Section -->
     <section
         class="relative w-full py-24 md:py-32 lg:py-40 flex flex-col items-center justify-center bg-background-dark border-b border-white/5"
