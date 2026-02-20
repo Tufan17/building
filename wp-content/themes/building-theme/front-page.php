@@ -193,6 +193,68 @@ get_header();
     });
     </script>
 
+    <!-- Instagram Showcase -->
+    <?php
+    $insta_url = 'https://www.instagram.com/capitalyasaminsaat/';
+    $insta_query = new WP_Query(array(
+        'posts_per_page' => 6,
+        'post_status' => 'publish',
+        'category_name' => 'projelerimiz',
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'meta_query' => array(
+            array('key' => '_thumbnail_id'),
+        ),
+    ));
+    if ($insta_query->have_posts()):
+    ?>
+    <section class="bg-navy-dark py-24 md:py-32 overflow-hidden border-y border-white/5">
+        <!-- Header -->
+        <div class="text-center mb-14 md:mb-20 px-4">
+            <div class="w-12 h-px bg-primary/40 mx-auto mb-10"></div>
+            <div class="flex items-center justify-center gap-4 mb-5">
+                <svg class="w-7 h-7 md:w-9 md:h-9 text-white fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                <h2 class="font-serif-heading text-3xl md:text-5xl text-white tracking-wider">INSTAGRAM</h2>
+            </div>
+            <p class="text-gray-500 text-xs tracking-[0.3em] uppercase font-medium">@capitalyasaminsaat</p>
+        </div>
+
+        <!-- Image Grid -->
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+                <?php while ($insta_query->have_posts()): $insta_query->the_post();
+                    $insta_thumb = get_the_post_thumbnail_url(get_the_ID(), 'medium_large');
+                    if (!$insta_thumb) continue;
+                ?>
+                <a href="<?php echo esc_url($insta_url); ?>" target="_blank" rel="noopener noreferrer"
+                   class="group relative aspect-square overflow-hidden rounded-sm bg-black/30 block">
+                    <img src="<?php echo esc_url($insta_thumb); ?>"
+                         alt="<?php the_title_attribute(); ?>"
+                         class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                         loading="lazy" />
+                    <!-- Hover Overlay -->
+                    <div class="absolute inset-0 bg-navy-dark/70 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                        <svg class="w-8 h-8 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        <span class="text-white/80 text-[10px] uppercase tracking-widest font-medium">Görüntüle</span>
+                    </div>
+                    <!-- Bottom gold accent line -->
+                    <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                </a>
+                <?php endwhile; wp_reset_postdata(); ?>
+            </div>
+        </div>
+
+        <!-- Follow Button -->
+        <div class="text-center mt-12 md:mt-16">
+            <a href="<?php echo esc_url($insta_url); ?>" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-3 px-10 py-4 border border-primary/20 text-primary text-xs uppercase tracking-[0.25em] font-bold rounded-sm hover:bg-primary hover:text-navy-dark transition-all duration-500 group">
+                <span>Bizi Takip Edin</span>
+                <span class="material-icons text-sm group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+            </a>
+        </div>
+    </section>
+    <?php endif; ?>
+
     <!-- Prestige Metrics -->
     <?php
     $metrics = get_option('prestige_metrics');
