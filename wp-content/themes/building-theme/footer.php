@@ -21,7 +21,7 @@
                     if ($footer_logo):
                         ?>
                         <img src="<?php echo esc_url($footer_logo); ?>" alt="<?php bloginfo('name'); ?>"
-                            class="h-14 w-auto object-contain">
+                            class="h-24 w-auto object-contain">
                     <?php else: ?>
                         <span class="material-icons text-primary text-2xl">temple_hindu</span>
                         <span

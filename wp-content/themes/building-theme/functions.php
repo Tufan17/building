@@ -779,5 +779,222 @@ function prestige_contact_unread_badge()
 add_action('admin_menu', 'prestige_contact_unread_badge', 999);
 
 /**
+ * Remove WordPress branding everywhere
+ */
+
+// Remove WP generator meta tag from <head>
+remove_action('wp_head', 'wp_generator');
+
+// Remove WP logo from admin bar
+function prestige_remove_wp_logo_admin_bar($wp_admin_bar)
+{
+    $wp_admin_bar->remove_node('wp-logo');
+}
+add_action('admin_bar_menu', 'prestige_remove_wp_logo_admin_bar', 999);
+
+// Custom login page logo
+function prestige_custom_login_logo()
+{
+    $logo = get_option('prestige_header_logo');
+    ?>
+    <style>
+        #login h1 a,
+        .login h1 a {
+            <?php if ($logo): ?>
+            background-image: url('<?php echo esc_url($logo); ?>');
+            background-size: contain;
+            width: 280px;
+            height: 80px;
+            <?php else: ?>
+            background-image: none;
+            <?php endif; ?>
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .login {
+            background: #0b1120 !important;
+        }
+        .login form {
+            background: #131b2e !important;
+            border: 1px solid rgba(255,255,255,0.05) !important;
+            border-radius: 12px !important;
+        }
+        .login label, .login .message, .login .success {
+            color: #ccc !important;
+        }
+        .login input[type="text"],
+        .login input[type="password"] {
+            background: #0b1120 !important;
+            border-color: rgba(255,255,255,0.1) !important;
+            color: #fff !important;
+        }
+        .login .button-primary {
+            background: #c6a85a !important;
+            border-color: #c6a85a !important;
+            color: #0b1120 !important;
+            font-weight: 700 !important;
+        }
+        .login .button-primary:hover {
+            background: #e8d5a0 !important;
+        }
+        .login #backtoblog a,
+        .login #nav a {
+            color: rgba(255,255,255,0.4) !important;
+        }
+        .login #backtoblog a:hover,
+        .login #nav a:hover {
+            color: #c6a85a !important;
+        }
+    </style>
+    <?php
+}
+add_action('login_enqueue_scripts', 'prestige_custom_login_logo');
+
+// Change login logo URL to homepage
+function prestige_login_logo_url()
+{
+    return home_url('/');
+}
+add_filter('login_headerurl', 'prestige_login_logo_url');
+
+// Change login logo title
+function prestige_login_logo_title()
+{
+    return get_bloginfo('name');
+}
+add_filter('login_headertext', 'prestige_login_logo_title');
+
+// Custom admin footer text
+function prestige_admin_footer_text()
+{
+    return '<span style="color:#888;">Capital Yaşam İnşaat — Yönetim Paneli</span>';
+}
+add_filter('admin_footer_text', 'prestige_admin_footer_text');
+
+// Remove WordPress version from admin footer
+function prestige_remove_wp_version_footer()
+{
+    return '';
+}
+add_filter('update_footer', 'prestige_remove_wp_version_footer', 999);
+
+// Remove WP emoji scripts
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('wp_print_styles', 'print_emoji_styles');
+remove_action('admin_print_scripts', 'print_emoji_detection_script');
+remove_action('admin_print_styles', 'print_emoji_styles');
+
+// Hide admin bar on frontend
+add_filter('show_admin_bar', '__return_false');
+
+/**
+ * Custom Admin Dashboard — Remove WP widgets, add Capital Yaşam branding
+ */
+function prestige_remove_dashboard_widgets()
+{
+    // Remove all default WordPress dashboard widgets
+    remove_meta_box('dashboard_right_now', 'dashboard', 'normal');       // At a Glance
+    remove_meta_box('dashboard_activity', 'dashboard', 'normal');        // Activity
+    remove_meta_box('dashboard_quick_press', 'dashboard', 'side');       // Quick Draft
+    remove_meta_box('dashboard_primary', 'dashboard', 'side');           // WordPress Events and News
+    remove_meta_box('dashboard_site_health', 'dashboard', 'normal');     // Site Health
+    remove_action('welcome_panel', 'wp_welcome_panel');                  // Welcome Panel
+
+    // Add custom Capital Yaşam widget
+    wp_add_dashboard_widget(
+        'prestige_dashboard_widget',
+        'Capital Yaşam İnşaat — Yönetim Paneli',
+        'prestige_dashboard_widget_content'
+    );
+}
+add_action('wp_dashboard_setup', 'prestige_remove_dashboard_widgets');
+
+// Hide WP-related menus from admin
+function prestige_remove_admin_menus()
+{
+    remove_menu_page('plugins.php');                             // Eklentiler
+    remove_submenu_page('index.php', 'update-core.php');         // Güncellemeler
+    remove_menu_page('tools.php');                               // Araçlar
+    remove_menu_page('edit-comments.php');                       // Yorumlar
+    remove_menu_page('themes.php');                              // Görünüm (tamamen kaldır)
+
+    // Menüler'i bağımsız üst menü olarak ekle
+    add_menu_page(
+        'Menüler',
+        'Menüler',
+        'edit_theme_options',
+        'nav-menus.php',
+        '',
+        'dashicons-menu',
+        61
+    );
+}
+add_action('admin_menu', 'prestige_remove_admin_menus', 999);
+
+function prestige_dashboard_widget_content()
+{
+    $logo = get_option('prestige_header_logo');
+    $total_projects = wp_count_posts();
+    $published = $total_projects->publish ?? 0;
+    $unread_messages = count(get_posts(array(
+        'post_type' => 'iletisim_formu',
+        'post_status' => 'publish',
+        'meta_key' => '_contact_read',
+        'meta_value' => '0',
+        'fields' => 'ids',
+    )));
+    ?>
+    <div style="text-align:center; padding:20px 10px;">
+        <?php if ($logo): ?>
+            <img src="<?php echo esc_url($logo); ?>" alt="Capital Yaşam" style="max-height:80px; width:auto; margin-bottom:20px;" />
+        <?php endif; ?>
+        <p style="font-size:14px; color:#555; line-height:1.8; max-width:500px; margin:0 auto 24px;">
+            Adana'nın önde gelen inşaat firması olarak prestijli yaşam alanları inşa ediyoruz.
+            Bu panel üzerinden projelerinizi, iletişim formlarınızı ve site ayarlarınızı yönetebilirsiniz.
+        </p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:24px;">
+            <div style="background:#f9f7f2; padding:16px; border-radius:8px; text-align:center;">
+                <div style="font-size:28px; font-weight:700; color:#c6a85a;"><?php echo $published; ?></div>
+                <div style="font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.1em; margin-top:4px;">Proje</div>
+            </div>
+            <div style="background:#f9f7f2; padding:16px; border-radius:8px; text-align:center;">
+                <div style="font-size:28px; font-weight:700; color:#c6a85a;"><?php echo $unread_messages; ?></div>
+                <div style="font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.1em; margin-top:4px;">Yeni Mesaj</div>
+            </div>
+            <div style="background:#f9f7f2; padding:16px; border-radius:8px; text-align:center;">
+                <div style="font-size:28px; font-weight:700; color:#c6a85a;">
+                    <a href="<?php echo esc_url(home_url('/')); ?>" target="_blank" style="color:#c6a85a; text-decoration:none;">↗</a>
+                </div>
+                <div style="font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.1em; margin-top:4px;">Siteyi Gör</div>
+            </div>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+            <a href="<?php echo admin_url('post-new.php'); ?>" style="display:inline-block; background:#c6a85a; color:#0b1120; padding:10px 20px; border-radius:6px; text-decoration:none; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">
+                + Yeni Proje Ekle
+            </a>
+            <a href="<?php echo admin_url('edit.php?post_type=iletisim_formu'); ?>" style="display:inline-block; background:#0b1120; color:#fff; padding:10px 20px; border-radius:6px; text-decoration:none; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">
+                📧 İletişim Formları
+            </a>
+            <a href="<?php echo admin_url('admin.php?page=prestige-settings'); ?>" style="display:inline-block; background:#f0f0f0; color:#333; padding:10px 20px; border-radius:6px; text-decoration:none; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">
+                ⚙ Site Ayarları
+            </a>
+        </div>
+    </div>
+    <?php
+}
+
+// Change dashboard page title
+function prestige_admin_title($admin_title, $title)
+{
+    if ($title === 'Dashboard' || $title === 'Başlangıç') {
+        return 'Capital Yaşam — Yönetim Paneli';
+    }
+    return $admin_title;
+}
+add_filter('admin_title', 'prestige_admin_title', 10, 2);
+
+/**
  * End functions.php
  */
