@@ -1013,6 +1013,15 @@ function prestige_seo_admin_page()
 }
 add_action('admin_menu', 'prestige_seo_admin_page');
 
+// Enqueue media on SEO page
+function prestige_seo_enqueue_media($hook)
+{
+    if (strpos($hook, 'prestige') !== false || strpos($hook, 'seo') !== false) {
+        wp_enqueue_media();
+    }
+}
+add_action('admin_enqueue_scripts', 'prestige_seo_enqueue_media');
+
 function prestige_seo_settings_page()
 {
     if (isset($_POST['prestige_seo_save']) && check_admin_referer('prestige_seo_nonce')) {
@@ -1051,7 +1060,7 @@ function prestige_seo_settings_page()
                     <th><label for="prestige_og_image">Paylaşım Görseli (OG Image)</label></th>
                     <td>
                         <?php if ($og_image): ?>
-                            <img src="<?php echo esc_url($og_image); ?>" style="max-width:300px;height:auto;display:block;margin-bottom:10px;border-radius:8px;" />
+                            <img id="prestige_og_image_preview" src="<?php echo esc_url($og_image); ?>" style="max-width:300px;height:auto;display:block;margin-bottom:10px;border-radius:8px;" />
                         <?php endif; ?>
                         <input type="text" id="prestige_og_image" name="prestige_og_image" value="<?php echo esc_attr($og_image); ?>" class="large-text" />
                         <button type="button" class="button" onclick="selectMedia('prestige_og_image')">Görsel Seç</button>
@@ -1062,7 +1071,7 @@ function prestige_seo_settings_page()
                     <th><label for="prestige_favicon">Favicon (Site İkonu)</label></th>
                     <td>
                         <?php if ($favicon): ?>
-                            <img src="<?php echo esc_url($favicon); ?>" style="max-width:64px;height:auto;display:block;margin-bottom:10px;" />
+                            <img id="prestige_favicon_preview" src="<?php echo esc_url($favicon); ?>" style="max-width:64px;height:auto;display:block;margin-bottom:10px;" />
                         <?php endif; ?>
                         <input type="text" id="prestige_favicon" name="prestige_favicon" value="<?php echo esc_attr($favicon); ?>" class="large-text" />
                         <button type="button" class="button" onclick="selectMedia('prestige_favicon')">İkon Seç</button>
@@ -1076,11 +1085,27 @@ function prestige_seo_settings_page()
         </form>
         <script>
         function selectMedia(inputId) {
-            var frame = wp.media({ title: 'Görsel Seç', multiple: false });
+            var frame = wp.media({
+                title: 'Görsel Seç',
+                button: { text: 'Bu Görseli Kullan' },
+                multiple: false
+            });
             frame.on('select', function() {
-                var url = frame.state().get('selection').first().toJSON().url;
-                document.getElementById(inputId).value = url;
-                location.reload();
+                var attachment = frame.state().get('selection').first().toJSON();
+                document.getElementById(inputId).value = attachment.url;
+                // Update preview if exists
+                var preview = document.getElementById(inputId + '_preview');
+                if (preview) {
+                    preview.src = attachment.url;
+                    preview.style.display = 'block';
+                } else {
+                    // Create preview
+                    var img = document.createElement('img');
+                    img.id = inputId + '_preview';
+                    img.src = attachment.url;
+                    img.style.cssText = 'max-width:200px;height:auto;display:block;margin-top:10px;border-radius:4px;border:1px solid #ccc;';
+                    document.getElementById(inputId).parentNode.appendChild(img);
+                }
             });
             frame.open();
         }
