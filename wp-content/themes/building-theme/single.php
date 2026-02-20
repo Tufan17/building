@@ -188,12 +188,16 @@ while (have_posts()):
                                     <?php
                                     $full_url = wp_get_attachment_image_url($item_id, 'full');
                                     $thumb_url = wp_get_attachment_image_url($item_id, 'large');
+
+                                    // REAL MOBILE FIX: Make URLs relative to prevent localhost/IP mismatch
+                                    $full_url_rel = wp_make_link_relative($full_url);
+                                    $thumb_url_rel = wp_make_link_relative($thumb_url);
                                     ?>
-                                    <a href="<?php echo esc_url($full_url); ?>" class="block w-full h-auto overflow-hidden rounded-lg gallery-lightbox">
-                                        <img src="<?php echo esc_url($thumb_url); ?>"
+                                    <a href="<?php echo esc_url($full_url_rel ? $full_url_rel : $full_url); ?>" class="block w-full h-auto min-h-[150px] overflow-hidden rounded-lg gallery-lightbox">
+                                        <img src="<?php echo esc_url($thumb_url_rel ? $thumb_url_rel : $thumb_url); ?>"
                                              alt="<?php the_title(); ?>"
                                              class="block w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                                             loading="lazy">
+                                             decoding="async">
                                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                                             <span class="material-symbols-outlined text-white text-3xl">fullscreen</span>
                                         </div>
