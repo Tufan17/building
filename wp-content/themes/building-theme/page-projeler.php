@@ -40,7 +40,7 @@ $projects_query = new WP_Query(array(
     'post_status' => 'publish',
     'cat' => $cat_id,
     'orderby' => 'date',
-    'order' => 'DESC',
+    'order' => 'ASC',
 ));
 ?>
 

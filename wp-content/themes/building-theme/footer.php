@@ -63,7 +63,7 @@
                         'cat' => $projeler_cat_id,
                         'post_status' => 'publish',
                         'orderby' => 'date',
-                        'order' => 'DESC'
+                        'order' => 'ASC'
                     ));
 
                     if ($footer_projects->have_posts()):
