@@ -351,9 +351,8 @@ while (have_posts()):
         <section class="bg-background-dark py-32 md:py-48 px-6 border-t border-white/5">
             <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-10">
                 <div class="w-[1px] h-16 bg-primary/50 mb-4"></div>
-                <h2 class="font-serif-heading text-4xl md:text-6xl text-white">Hassasiyetle İşlendi</h2>
-                <p class="text-gray-400 text-lg md:text-xl max-w-xl font-light">Sessizliği, alanı ve ARCHITRAVE'in tavizsiz
-                    kalitesini deneyimleyin.</p>
+                <h2 class="font-serif-heading text-4xl md:text-6xl text-white"><?php the_title(); ?></h2>
+                <p class="text-gray-400 text-lg md:text-xl max-w-xl font-light">Capital Yaşam İnşaat kalitesiyle inşa edilen bu projede yerinizi alın. Detaylı bilgi ve yerinde inceleme için bizimle iletişime geçin.</p>
                 <a href="<?php echo esc_url(home_url('/iletisim')); ?>"
                     class="mt-8 relative inline-flex items-center justify-center px-12 py-4 overflow-hidden font-bold text-white transition-all duration-300 bg-transparent border border-primary rounded-lg group hover:bg-primary/10">
                     <span
