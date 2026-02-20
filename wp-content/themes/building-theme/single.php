@@ -169,14 +169,14 @@ while (have_posts()):
                         <?php endif; ?>
 
                         <!-- Gallery Grid -->
-                        <div id="gallery-grid" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+                        <div id="gallery-grid" class="columns-1 md:columns-2 lg:columns-3 gap-8">
                             <?php foreach ($all_items as $item):
                                 $item_id = $item['id'];
                                 if (empty($item_id)) continue;
                                 $mime = get_post_mime_type($item_id);
                                 $is_video = strpos($mime, 'video') !== false;
                             ?>
-                            <div class="gallery-item break-inside-avoid overflow-hidden rounded-lg group relative bg-black/20 transition-all duration-500"
+                            <div class="gallery-item mb-8 break-inside-avoid overflow-hidden rounded-lg group relative bg-black/20 transition-all duration-500"
                                  data-category="<?php echo esc_attr($item['cat_slug']); ?>">
                                 <?php if ($is_video): ?>
                                     <div class="aspect-video w-full">
@@ -189,10 +189,10 @@ while (have_posts()):
                                     $full_url = wp_get_attachment_image_url($item_id, 'full');
                                     $thumb_url = wp_get_attachment_image_url($item_id, 'large');
                                     ?>
-                                    <a href="<?php echo esc_url($full_url); ?>" class="block overflow-hidden rounded-lg gallery-lightbox">
+                                    <a href="<?php echo esc_url($full_url); ?>" class="block w-full h-auto overflow-hidden rounded-lg gallery-lightbox">
                                         <img src="<?php echo esc_url($thumb_url); ?>"
                                              alt="<?php the_title(); ?>"
-                                             class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                                             class="block w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                                              loading="lazy">
                                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                                             <span class="material-symbols-outlined text-white text-3xl">fullscreen</span>
