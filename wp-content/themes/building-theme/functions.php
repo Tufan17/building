@@ -324,3 +324,187 @@ function prestige_save_year_meta($post_id)
     }
 }
 add_action('save_post', 'prestige_save_year_meta');
+/**
+ * Meta Box: Proje Galerisi (Multiple Image Gallery)
+ */
+function prestige_add_gallery_meta_box()
+{
+    add_meta_box(
+        'prestige_project_gallery',
+        'Proje Galerisi',
+        'prestige_render_gallery_meta_box',
+        'post',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'prestige_add_gallery_meta_box');
+
+function prestige_render_gallery_meta_box($post)
+{
+    wp_nonce_field('prestige_save_gallery', 'prestige_gallery_nonce');
+    $gallery_ids = get_post_meta($post->ID, '_prestige_project_gallery', true);
+    $ids_array = !empty($gallery_ids) ? explode(',', $gallery_ids) : array();
+    ?>
+    <div id="prestige-gallery-container">
+        <ul id="prestige-gallery-list"
+            style="display:flex; flex-wrap:wrap; gap:10px; list-style:none; padding:10px; margin:0 0 15px 0; border:2px dashed #ccc; min-height:120px;">
+            <?php
+            foreach ($ids_array as $item_id) {
+                if (empty($item_id))
+                    continue;
+                $mime = get_post_mime_type($item_id);
+                $is_video = strpos($mime, 'video') !== false;
+                $img_url = wp_get_attachment_image_url($item_id, 'thumbnail');
+
+                echo '<li data-id="' . esc_attr($item_id) . '" style="position:relative; width:100px; height:100px; border:1px solid #ddd; background:#eee; cursor:move;">';
+                if ($is_video) {
+                    echo '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#222; color:#fff;"><span class="dashicons dashicons-video-alt3" style="font-size:40px; width:40px; height:40px;"></span></div>';
+                } else if ($img_url) {
+                    echo '<img src="' . esc_url($img_url) . '" style="width:100%; height:100%; object-fit:cover;">';
+                } else {
+                    echo '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#eee;"><span class="dashicons dashicons-media-document" style="font-size:40px; width:40px; height:40px;"></span></div>';
+                }
+                echo '<a href="#" class="prestige-remove-gallery-img" style="position:absolute; top:-8px; right:-8px; background:#f00; color:#fff; border-radius:50%; width:24px; height:24px; line-height:22px; text-align:center; text-decoration:none; font-size:16px; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2); z-index:10;">&times;</a>';
+                echo '</li>';
+            }
+            ?>
+        </ul>
+        <input type="hidden" id="prestige_gallery_data" name="prestige_gallery_data"
+            value="<?php echo esc_attr($gallery_ids); ?>">
+        <button type="button" class="button button-primary button-large" id="prestige-manage-gallery">Görsel / Video Ekle
+            veya Düzenle</button>
+        <p class="description">Proje galerisi için birden fazla görsel ve video seçebilirsiniz. Sürükleyerek yerlerini
+            değiştirebilirsiniz.</p>
+    </div>
+
+    <script>
+        jQuery(document).ready(function ($) {
+            console.log('Gallery JS Initialized');
+            var frame;
+            $('#prestige-manage-gallery').on('click', function (e) {
+                e.preventDefault();
+                console.log('Add Button Clicked');
+
+                if (frame) {
+                    frame.open();
+                    return;
+                }
+
+                frame = wp.media({
+                    title: 'Galeri İçeriğini Yönet',
+                    button: { text: 'Galeriye Aktar' },
+                    library: { type: ['image', 'video'] },
+                    multiple: 'add'
+                });
+
+                frame.on('open', function () {
+                    var selection = frame.state().get('selection');
+                    var ids = $('#prestige_gallery_data').val().split(',');
+                    ids.forEach(function (id) {
+                        if (id) {
+                            var attachment = wp.media.attachment(id);
+                            attachment.fetch();
+                            selection.add(attachment ? [attachment] : []);
+                        }
+                    });
+                });
+
+                frame.on('select', function () {
+                    var selection = frame.state().get('selection');
+                    var ids = [];
+                    var $list = $('#prestige-gallery-list');
+                    $list.empty();
+
+                    selection.map(function (attachment) {
+                        attachment = attachment.toJSON();
+                        ids.push(attachment.id);
+
+                        var html = '<li data-id="' + attachment.id + '" style="position:relative; width:100px; height:100px; border:1px solid #ddd; background:#eee; cursor:move;">';
+                        if (attachment.type === 'video') {
+                            html += '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#222; color:#fff;"><span class="dashicons dashicons-video-alt3" style="font-size:40px; width:40px; height:40px;"></span></div>';
+                        } else {
+                            var thumb = (attachment.sizes && attachment.sizes.thumbnail) ? attachment.sizes.thumbnail.url : attachment.url;
+                            html += '<img src="' + thumb + '" style="width:100%; height:100%; object-fit:cover;">';
+                        }
+                        html += '<a href="#" class="prestige-remove-gallery-img" style="position:absolute; top:-8px; right:-8px; background:#f00; color:#fff; border-radius:50%; width:24px; height:24px; line-height:22px; text-align:center; text-decoration:none; font-size:16px; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2); z-index:10;">&times;</a>';
+                        html += '</li>';
+                        $list.append(html);
+                    });
+
+                    $('#prestige_gallery_data').val(ids.join(','));
+                    console.log('Selection Saved. IDs:', ids.join(','));
+                });
+
+                frame.open();
+            });
+
+            $(document).on('click', '.prestige-remove-gallery-img', function (e) {
+                e.preventDefault();
+                $(this).parent().remove();
+                updateIds();
+            });
+
+            function updateIds() {
+                var ids = [];
+                $('#prestige-gallery-list li').each(function () {
+                    ids.push($(this).data('id'));
+                });
+                $('#prestige_gallery_data').val(ids.join(','));
+                console.log('Remaining IDs:', ids.join(','));
+            }
+
+            if ($.fn.sortable) {
+                $('#prestige-gallery-list').sortable({
+                    update: updateIds
+                });
+            }
+        });
+    </script>
+    <style>
+        #prestige-gallery-list li:hover {
+            border-color: #007cba;
+        }
+
+        .prestige-remove-gallery-img:hover {
+            background: #d00 !important;
+        }
+    </style>
+    <?php
+}
+
+/**
+ * Save Gallery Meta
+ */
+function prestige_save_gallery_meta($post_id)
+{
+    // Minimal verification for maximum compatibility
+    if (!isset($_POST['prestige_gallery_nonce']) || !wp_verify_nonce($_POST['prestige_gallery_nonce'], 'prestige_save_gallery')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    if (isset($_POST['prestige_gallery_data'])) {
+        $val = sanitize_text_field($_POST['prestige_gallery_data']);
+        update_post_meta($post_id, '_prestige_project_gallery', $val);
+    }
+}
+add_action('save_post', 'prestige_save_gallery_meta');
+
+/**
+ * Enqueue Media for Admin
+ */
+function prestige_admin_gallery_scripts($hook)
+{
+    if ('post.php' != $hook && 'post-new.php' != $hook) {
+        return;
+    }
+    wp_enqueue_media();
+}
+add_action('admin_enqueue_scripts', 'prestige_admin_gallery_scripts');
+
+/**
+ * End functions.php
+ */

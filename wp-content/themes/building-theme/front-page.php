@@ -77,7 +77,7 @@ get_header();
             </div>
         </div>
         <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
+        <div class="absolute bottom-10 w-full transform -translate-x-1/2 animate-bounce text-white/50 text-center">
             <span class="material-icons text-4xl">keyboard_arrow_down</span>
         </div>
     </header>
@@ -140,18 +140,21 @@ get_header();
     $metric_count = count($metrics);
     ?>
     <?php if ($metric_count > 0): ?>
-    <section class="py-32 bg-navy-dark border-y border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-<?php echo min($metric_count, 4); ?> gap-16 text-center divide-y md:divide-y-0 md:divide-x divide-white/5">
-                <?php foreach ($metrics as $m): ?>
-                    <div class="p-8">
-                        <span class="block font-serif-heading text-5xl md:text-7xl text-primary mb-6"><?php echo esc_html($m['value']); ?></span>
-                        <span class="text-gray-400 text-xs uppercase tracking-[0.3em] font-medium"><?php echo esc_html($m['label']); ?></span>
-                    </div>
-                <?php endforeach; ?>
+        <section class="py-32 bg-navy-dark border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div
+                    class="grid grid-cols-1 md:grid-cols-<?php echo min($metric_count, 4); ?> gap-16 text-center divide-y md:divide-y-0 md:divide-x divide-white/5">
+                    <?php foreach ($metrics as $m): ?>
+                        <div class="p-8">
+                            <span
+                                class="block font-serif-heading text-5xl md:text-7xl text-primary mb-6"><?php echo esc_html($m['value']); ?></span>
+                            <span
+                                class="text-gray-400 text-xs uppercase tracking-[0.3em] font-medium"><?php echo esc_html($m['label']); ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
     <?php endif; ?>
 
     <!-- Why Choose Us -->
@@ -163,29 +166,33 @@ get_header();
     $std_count = count($standards);
     ?>
     <?php if ($std_count > 0): ?>
-    <section class="py-40 bg-navy-dark" id="expertise">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-28">
-                <h2 class="font-serif-heading text-4xl md:text-5xl text-white mb-8">
-                    Prestij Standartları
-                </h2>
-                <div class="w-12 h-px bg-primary mx-auto opacity-50"></div>
+        <section class="py-40 bg-navy-dark" id="expertise">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-28">
+                    <h2 class="font-serif-heading text-4xl md:text-5xl text-white mb-8">
+                        Prestij Standartları
+                    </h2>
+                    <div class="w-12 h-px bg-primary mx-auto opacity-50"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-<?php echo min($std_count, 3); ?> gap-16">
+                    <?php foreach ($standards as $std): ?>
+                        <div
+                            class="group p-10 border border-white/5 hover:border-primary/20 transition-all duration-700 bg-white/[0.01] hover:bg-white/[0.02]">
+                            <?php if (!empty($std['icon'])): ?>
+                                <div
+                                    class="w-14 h-14 rounded-full bg-primary/5 flex items-center justify-center mb-10 group-hover:bg-primary/10 transition-all duration-500">
+                                    <span
+                                        class="material-icons text-primary/80 group-hover:text-primary transition-colors"><?php echo esc_html($std['icon']); ?></span>
+                                </div>
+                            <?php endif; ?>
+                            <h3 class="font-serif-heading text-xl text-white mb-4"><?php echo esc_html($std['title']); ?></h3>
+                            <p class="text-gray-400 text-sm leading-relaxed font-light"><?php echo esc_html($std['desc']); ?>
+                            </p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-<?php echo min($std_count, 3); ?> gap-16">
-                <?php foreach ($standards as $std): ?>
-                    <div class="group p-10 border border-white/5 hover:border-primary/20 transition-all duration-700 bg-white/[0.01] hover:bg-white/[0.02]">
-                        <?php if (!empty($std['icon'])): ?>
-                            <div class="w-14 h-14 rounded-full bg-primary/5 flex items-center justify-center mb-10 group-hover:bg-primary/10 transition-all duration-500">
-                                <span class="material-icons text-primary/80 group-hover:text-primary transition-colors"><?php echo esc_html($std['icon']); ?></span>
-                            </div>
-                        <?php endif; ?>
-                        <h3 class="font-serif-heading text-xl text-white mb-4"><?php echo esc_html($std['title']); ?></h3>
-                        <p class="text-gray-400 text-sm leading-relaxed font-light"><?php echo esc_html($std['desc']); ?></p>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
+        </section>
     <?php endif; ?>
 
     <!-- Pre-Footer CTA -->
@@ -200,7 +207,8 @@ get_header();
                 Hayalinizdeki Yapıyı Birlikte Tasarlayalım
             </h2>
             <p class="text-gray-300 mb-10 font-light text-lg">
-                Bir fincan kahve eşliğinde projenizi konuşmak ister misiniz? Vizyonunuzu dinlemek ve size özel çözümler sunmak için buradayız.
+                Bir fincan kahve eşliğinde projenizi konuşmak ister misiniz? Vizyonunuzu dinlemek ve size özel çözümler
+                sunmak için buradayız.
             </p>
             <a class="inline-block bg-primary hover:bg-primary-dark text-navy-dark px-14 py-6 rounded-sm text-xs uppercase tracking-[0.3em] font-bold transition-all duration-500 shadow-2xl shadow-primary/10"
                 href="#contact">

@@ -60,7 +60,7 @@ while (have_posts()):
             </div>
             <!-- Scroll Indicator -->
             <div
-                class="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center gap-2 animate-bounce">
+                class="absolute bottom-10 w-full -translate-x-1/2 text-white/50 flex flex-col items-center gap-2 animate-bounce">
                 <span class="text-[10px] uppercase tracking-widest">Aşağı Kaydır</span>
                 <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
             </div>
@@ -85,72 +85,66 @@ while (have_posts()):
                         <div class="text-lg md:text-xl font-light leading-relaxed text-gray-600">
                             <?php the_content(); ?>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-gray-200">
-                            <!-- Stat 1 -->
-                            <div class="flex flex-col gap-2">
-                                <div class="flex items-center gap-2 text-primary">
-                                    <span class="material-symbols-outlined">square_foot</span>
-                                </div>
-                                <h3 class="text-background-dark font-bold text-lg">Alan</h3>
-                                <p class="text-gray-500 font-medium text-sm"><?php echo esc_html($area); ?></p>
-                            </div>
-                            <!-- Stat 2 -->
-                            <div class="flex flex-col gap-2">
-                                <div class="flex items-center gap-2 text-primary">
-                                    <span class="material-symbols-outlined">home_work</span>
-                                </div>
-                                <h3 class="text-background-dark font-bold text-lg">Tip</h3>
-                                <p class="text-gray-500 font-medium text-sm">Özel Mülk</p>
-                            </div>
-                            <!-- Stat 3 -->
-                            <div class="flex flex-col gap-2">
-                                <div class="flex items-center gap-2 text-primary">
-                                    <span class="material-symbols-outlined">architecture</span>
-                                </div>
-                                <h3 class="text-background-dark font-bold text-lg">Mimar</h3>
-                                <p class="text-gray-500 font-medium text-sm"><?php echo esc_html($architect); ?></p>
-                            </div>
-                        </div>
                     </div>
+
                 </div>
+            </div>
             </div>
         </section>
 
-        <!-- Metrics Section -->
-        <section class="bg-navy-dark py-24 md:py-32 relative overflow-hidden">
-            <!-- Subtle Pattern Background -->
-            <div class="absolute inset-0 opacity-5"
-                style="background-image: radial-gradient(#cdab56 1px, transparent 1px); background-size: 32px 32px;"></div>
-            <div class="max-w-[1440px] mx-auto px-6 relative z-10">
-                <div
-                    class="flex flex-col md:flex-row flex-wrap gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                    <!-- Metric 1 -->
-                    <div class="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-center group">
-                        <h3
-                            class="text-primary font-bold text-7xl md:text-9xl tracking-tighter mb-4 transition-transform duration-500 group-hover:-translate-y-2">
-                            03</h3>
-                        <p class="text-white font-medium text-lg uppercase tracking-[0.2em] mb-2">Yıllık Titiz Çalışma</p>
-                        <p class="text-gray-400 text-sm max-w-[200px]">İlk taslaktan son taş yerleşimine kadar.</p>
-                    </div>
-                    <!-- Metric 2 -->
-                    <div class="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-center group">
-                        <h3
-                            class="text-primary font-bold text-7xl md:text-9xl tracking-tighter mb-4 transition-transform duration-500 group-hover:-translate-y-2">
-                            12</h3>
-                        <p class="text-white font-medium text-lg uppercase tracking-[0.2em] mb-2">Özel Malzeme</p>
-                        <p class="text-gray-400 text-sm max-w-[200px]">En iyi ocaklardan özenle seçilmiş.</p>
-                    </div>
-                    <!-- Metric 3 -->
-                    <div class="flex-1 flex flex-col items-center justify-center p-8 md:p-12 text-center group">
-                        <h3
-                            class="text-primary font-bold text-7xl md:text-9xl tracking-tighter mb-4 transition-transform duration-500 group-hover:-translate-y-2">
-                            ∞</h3>
-                        <p class="text-white font-medium text-lg uppercase tracking-[0.2em] mb-2">Kesintisiz Manzara</p>
-                        <p class="text-gray-400 text-sm max-w-[200px]">Ufuk çizgisine açılan panoramik bakış.</p>
+        <!-- Project Gallery Section -->
+        <?php
+        $gallery_ids = get_post_meta(get_the_ID(), '_prestige_project_gallery', true);
+        if ($gallery_ids):
+            $ids_array = explode(',', $gallery_ids);
+            ?>
+            <section class="bg-navy-dark py-24 md:py-32 relative overflow-hidden">
+                <!-- Subtle Pattern Background -->
+                <div class="absolute inset-0 opacity-5"
+                    style="background-image: radial-gradient(#cdab56 1px, transparent 1px); background-size: 32px 32px;"></div>
+                <div class="max-w-[1440px] mx-auto px-6 relative z-10">
+                    <div class="flex flex-col gap-16">
+                        <div class="flex flex-col items-center text-center space-y-4">
+                            <span class="text-primary text-sm font-medium tracking-[0.3em] uppercase">Proje Galerisi</span>
+                            <h2 class="font-serif-heading text-4xl md:text-6xl text-white">Detaylar ve <span class="italic text-gray-400">Vizyon</span></h2>
+                        </div>
+                        
+                        <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+                            <?php
+                            foreach ($ids_array as $item_id):
+                                if (empty($item_id)) continue;
+                                $mime = get_post_mime_type($item_id);
+                                $is_video = strpos($mime, 'video') !== false;
+                                ?>
+                                <div class="break-inside-avoid overflow-hidden rounded-lg group relative bg-black/20">
+                                    <?php if ($is_video): ?>
+                                        <div class="aspect-video w-full">
+                                            <video controls class="w-full h-full object-cover rounded-lg" poster="<?php echo esc_url(wp_get_attachment_image_url($item_id, 'large')); ?>">
+                                                <source src="<?php echo esc_url(wp_get_attachment_url($item_id)); ?>" type="<?php echo esc_attr($mime); ?>">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                    <?php else: ?>
+                                        <?php 
+                                        $full_url = wp_get_attachment_image_url($item_id, 'full');
+                                        $thumb_url = wp_get_attachment_image_url($item_id, 'large');
+                                        ?>
+                                        <a href="<?php echo esc_url($full_url); ?>" class="block overflow-hidden rounded-lg">
+                                            <img src="<?php echo esc_url($thumb_url); ?>" 
+                                                 alt="<?php the_title(); ?>" 
+                                                 class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105">
+                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                                                <span class="material-symbols-outlined text-white text-3xl">fullscreen</span>
+                                            </div>
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        <?php endif; ?>
 
         <!-- Closing / CTA -->
         <section class="bg-background-dark py-32 md:py-48 px-6 border-t border-white/5">

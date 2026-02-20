@@ -533,10 +533,17 @@ function prestige_admin_footer_scripts()
             /* Media uploader */
             $(document).on('click', '.prestige-media-button', function (e) {
                 e.preventDefault();
-                var input = $(this).siblings('.prestige-media-url');
-                wp.media({ title: 'Dosya Seç', button: { text: 'Dosyayı Kullan' }, multiple: false })
-                    .on('select', function () { input.val(this.state().get('selection').first().toJSON().url); })
-                    .open();
+                var button = $(this);
+                var input = button.closest('.prestige-media-uploader').find('.prestige-media-url');
+
+                var custom_uploader = wp.media({
+                    title: 'Dosya Seç',
+                    button: { text: 'Dosyayı Kullan' },
+                    multiple: false
+                }).on('select', function () {
+                    var attachment = custom_uploader.state().get('selection').first().toJSON();
+                    input.val(attachment.url);
+                }).open();
             });
 
             /* Generic reindex helper */
