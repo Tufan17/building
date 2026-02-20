@@ -192,10 +192,11 @@ $projects_query = new WP_Query(array(
                             <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400 font-medium tracking-wide">
                                 <?php if (!empty($durum_names)): ?>
                                     <?php foreach ($durum_names as $dn):
-                                        $badge_color = (strpos(strtolower($dn), 'tamamlanan') !== false) ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+                                        $is_tamamlanan_p = (strpos(strtolower($dn), 'tamamlanan') !== false);
+                                        $badge_color = $is_tamamlanan_p ? 'bg-primary/10 text-primary border-primary/25' : 'bg-white/5 text-gray-300 border-white/15';
                                     ?>
-                                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border <?php echo $badge_color; ?>">
-                                            <span class="w-1.5 h-1.5 rounded-full <?php echo (strpos(strtolower($dn), 'tamamlanan') !== false) ? 'bg-green-400' : 'bg-amber-400'; ?>"></span>
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border <?php echo $badge_color; ?>">
+                                            <span class="w-1.5 h-1.5 rounded-full <?php echo $is_tamamlanan_p ? 'bg-primary' : 'bg-gray-400'; ?>"></span>
                                             <?php echo esc_html($dn); ?>
                                         </span>
                                     <?php endforeach; ?>

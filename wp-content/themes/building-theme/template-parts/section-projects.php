@@ -10,7 +10,7 @@ $projects_query = new WP_Query(array(
     'posts_per_page' => -1,
     'post_status' => 'publish',
     'orderby' => 'date',
-    'order' => 'DESC',
+    'order' => 'ASC',
     'category_name' => 'projelerimiz',
 ));
 
@@ -45,6 +45,11 @@ if ($projects_query->have_posts()):
         }
         $durum_attr_fp = implode(' ', $durum_slugs_fp);
 
+        // Badge styling — premium gold theme
+        $is_tamamlanan = (strpos(strtolower($durum_name_fp), 'tamamlanan') !== false);
+        $fp_badge = $is_tamamlanan ? 'bg-primary/10 text-primary border-primary/25' : 'bg-white/5 text-gray-300 border-white/15';
+        $fp_dot = $is_tamamlanan ? 'bg-primary' : 'bg-gray-400';
+
         // Get featured image
         $thumb = get_the_post_thumbnail_url(get_the_ID(), 'large');
         if (!$thumb) {
@@ -62,12 +67,8 @@ if ($projects_query->have_posts()):
                         <div class="absolute -left-10 top-1/2 -translate-y-1/2 w-20 h-px bg-primary/30 hidden lg:block"></div>
                         <div class="flex items-center gap-3 mb-4">
                             <?php if ($durum_name_fp): ?>
-                                <?php
-                                $fp_badge = (strpos(strtolower($durum_name_fp), 'tamamlanan') !== false) ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-                                $fp_dot = (strpos(strtolower($durum_name_fp), 'tamamlanan') !== false) ? 'bg-green-400' : 'bg-amber-400';
-                                ?>
-                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-semibold border <?php echo $fp_badge; ?>">
-                                    <span class="w-1 h-1 rounded-full <?php echo $fp_dot; ?>"></span>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-semibold border <?php echo $fp_badge; ?>">
+                                    <span class="w-1.5 h-1.5 rounded-full <?php echo $fp_dot; ?>"></span>
                                     <?php echo esc_html($durum_name_fp); ?>
                                 </span>
                             <?php endif; ?>
@@ -113,8 +114,8 @@ if ($projects_query->have_posts()):
                         <div class="absolute -right-10 top-1/2 -translate-y-1/2 w-20 h-px bg-primary/30 hidden lg:block"></div>
                         <div class="flex items-center justify-end gap-3 mb-4">
                             <?php if ($durum_name_fp): ?>
-                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-semibold border <?php echo $fp_badge; ?>">
-                                    <span class="w-1 h-1 rounded-full <?php echo $fp_dot; ?>"></span>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-semibold border <?php echo $fp_badge; ?>">
+                                    <span class="w-1.5 h-1.5 rounded-full <?php echo $fp_dot; ?>"></span>
                                     <?php echo esc_html($durum_name_fp); ?>
                                 </span>
                             <?php endif; ?>
