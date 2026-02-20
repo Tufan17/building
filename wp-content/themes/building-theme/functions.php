@@ -612,5 +612,172 @@ function prestige_admin_gallery_scripts($hook)
 add_action('admin_enqueue_scripts', 'prestige_admin_gallery_scripts');
 
 /**
+ * Contact Form: Custom Post Type & Handler
+ */
+function prestige_register_contact_cpt()
+{
+    register_post_type('iletisim_formu', array(
+        'labels' => array(
+            'name' => 'İletişim Formları',
+            'singular_name' => 'İletişim Formu',
+            'menu_name' => 'İletişim Formları',
+            'all_items' => 'Tüm Mesajlar',
+            'view_item' => 'Mesajı Görüntüle',
+            'search_items' => 'Mesaj Ara',
+            'not_found' => 'Mesaj bulunamadı',
+        ),
+        'public' => false,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'menu_icon' => 'dashicons-email-alt',
+        'menu_position' => 26,
+        'supports' => array(''),
+        'capability_type' => 'post',
+        'capabilities' => array(
+            'create_posts' => 'do_not_allow',
+        ),
+        'map_meta_cap' => true,
+    ));
+}
+add_action('init', 'prestige_register_contact_cpt');
+
+// Handle form submission
+function prestige_handle_contact_form()
+{
+    if (!isset($_POST['prestige_contact_submit'])) return;
+    if (!wp_verify_nonce($_POST['prestige_contact_nonce'] ?? '', 'prestige_contact_form')) return;
+
+    $first_name = sanitize_text_field($_POST['contact_first_name'] ?? '');
+    $last_name = sanitize_text_field($_POST['contact_last_name'] ?? '');
+    $email = sanitize_email($_POST['contact_email'] ?? '');
+    $phone = sanitize_text_field($_POST['contact_phone'] ?? '');
+    $project_type = sanitize_text_field($_POST['contact_project_type'] ?? '');
+    $budget = sanitize_text_field($_POST['contact_budget'] ?? '');
+    $message = sanitize_textarea_field($_POST['contact_message'] ?? '');
+
+    $post_id = wp_insert_post(array(
+        'post_type' => 'iletisim_formu',
+        'post_title' => $first_name . ' ' . $last_name . ' - ' . date('d.m.Y H:i'),
+        'post_status' => 'publish',
+    ));
+
+    if ($post_id && !is_wp_error($post_id)) {
+        update_post_meta($post_id, '_contact_first_name', $first_name);
+        update_post_meta($post_id, '_contact_last_name', $last_name);
+        update_post_meta($post_id, '_contact_email', $email);
+        update_post_meta($post_id, '_contact_phone', $phone);
+        update_post_meta($post_id, '_contact_project_type', $project_type);
+        update_post_meta($post_id, '_contact_budget', $budget);
+        update_post_meta($post_id, '_contact_message', $message);
+        update_post_meta($post_id, '_contact_read', '0');
+
+        // Redirect with success
+        wp_redirect(add_query_arg('contact_sent', '1', wp_get_referer() ?: home_url()));
+        exit;
+    }
+}
+add_action('init', 'prestige_handle_contact_form');
+
+// Admin columns
+function prestige_contact_columns($columns)
+{
+    return array(
+        'cb' => '<input type="checkbox" />',
+        'title' => 'Gönderen',
+        'contact_email' => 'E-posta',
+        'contact_phone' => 'Telefon',
+        'contact_type' => 'Proje Tipi',
+        'contact_read' => 'Durum',
+        'date' => 'Tarih',
+    );
+}
+add_filter('manage_iletisim_formu_posts_columns', 'prestige_contact_columns');
+
+function prestige_contact_column_data($column, $post_id)
+{
+    $type_labels = array(
+        'residential' => 'Konut',
+        'commercial' => 'Ticari',
+        'interior' => 'İç Tasarım',
+        'renovation' => 'Renovasyon',
+    );
+    switch ($column) {
+        case 'contact_email':
+            echo esc_html(get_post_meta($post_id, '_contact_email', true));
+            break;
+        case 'contact_phone':
+            echo esc_html(get_post_meta($post_id, '_contact_phone', true));
+            break;
+        case 'contact_type':
+            $t = get_post_meta($post_id, '_contact_project_type', true);
+            echo esc_html($type_labels[$t] ?? $t);
+            break;
+        case 'contact_read':
+            $read = get_post_meta($post_id, '_contact_read', true);
+            echo $read === '0' ? '<span style="color:#c6a85a;font-weight:700;">● Yeni</span>' : '<span style="color:#888;">Okundu</span>';
+            break;
+    }
+}
+add_action('manage_iletisim_formu_posts_custom_column', 'prestige_contact_column_data', 10, 2);
+
+// Custom detail view for submissions
+function prestige_contact_meta_box()
+{
+    add_meta_box('contact_details', 'Mesaj Detayları', 'prestige_render_contact_details', 'iletisim_formu', 'normal', 'high');
+}
+add_action('add_meta_boxes', 'prestige_contact_meta_box');
+
+function prestige_render_contact_details($post)
+{
+    // Mark as read
+    update_post_meta($post->ID, '_contact_read', '1');
+
+    $fields = array(
+        'Ad' => get_post_meta($post->ID, '_contact_first_name', true),
+        'Soyad' => get_post_meta($post->ID, '_contact_last_name', true),
+        'E-posta' => get_post_meta($post->ID, '_contact_email', true),
+        'Telefon' => get_post_meta($post->ID, '_contact_phone', true),
+        'Proje Tipi' => get_post_meta($post->ID, '_contact_project_type', true),
+        'Bütçe' => get_post_meta($post->ID, '_contact_budget', true),
+    );
+    $message = get_post_meta($post->ID, '_contact_message', true);
+
+    $type_labels = array('residential' => 'Konut Mimarisi', 'commercial' => 'Ticari Geliştirme', 'interior' => 'İç Tasarım', 'renovation' => 'Renovasyon');
+    $budget_labels = array('tier1' => '₺500K - ₺1M', 'tier2' => '₺1M - ₺5M', 'tier3' => '₺5M - ₺10M', 'tier4' => '₺10M+');
+
+    echo '<table class="form-table" style="margin-top:0;">';
+    foreach ($fields as $label => $val) {
+        if ($label === 'Proje Tipi') $val = $type_labels[$val] ?? $val;
+        if ($label === 'Bütçe') $val = $budget_labels[$val] ?? $val;
+        if ($label === 'E-posta' && $val) $val = '<a href="mailto:' . esc_attr($val) . '">' . esc_html($val) . '</a>';
+        elseif ($label === 'Telefon' && $val) $val = '<a href="tel:' . esc_attr($val) . '">' . esc_html($val) . '</a>';
+        else $val = esc_html($val);
+        echo '<tr><th style="width:120px;padding:12px 10px;color:#333;font-weight:600;">' . esc_html($label) . '</th><td style="padding:12px 10px;">' . ($val ?: '—') . '</td></tr>';
+    }
+    echo '</table>';
+    echo '<h4 style="margin:20px 0 8px;font-weight:600;">Mesaj</h4>';
+    echo '<div style="background:#f9f9f9;padding:16px 20px;border-radius:8px;border:1px solid #e0e0e0;line-height:1.7;white-space:pre-wrap;">' . esc_html($message) . '</div>';
+}
+
+// Unread count badge
+function prestige_contact_unread_badge()
+{
+    $count = wp_count_posts('iletisim_formu');
+    if (!$count) return;
+    global $menu;
+    $unread = get_posts(array('post_type' => 'iletisim_formu', 'post_status' => 'publish', 'meta_key' => '_contact_read', 'meta_value' => '0', 'fields' => 'ids'));
+    $unread_count = count($unread);
+    if ($unread_count > 0) {
+        foreach ($menu as $key => $item) {
+            if (isset($item[2]) && $item[2] === 'edit.php?post_type=iletisim_formu') {
+                $menu[$key][0] .= ' <span class="awaiting-mod count-' . $unread_count . '"><span class="pending-count">' . $unread_count . '</span></span>';
+                break;
+            }
+        }
+    }
+}
+add_action('admin_menu', 'prestige_contact_unread_badge', 999);
+
+/**
  * End functions.php
  */

@@ -211,7 +211,7 @@
                         if ($header_logo):
                             ?>
                             <img src="<?php echo esc_url($header_logo); ?>" alt="<?php bloginfo('name'); ?>"
-                                class="h-12 w-auto object-contain">
+                                class="h-16 w-auto object-contain">
                         <?php else: ?>
                             <span class="material-icons text-primary text-3xl">temple_hindu</span>
                             <span
