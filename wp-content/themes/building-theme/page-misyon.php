@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Misyon Sayfası
- * 
+ *
  * @package Building_Theme
  */
 
@@ -81,16 +81,22 @@ get_header();
                     taş, çelik ve camla yazılan bir miras olarak yaklaşıyoruz. Bağlılığımız, fiziksel yapının ötesine
                     geçerek sakinlerine sunduğu kalıcı değere kadar uzanır.
                 </p>
+                <?php
+                $misyon_metrics = get_option('prestige_metrics');
+                if (!$misyon_metrics || !is_array($misyon_metrics)) {
+                    $misyon_metrics = prestige_get_default('prestige_metrics');
+                }
+                if (!empty($misyon_metrics)):
+                ?>
                 <div class="flex flex-col sm:flex-row gap-8 mt-4">
+                    <?php foreach ($misyon_metrics as $m): ?>
                     <div class="flex flex-col gap-2">
-                        <span class="text-4xl font-serif-heading text-primary">25+</span>
-                        <span class="text-sm text-white/60 uppercase tracking-wider">Yıllık Mükemmellik</span>
+                        <span class="text-4xl font-serif-heading text-primary"><?php echo esc_html($m['value']); ?></span>
+                        <span class="text-sm text-white/60 uppercase tracking-wider"><?php echo esc_html($m['label']); ?></span>
                     </div>
-                    <div class="flex flex-col gap-2">
-                        <span class="text-4xl font-serif-heading text-primary">140</span>
-                        <span class="text-sm text-white/60 uppercase tracking-wider">Tamamlanan Proje</span>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>

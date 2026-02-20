@@ -7,7 +7,7 @@
  */
 
 $projects_query = new WP_Query(array(
-    'posts_per_page' => 2,
+    'posts_per_page' => -1,
     'post_status' => 'publish',
     'orderby' => 'date',
     'order' => 'DESC',
@@ -33,6 +33,18 @@ if ($projects_query->have_posts()):
         }
         $location = implode(', ', $location_parts);
 
+        // Get proje durumu
+        $durum_terms_fp = wp_get_post_terms(get_the_ID(), 'proje_durumu', array('fields' => 'all'));
+        $durum_slugs_fp = array();
+        $durum_name_fp = '';
+        if (!is_wp_error($durum_terms_fp) && !empty($durum_terms_fp)) {
+            foreach ($durum_terms_fp as $dt) {
+                $durum_slugs_fp[] = $dt->slug;
+            }
+            $durum_name_fp = $durum_terms_fp[0]->name;
+        }
+        $durum_attr_fp = implode(' ', $durum_slugs_fp);
+
         // Get featured image
         $thumb = get_the_post_thumbnail_url(get_the_ID(), 'large');
         if (!$thumb) {
@@ -44,18 +56,28 @@ if ($projects_query->have_posts()):
 
                 <?php if ($is_even): ?>
             <!-- Alternating Layout (even) -->
-            <div class="group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="fp-project-item group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center transition-all duration-500" data-status="<?php echo esc_attr($durum_attr_fp); ?>">
                 <div class="lg:col-span-12 lg:order-1 order-2 mt-[-10%] lg:mt-0 lg:ml-[40%] lg:w-[60%] z-10">
                     <div class="bg-navy-dark/95 backdrop-blur-xl p-10 lg:p-16 border-l border-primary/20 shadow-2xl relative">
                         <div class="absolute -left-10 top-1/2 -translate-y-1/2 w-20 h-px bg-primary/30 hidden lg:block"></div>
                         <div class="flex items-center gap-3 mb-4">
-                                        <?php if ($location): ?>
+                            <?php if ($durum_name_fp): ?>
+                                <?php
+                                $fp_badge = (strpos(strtolower($durum_name_fp), 'tamamlanan') !== false) ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+                                $fp_dot = (strpos(strtolower($durum_name_fp), 'tamamlanan') !== false) ? 'bg-green-400' : 'bg-amber-400';
+                                ?>
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-semibold border <?php echo $fp_badge; ?>">
+                                    <span class="w-1 h-1 rounded-full <?php echo $fp_dot; ?>"></span>
+                                    <?php echo esc_html($durum_name_fp); ?>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($location): ?>
                                 <span class="text-primary text-[10px] font-bold uppercase tracking-[0.3em]"><?php echo esc_html($location); ?></span>
-                          <?php endif; ?>
-                         <?php if ($yil): ?>
+                            <?php endif; ?>
+                            <?php if ($yil): ?>
                                 <span class="text-gray-600 text-[10px]">•</span>
                                 <span class="text-gray-400 text-[10px] uppercase tracking-[0.3em] font-medium"><?php echo esc_html($yil); ?></span>
-                          <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <h3 class="font-serif-heading text-4xl lg:text-5xl text-white mb-8 leading-tight"><?php the_title(); ?></h3>
                         <p class="text-gray-400 mb-10 font-light leading-relaxed text-lg italic opacity-80">
@@ -78,7 +100,7 @@ if ($projects_query->have_posts()):
             </div>
                 <?php else: ?>
             <!-- Standard Layout (odd) -->
-            <div class="group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="fp-project-item group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center transition-all duration-500" data-status="<?php echo esc_attr($durum_attr_fp); ?>">
                 <div class="lg:col-span-12 relative overflow-hidden">
                     <div class="aspect-[16/9] lg:aspect-[21/9] overflow-hidden grayscale-[30%] hover:grayscale-0 transition-all duration-1000">
                         <img alt="<?php the_title_attribute(); ?>"
@@ -90,13 +112,19 @@ if ($projects_query->have_posts()):
                     <div class="bg-navy-dark/95 backdrop-blur-xl p-10 lg:p-16 border-r border-primary/20 shadow-2xl relative text-right ml-auto">
                         <div class="absolute -right-10 top-1/2 -translate-y-1/2 w-20 h-px bg-primary/30 hidden lg:block"></div>
                         <div class="flex items-center justify-end gap-3 mb-4">
-                                        <?php if ($location): ?>
+                            <?php if ($durum_name_fp): ?>
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-semibold border <?php echo $fp_badge; ?>">
+                                    <span class="w-1 h-1 rounded-full <?php echo $fp_dot; ?>"></span>
+                                    <?php echo esc_html($durum_name_fp); ?>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($location): ?>
                                 <span class="text-primary text-[10px] font-bold uppercase tracking-[0.3em]"><?php echo esc_html($location); ?></span>
-                                        <?php endif; ?>
-                                        <?php if ($yil): ?>
+                            <?php endif; ?>
+                            <?php if ($yil): ?>
                                 <span class="text-gray-600 text-[10px]">•</span>
                                 <span class="text-gray-400 text-[10px] uppercase tracking-[0.3em] font-medium"><?php echo esc_html($yil); ?></span>
-                          <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <h3 class="font-serif-heading text-4xl lg:text-5xl text-white mb-8 leading-tight"><?php the_title(); ?></h3>
                         <p class="text-gray-400 mb-10 font-light leading-relaxed text-lg italic opacity-80">

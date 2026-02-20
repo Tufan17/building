@@ -29,15 +29,12 @@
                     <?php endif; ?>
                 </div>
                 <p class="text-gray-400 text-sm leading-relaxed mb-6">
-                    Redefining the landscape of luxury real estate development through architectural excellence.
+                    Adana'nın kalbinde, yaşam alanlarını prestij ve kalite ile yeniden tanımlıyoruz. Capital Yaşam olarak her projemizde mimari mükemmelliği ve modern yaşamın konforunu bir araya getiriyoruz.
                 </p>
                 <div class="flex gap-4">
-                    <a class="text-gray-400 hover:text-primary transition-colors" href="#"><i
-                            class="material-icons text-lg">facebook</i></a>
-                    <a class="text-gray-400 hover:text-primary transition-colors" href="#"><i
-                            class="material-icons text-lg">camera_alt</i></a>
-                    <a class="text-gray-400 hover:text-primary transition-colors" href="#"><i
-                            class="material-icons text-lg">alternate_email</i></a>
+                    <a class="text-gray-400 hover:text-primary transition-colors" href="https://www.instagram.com/capitalyasaminsaat/" target="_blank" rel="noopener noreferrer" title="Instagram">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
                 </div>
             </div>
             <!-- Navigation Col -->
@@ -95,23 +92,22 @@
                 <ul class="space-y-5">
                     <li class="flex items-start gap-3">
                         <span class="material-icons text-primary/80 text-sm mt-0.5">place</span>
-                        <span class="text-gray-400 text-xs leading-relaxed tracking-wide">1200 Architecture
-                            Ave,<br />Beverly Hills, CA 90210</span>
+                        <span class="text-gray-400 text-xs leading-relaxed tracking-wide">Toros Mah. 78143 Sk.<br />Hilal Tower, Bina No: 4A<br />Çukurova / Adana</span>
                     </li>
                     <li class="flex items-center gap-3">
                         <span class="material-icons text-primary/80 text-sm">phone</span>
-                        <span class="text-gray-400 text-xs tracking-wide">+1 (310) 555-0123</span>
+                        <a href="tel:+905313550738" class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wide">+90 531 355 07 38</a>
                     </li>
                     <li class="flex items-center gap-3">
-                        <span class="material-icons text-primary/80 text-sm">email</span>
-                        <span class="text-gray-400 text-xs tracking-wide">inquiry@prestige.com</span>
+                        <svg class="w-4 h-4 text-primary/80 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        <a href="https://www.instagram.com/capitalyasaminsaat/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wide">@capitalyasaminsaat</a>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-gray-500 text-xs">
-                © <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All rights reserved.
+                © <?php echo date('Y'); ?> Capital Yaşam İnşaat. Tüm hakları saklıdır.
             </p>
 
         </div>
@@ -151,7 +147,7 @@
 </script>
 
 
-<a href="https://wa.me/905000000000" target="_blank" rel="noopener noreferrer"
+<a href="https://wa.me/905313550738" target="_blank" rel="noopener noreferrer"
     class="fixed bottom-8 left-8 z-[100] w-14 h-14 bg-navy-dark border border-primary/40 rounded-full flex items-center justify-center text-primary shadow-2xl hover:bg-primary hover:text-navy-dark hover:scale-110 transition-all duration-500 group"
     title="WhatsApp ile İletişime Geçin">
     <div class="absolute inset-0 rounded-full bg-primary/20 animate-ping group-hover:hidden"></div>

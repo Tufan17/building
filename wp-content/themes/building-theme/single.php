@@ -11,7 +11,14 @@ while (have_posts()):
     the_post();
 
     // Get project meta data
-    $location = get_post_meta(get_the_ID(), '_prestige_konum', true); // Custom meta if available
+    $konum_terms = wp_get_post_terms(get_the_ID(), 'konum', array('orderby' => 'parent', 'order' => 'DESC'));
+    $location_parts = array();
+    if (!is_wp_error($konum_terms) && !empty($konum_terms)) {
+        foreach ($konum_terms as $kt) {
+            $location_parts[] = $kt->name;
+        }
+    }
+    $location = implode(', ', $location_parts);
     $year = get_post_meta(get_the_ID(), '_prestige_insaat_yili', true);
     $area = get_post_meta(get_the_ID(), '_prestige_alan', true);
     $architect = get_post_meta(get_the_ID(), '_prestige_mimar', true);
@@ -20,7 +27,7 @@ while (have_posts()):
     if (!$year)
         $year = "2024";
     if (!$location)
-        $location = "İstanbul, Türkiye";
+        $location = "";
     if (!$area)
         $area = "1,200m²";
     if (!$architect)
@@ -76,19 +83,32 @@ while (have_posts()):
                             <span class="block w-12 h-[2px] bg-primary mb-8"></span>
                             <h2
                                 class="font-serif-heading text-4xl md:text-6xl lg:text-7xl font-medium leading-tight text-background-dark">
-                                Formun <br /><span class="italic text-gray-400">Senfonisi</span>
+                                <?php the_title(); ?>
                             </h2>
                         </div>
                     </div>
                     <!-- Right Column: Content & Stats -->
                     <div class="lg:col-span-7 flex flex-col gap-12 pt-4">
-                        <div class="text-lg md:text-xl font-light leading-relaxed text-gray-600">
+                        <div class="prose prose-lg max-w-none text-gray-600 font-light leading-relaxed">
+                            <style>
+                                .prose p { margin-bottom: 1.25em; }
+                                .prose strong, .prose b { font-weight: 700; color: #1e1b14; }
+                                .prose em, .prose i { font-style: italic; }
+                                .prose ul { list-style: disc; padding-left: 1.5em; margin-bottom: 1.25em; }
+                                .prose ol { list-style: decimal; padding-left: 1.5em; margin-bottom: 1.25em; }
+                                .prose li { margin-bottom: 0.5em; }
+                                .prose h2 { font-size: 1.75rem; font-weight: 600; color: #1e1b14; margin: 2em 0 0.75em; }
+                                .prose h3 { font-size: 1.35rem; font-weight: 600; color: #1e1b14; margin: 1.5em 0 0.5em; }
+                                .prose h4 { font-size: 1.15rem; font-weight: 600; color: #1e1b14; margin: 1.25em 0 0.5em; }
+                                .prose blockquote { border-left: 3px solid #c6a85a; padding-left: 1.25em; font-style: italic; color: #6b7280; margin: 1.5em 0; }
+                                .prose a { color: #c6a85a; text-decoration: underline; }
+                                .prose a:hover { color: #a8903e; }
+                            </style>
                             <?php the_content(); ?>
                         </div>
                     </div>
 
                 </div>
-            </div>
             </div>
         </section>
 

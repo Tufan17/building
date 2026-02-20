@@ -277,8 +277,46 @@ function prestige_register_taxonomies()
         'query_var' => true,
         'rewrite' => array('slug' => 'konum'),
     ));
+
+    // Proje Durumu (Tamamlanan / Devam Eden)
+    register_taxonomy('proje_durumu', 'post', array(
+        'labels' => array(
+            'name' => 'Proje Durumu',
+            'singular_name' => 'Proje Durumu',
+            'search_items' => 'Durum Ara',
+            'all_items' => 'Tüm Durumlar',
+            'edit_item' => 'Durumu Düzenle',
+            'update_item' => 'Durumu Güncelle',
+            'add_new_item' => 'Yeni Durum Ekle',
+            'new_item_name' => 'Yeni Durum Adı',
+            'menu_name' => 'Proje Durumu',
+        ),
+        'hierarchical' => true,
+        'show_ui' => true,
+        'show_in_rest' => true,
+        'show_admin_column' => true,
+        'query_var' => true,
+        'rewrite' => array('slug' => 'proje-durumu'),
+    ));
 }
 add_action('init', 'prestige_register_taxonomies');
+
+/**
+ * Auto-create default Proje Durumu terms
+ */
+function prestige_create_default_proje_durumu()
+{
+    $defaults = array(
+        'tamamlanan-projeler' => 'Tamamlanan Projeler',
+        'devam-eden-projeler' => 'Devam Eden Projeler',
+    );
+    foreach ($defaults as $slug => $name) {
+        if (!term_exists($slug, 'proje_durumu')) {
+            wp_insert_term($name, 'proje_durumu', array('slug' => $slug));
+        }
+    }
+}
+add_action('init', 'prestige_create_default_proje_durumu', 20);
 
 /**
  * Meta Box: İnşaat Yılı (Construction Year)

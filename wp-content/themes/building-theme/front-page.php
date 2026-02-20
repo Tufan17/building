@@ -107,8 +107,17 @@ get_header();
     </section>
 
     <!-- Signature Projects -->
+    <?php
+    $fp_durum_terms = get_terms(array(
+        'taxonomy' => 'proje_durumu',
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC',
+    ));
+    if (is_wp_error($fp_durum_terms)) $fp_durum_terms = array();
+    ?>
     <section class="py-32 bg-background-dark relative" id="projects">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
             <div class="flex flex-col md:flex-row justify-between items-end border-b border-white/10 pb-8">
                 <div>
                     <h3 class="text-primary tracking-widest uppercase text-sm font-semibold mb-2">Seçilmiş Projeler</h3>
@@ -123,13 +132,66 @@ get_header();
             </div>
         </div>
 
-        <div class="flex flex-col gap-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Status Filter Tabs -->
+        <?php if (!empty($fp_durum_terms)): ?>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+            <div class="flex flex-wrap gap-3 justify-center md:justify-start">
+                <button type="button"
+                    class="fp-status-tab active px-6 py-3 text-xs uppercase tracking-[0.2em] font-semibold border border-white/10 rounded-sm transition-all duration-500 text-primary bg-primary/5 border-primary/30"
+                    data-status="all">
+                    Tümü
+                </button>
+                <?php foreach ($fp_durum_terms as $dt): ?>
+                <button type="button"
+                    class="fp-status-tab px-6 py-3 text-xs uppercase tracking-[0.2em] font-semibold border border-white/10 rounded-sm transition-all duration-500 text-gray-400 hover:text-primary hover:border-primary/20"
+                    data-status="<?php echo esc_attr($dt->slug); ?>">
+                    <?php echo esc_html($dt->name); ?>
+                </button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <div class="flex flex-col gap-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="fp-projects-grid">
             <?php
-            // Extracting components to template-parts for cleaner code or WP loop integration
             get_template_part('template-parts/section-projects');
             ?>
         </div>
     </section>
+
+    <!-- Front Page Status Filter Script -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tabs = document.querySelectorAll('.fp-status-tab');
+        var items = document.querySelectorAll('.fp-project-item');
+        if (tabs.length === 0 || items.length === 0) return;
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                var status = this.getAttribute('data-status');
+
+                tabs.forEach(function(t) {
+                    t.classList.remove('active', 'text-primary', 'bg-primary/5', 'border-primary/30');
+                    t.classList.add('text-gray-400');
+                });
+                this.classList.add('active', 'text-primary', 'bg-primary/5', 'border-primary/30');
+                this.classList.remove('text-gray-400');
+
+                items.forEach(function(item) {
+                    var itemStatus = item.getAttribute('data-status') || '';
+                    if (status === 'all' || itemStatus.indexOf(status) !== -1) {
+                        item.style.opacity = '0';
+                        item.style.display = '';
+                        setTimeout(function() { item.style.opacity = '1'; }, 50);
+                    } else {
+                        item.style.opacity = '0';
+                        setTimeout(function() { item.style.display = 'none'; }, 400);
+                    }
+                });
+            });
+        });
+    });
+    </script>
 
     <!-- Prestige Metrics -->
     <?php
