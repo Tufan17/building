@@ -42,14 +42,14 @@
             }
             /* Logo image */
             .splash-logo {
-                width: 220px;
+                width: 300px;
                 height: auto;
                 opacity: 0;
                 transform: translateY(20px) scale(0.9);
                 animation: splashLogoIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
             }
             @media (min-width: 768px) {
-                .splash-logo { width: 300px; }
+                .splash-logo { width: 420px; }
             }
             @keyframes splashLogoIn {
                 to {
