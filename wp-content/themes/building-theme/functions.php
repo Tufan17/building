@@ -996,5 +996,149 @@ function prestige_admin_title($admin_title, $title)
 add_filter('admin_title', 'prestige_admin_title', 10, 2);
 
 /**
+ * SEO: Meta Description, Open Graph, Favicon
+ */
+
+// SEO Admin Settings Page
+function prestige_seo_admin_page()
+{
+    add_submenu_page(
+        'prestige-settings',
+        'SEO & Favicon Ayarları',
+        'SEO & Favicon',
+        'manage_options',
+        'prestige-seo-settings',
+        'prestige_seo_settings_page'
+    );
+}
+add_action('admin_menu', 'prestige_seo_admin_page');
+
+function prestige_seo_settings_page()
+{
+    if (isset($_POST['prestige_seo_save']) && check_admin_referer('prestige_seo_nonce')) {
+        update_option('prestige_meta_description', sanitize_textarea_field($_POST['prestige_meta_description'] ?? ''));
+        update_option('prestige_meta_keywords', sanitize_text_field($_POST['prestige_meta_keywords'] ?? ''));
+        update_option('prestige_og_image', esc_url_raw($_POST['prestige_og_image'] ?? ''));
+        update_option('prestige_favicon', esc_url_raw($_POST['prestige_favicon'] ?? ''));
+        echo '<div class="updated"><p>SEO ayarları kaydedildi.</p></div>';
+    }
+
+    $meta_desc = get_option('prestige_meta_description', 'Capital Yaşam İnşaat — 2021\'den bu yana Adana\'da prestijli rezidans ve villa projeleri. Sarıçam ve Çukurova\'da modern yaşam alanları inşa ediyoruz.');
+    $meta_keys = get_option('prestige_meta_keywords', 'capital yaşam, adana inşaat, rezidans, villa, sarıçam, çukurova, sun city, prestijli konut');
+    $og_image = get_option('prestige_og_image', '');
+    $favicon = get_option('prestige_favicon', '');
+    ?>
+    <div class="wrap">
+        <h1>SEO & Favicon Ayarları</h1>
+        <form method="post">
+            <?php wp_nonce_field('prestige_seo_nonce'); ?>
+            <table class="form-table">
+                <tr>
+                    <th><label for="prestige_meta_description">Meta Açıklama (Description)</label></th>
+                    <td>
+                        <textarea id="prestige_meta_description" name="prestige_meta_description" rows="3" class="large-text"><?php echo esc_textarea($meta_desc); ?></textarea>
+                        <p class="description">Google'da sitenizin altında görünen açıklama metni. 155-160 karakter ideal.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="prestige_meta_keywords">Anahtar Kelimeler</label></th>
+                    <td>
+                        <input type="text" id="prestige_meta_keywords" name="prestige_meta_keywords" value="<?php echo esc_attr($meta_keys); ?>" class="large-text" />
+                        <p class="description">Virgülle ayrılmış anahtar kelimeler.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="prestige_og_image">Paylaşım Görseli (OG Image)</label></th>
+                    <td>
+                        <?php if ($og_image): ?>
+                            <img src="<?php echo esc_url($og_image); ?>" style="max-width:300px;height:auto;display:block;margin-bottom:10px;border-radius:8px;" />
+                        <?php endif; ?>
+                        <input type="text" id="prestige_og_image" name="prestige_og_image" value="<?php echo esc_attr($og_image); ?>" class="large-text" />
+                        <button type="button" class="button" onclick="selectMedia('prestige_og_image')">Görsel Seç</button>
+                        <p class="description">Sosyal medyada paylaşıldığında görünen görsel. 1200x630px önerilir.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="prestige_favicon">Favicon (Site İkonu)</label></th>
+                    <td>
+                        <?php if ($favicon): ?>
+                            <img src="<?php echo esc_url($favicon); ?>" style="max-width:64px;height:auto;display:block;margin-bottom:10px;" />
+                        <?php endif; ?>
+                        <input type="text" id="prestige_favicon" name="prestige_favicon" value="<?php echo esc_attr($favicon); ?>" class="large-text" />
+                        <button type="button" class="button" onclick="selectMedia('prestige_favicon')">İkon Seç</button>
+                        <p class="description">Tarayıcı sekmesinde ve Google'da görünen küçük ikon. 512x512px PNG önerilir.</p>
+                    </td>
+                </tr>
+            </table>
+            <p class="submit">
+                <input type="submit" name="prestige_seo_save" class="button-primary" value="Kaydet" />
+            </p>
+        </form>
+        <script>
+        function selectMedia(inputId) {
+            var frame = wp.media({ title: 'Görsel Seç', multiple: false });
+            frame.on('select', function() {
+                var url = frame.state().get('selection').first().toJSON().url;
+                document.getElementById(inputId).value = url;
+                location.reload();
+            });
+            frame.open();
+        }
+        </script>
+    </div>
+    <?php
+}
+
+// Output SEO meta tags in <head>
+function prestige_seo_meta_tags()
+{
+    $desc = get_option('prestige_meta_description', 'Capital Yaşam İnşaat — 2021\'den bu yana Adana\'da prestijli rezidans ve villa projeleri. Sarıçam ve Çukurova\'da modern yaşam alanları inşa ediyoruz.');
+    $keys = get_option('prestige_meta_keywords', '');
+    $og_image = get_option('prestige_og_image', '');
+    $favicon = get_option('prestige_favicon', '');
+    $site_name = get_bloginfo('name');
+    $site_url = home_url('/');
+
+    // Meta description
+    if ($desc) {
+        echo '<meta name="description" content="' . esc_attr($desc) . '">' . "\n";
+    }
+    // Meta keywords
+    if ($keys) {
+        echo '<meta name="keywords" content="' . esc_attr($keys) . '">' . "\n";
+    }
+
+    // Open Graph tags
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr($site_name) . '">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url($site_url) . '">' . "\n";
+    if ($desc) {
+        echo '<meta property="og:description" content="' . esc_attr($desc) . '">' . "\n";
+    }
+    if ($og_image) {
+        echo '<meta property="og:image" content="' . esc_url($og_image) . '">' . "\n";
+        echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+        echo '<meta name="twitter:image" content="' . esc_url($og_image) . '">' . "\n";
+    }
+
+    // Favicon
+    if ($favicon) {
+        echo '<link rel="icon" type="image/png" href="' . esc_url($favicon) . '">' . "\n";
+        echo '<link rel="apple-touch-icon" href="' . esc_url($favicon) . '">' . "\n";
+    }
+}
+add_action('wp_head', 'prestige_seo_meta_tags', 1);
+
+// Custom title tag
+function prestige_custom_title($title)
+{
+    if (is_front_page()) {
+        return get_bloginfo('name') . ' — Prestijli Yaşam Alanları | Adana İnşaat';
+    }
+    return $title;
+}
+add_filter('pre_get_document_title', 'prestige_custom_title');
+
+/**
  * End functions.php
  */

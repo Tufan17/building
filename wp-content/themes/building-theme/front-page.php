@@ -335,7 +335,7 @@ get_header();
                 sunmak için buradayız.
             </p>
             <a class="inline-block bg-primary hover:bg-primary-dark text-navy-dark px-14 py-6 rounded-sm text-xs uppercase tracking-[0.3em] font-bold transition-all duration-500 shadow-2xl shadow-primary/10"
-                href="#contact">
+                href="/iletisim">
                 Hadi Tanışalım ☕
             </a>
         </div>
