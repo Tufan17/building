@@ -53,6 +53,9 @@ function prestige_get_default($field_id)
         'prestige_corp_hero_desc' => 'Güven, kalite ve inovasyon temelleri üzerine kurulu kurumsal kimliğimiz.',
         'prestige_corp_profile' => 'Building, inşaat ve gayrimenkul geliştirme sektöründe standartları belirleyen, küresel ölçekte projeler üreten bir kuruluştur. Kurumsal sürdürülebilirlik ve operasyonel mükemmellik odaklarımızdır.',
         'prestige_corp_policy' => 'Tavizsiz kalite politikamız, tüm paydaşlarımız için değer yaratma sözümüzün temelidir.',
+        // Logo Defaults
+        'prestige_header_logo' => '',
+        'prestige_footer_logo' => '',
     );
 
     return isset($defaults[$field_id]) ? $defaults[$field_id] : '';
@@ -144,7 +147,7 @@ function prestige_prestij_page()
     <div class="wrap">
         <h1><?php _e('Prestij Ayarları', 'building-theme'); ?></h1>
         <p style="color:#666;">
-                    <?php _e('Metrik sayaçları ve prestij standartlarını buradan yönetin. İstediğiniz kadar ekleyebilir veya silebilirsiniz.', 'building-theme'); ?>
+            <?php _e('Metrik sayaçları ve prestij standartlarını buradan yönetin. İstediğiniz kadar ekleyebilir veya silebilirsiniz.', 'building-theme'); ?>
         </p>
         <form method="post" action="options.php">
             <?php
@@ -156,7 +159,7 @@ function prestige_prestij_page()
                 <?php _e('Prestij Metrikleri (Sayaçlar)', 'building-theme'); ?>
             </h2>
             <p class="description">
-       <?php _e('Anasayfada görüntülenen performans göstergeleri. İstediğiniz kadar ekleyebilirsiniz.', 'building-theme'); ?>
+                <?php _e('Anasayfada görüntülenen performans göstergeleri. İstediğiniz kadar ekleyebilirsiniz.', 'building-theme'); ?>
             </p>
 
             <?php
@@ -196,7 +199,7 @@ function prestige_prestij_page()
                 <?php _e('Prestij Standartları', 'building-theme'); ?>
             </h2>
             <p class="description">
-                        <?php _e('Anasayfadaki "Prestij Standartları" kartları. İkon adları için Google Material Icons kullanılmaktadır. İstediğiniz kadar ekleyebilirsiniz.', 'building-theme'); ?>
+                <?php _e('Anasayfadaki "Prestij Standartları" kartları. İkon adları için Google Material Icons kullanılmaktadır. İstediğiniz kadar ekleyebilirsiniz.', 'building-theme'); ?>
             </p>
 
             <?php
@@ -232,39 +235,39 @@ function prestige_prestij_page()
             <button type="button" class="button button-primary" id="prestige-add-standard" style="margin-top:10px;">+ Yeni
                 Standart Ekle</button>
 
-               <?php submit_button('Değişiklikleri Kaydet'); ?>
-            </form>
-        </div>
-        <?php
+            <?php submit_button('Değişiklikleri Kaydet'); ?>
+        </form>
+    </div>
+    <?php
 }
 
 function prestige_about_page()
 {
     ?>
-        <div class="wrap">
-            <h1><?php _e('Hakkımızda Sayfası Ayarları', 'building-theme'); ?></h1>
-            <form method="post" action="options.php">
-                <?php
-                settings_fields('prestige_about_group');
-                do_settings_sections('prestige-about-settings');
-                submit_button('Değişiklikleri Kaydet');
-                ?>
-            </form>
-        </div>
-        <?php
+    <div class="wrap">
+        <h1><?php _e('Hakkımızda Sayfası Ayarları', 'building-theme'); ?></h1>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields('prestige_about_group');
+            do_settings_sections('prestige-about-settings');
+            submit_button('Değişiklikleri Kaydet');
+            ?>
+        </form>
+    </div>
+    <?php
 }
 
 function prestige_corporate_page()
 {
     ?>
-        <div class="wrap">
-            <h1><?php _e('Kurumsal Sayfası Ayarları', 'building-theme'); ?></h1>
-            <form method="post" action="options.php">
-                <?php
-                settings_fields('prestige_corporate_group');
-                do_settings_sections('prestige-corporate-settings');
-                submit_button('Değişiklikleri Kaydet');
-                ?>
+    <div class="wrap">
+        <h1><?php _e('Kurumsal Sayfası Ayarları', 'building-theme'); ?></h1>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields('prestige_corporate_group');
+            do_settings_sections('prestige-corporate-settings');
+            submit_button('Değişiklikleri Kaydet');
+            ?>
         </form>
     </div>
     <?php
@@ -288,6 +291,8 @@ function prestige_register_settings()
     ));
     register_setting('prestige_homepage_group', 'prestige_brand_quote');
     register_setting('prestige_homepage_group', 'prestige_brand_signature');
+    register_setting('prestige_homepage_group', 'prestige_header_logo');
+    register_setting('prestige_homepage_group', 'prestige_footer_logo');
 
     // Hero section
     add_settings_section('prestige_hero_section', __('Hero Bölümü Ayarları', 'building-theme'), function () {
@@ -311,6 +316,14 @@ function prestige_register_settings()
 
     add_settings_field('prestige_brand_quote', __('Marka Sözü (Alıntı)', 'building-theme'), 'prestige_render_textarea_field', 'prestige-homepage-settings', 'prestige_brand_section', array('label_for' => 'prestige_brand_quote'));
     add_settings_field('prestige_brand_signature', __('İmza Resmi', 'building-theme'), 'prestige_render_media_field', 'prestige-homepage-settings', 'prestige_brand_section', array('label_for' => 'prestige_brand_signature'));
+
+    // Logo section
+    add_settings_section('prestige_logo_section', __('Logo Ayarları', 'building-theme'), function () {
+        echo '<p>' . __('Header ve Footer logolarını buradan yönetin.', 'building-theme') . '</p>';
+    }, 'prestige-homepage-settings');
+
+    add_settings_field('prestige_header_logo', __('Header Logo', 'building-theme'), 'prestige_render_media_field', 'prestige-homepage-settings', 'prestige_logo_section', array('label_for' => 'prestige_header_logo'));
+    add_settings_field('prestige_footer_logo', __('Footer Logo', 'building-theme'), 'prestige_render_media_field', 'prestige-homepage-settings', 'prestige_logo_section', array('label_for' => 'prestige_footer_logo'));
 
     // --- Prestij group (metrics + standards as arrays) ---
     register_setting('prestige_prestij_group', 'prestige_metrics', array(

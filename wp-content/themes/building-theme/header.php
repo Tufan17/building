@@ -20,9 +20,17 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-24">
                     <div class="flex-shrink-0 flex items-center gap-2">
-                        <span class="material-icons text-primary text-3xl">temple_hindu</span>
-                        <span
-                            class="font-serif-heading font-bold text-2xl tracking-widest text-white uppercase"><?php bloginfo('name'); ?></span>
+                        <?php
+                        $header_logo = get_option('prestige_header_logo');
+                        if ($header_logo):
+                            ?>
+                            <img src="<?php echo esc_url($header_logo); ?>" alt="<?php bloginfo('name'); ?>"
+                                class="h-12 w-auto object-contain">
+                        <?php else: ?>
+                            <span class="material-icons text-primary text-3xl">temple_hindu</span>
+                            <span
+                                class="font-serif-heading font-bold text-2xl tracking-widest text-white uppercase"><?php bloginfo('name'); ?></span>
+                        <?php endif; ?>
                     </div>
                     <div class="hidden md:flex items-center gap-8">
                         <?php
