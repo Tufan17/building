@@ -106,7 +106,6 @@ while (have_posts()):
                     <div class="flex flex-col gap-16">
                         <div class="flex flex-col items-center text-center space-y-4">
                             <span class="text-primary text-sm font-medium tracking-[0.3em] uppercase">Proje Galerisi</span>
-                            <h2 class="font-serif-heading text-4xl md:text-6xl text-white">Detaylar ve <span class="italic text-gray-400">Vizyon</span></h2>
                         </div>
                         
                         <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
