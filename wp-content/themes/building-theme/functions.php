@@ -325,13 +325,13 @@ function prestige_save_year_meta($post_id)
 }
 add_action('save_post', 'prestige_save_year_meta');
 /**
- * Meta Box: Proje Galerisi (Multiple Image Gallery)
+ * Meta Box: Kategorili Proje Galerisi (Dynamic Categories + Gallery)
  */
 function prestige_add_gallery_meta_box()
 {
     add_meta_box(
         'prestige_project_gallery',
-        'Proje Galerisi',
+        'Proje Galerisi (Kategorili)',
         'prestige_render_gallery_meta_box',
         'post',
         'normal',
@@ -343,153 +343,221 @@ add_action('add_meta_boxes', 'prestige_add_gallery_meta_box');
 function prestige_render_gallery_meta_box($post)
 {
     wp_nonce_field('prestige_save_gallery', 'prestige_gallery_nonce');
-    $gallery_ids = get_post_meta($post->ID, '_prestige_project_gallery', true);
-    $ids_array = !empty($gallery_ids) ? explode(',', $gallery_ids) : array();
-    ?>
-    <div id="prestige-gallery-container">
-        <ul id="prestige-gallery-list"
-            style="display:flex; flex-wrap:wrap; gap:10px; list-style:none; padding:10px; margin:0 0 15px 0; border:2px dashed #ccc; min-height:120px;">
-            <?php
-            foreach ($ids_array as $item_id) {
-                if (empty($item_id))
-                    continue;
-                $mime = get_post_mime_type($item_id);
-                $is_video = strpos($mime, 'video') !== false;
-                $img_url = wp_get_attachment_image_url($item_id, 'thumbnail');
 
-                echo '<li data-id="' . esc_attr($item_id) . '" style="position:relative; width:100px; height:100px; border:1px solid #ddd; background:#eee; cursor:move;">';
-                if ($is_video) {
-                    echo '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#222; color:#fff;"><span class="dashicons dashicons-video-alt3" style="font-size:40px; width:40px; height:40px;"></span></div>';
-                } else if ($img_url) {
-                    echo '<img src="' . esc_url($img_url) . '" style="width:100%; height:100%; object-fit:cover;">';
-                } else {
-                    echo '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#eee;"><span class="dashicons dashicons-media-document" style="font-size:40px; width:40px; height:40px;"></span></div>';
-                }
-                echo '<a href="#" class="prestige-remove-gallery-img" style="position:absolute; top:-8px; right:-8px; background:#f00; color:#fff; border-radius:50%; width:24px; height:24px; line-height:22px; text-align:center; text-decoration:none; font-size:16px; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2); z-index:10;">&times;</a>';
-                echo '</li>';
-            }
-            ?>
-        </ul>
-        <input type="hidden" id="prestige_gallery_data" name="prestige_gallery_data"
-            value="<?php echo esc_attr($gallery_ids); ?>">
-        <button type="button" class="button button-primary button-large" id="prestige-manage-gallery">Görsel / Video Ekle
-            veya Düzenle</button>
-        <p class="description">Proje galerisi için birden fazla görsel ve video seçebilirsiniz. Sürükleyerek yerlerini
-            değiştirebilirsiniz.</p>
+    $categories = get_post_meta($post->ID, '_prestige_gallery_categories', true);
+
+    // Backward compatibility: migrate old flat gallery format
+    if (empty($categories) || !is_array($categories)) {
+        $old_ids = get_post_meta($post->ID, '_prestige_project_gallery', true);
+        if (!empty($old_ids)) {
+            $categories = array(array('name' => 'Genel', 'ids' => $old_ids));
+        } else {
+            $categories = array();
+        }
+    }
+    ?>
+    <style>
+        .prestige-gallery-cat { background:#f9f9f9; border:1px solid #ddd; padding:20px; margin-bottom:16px; border-radius:6px; }
+        .prestige-gallery-cat .cat-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:12px; }
+        .prestige-gallery-cat .cat-header input { font-size:15px; font-weight:600; padding:8px 12px; border:1px solid #ccc; border-radius:4px; flex:1; max-width:400px; }
+        .prestige-cat-gallery-list { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:10px; margin:0 0 12px 0; border:2px dashed #ddd; min-height:90px; border-radius:4px; background:#fff; }
+        .prestige-cat-gallery-list li { position:relative; width:90px; height:90px; border:1px solid #ddd; background:#eee; cursor:move; border-radius:4px; overflow:hidden; }
+        .prestige-cat-gallery-list li:hover { border-color:#007cba; }
+        .prestige-cat-gallery-list li img { width:100%; height:100%; object-fit:cover; }
+        .prestige-cat-remove-img { position:absolute; top:-6px; right:-6px; background:#e00; color:#fff; border-radius:50%; width:22px; height:22px; line-height:20px; text-align:center; text-decoration:none; font-size:14px; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2); z-index:10; }
+        .prestige-cat-remove-img:hover { background:#b00 !important; color:#fff; }
+        #prestige-add-category { margin-top:12px; }
+    </style>
+
+    <p class="description" style="margin-bottom:15px;">
+        Her kategori için ayrı görseller yükleyebilirsiniz (örn: İç Mekan, Dış Mekan, Bahçe vb.). Proje detay sayfasında bu kategoriler tab olarak görüntülenir.
+    </p>
+
+    <div id="prestige-gallery-categories">
+        <?php foreach ($categories as $idx => $cat):
+            $cat_name = isset($cat['name']) ? $cat['name'] : '';
+            $cat_ids  = isset($cat['ids'])  ? $cat['ids']  : '';
+            $ids_array = !empty($cat_ids) ? array_filter(explode(',', $cat_ids)) : array();
+        ?>
+        <div class="prestige-gallery-cat" data-index="<?php echo $idx; ?>">
+            <div class="cat-header">
+                <input type="text" name="prestige_gallery_cats[<?php echo $idx; ?>][name]"
+                       value="<?php echo esc_attr($cat_name); ?>" placeholder="Kategori Adı (Örn: İç Mekan)" />
+                <button type="button" class="button prestige-remove-cat" style="color:#a00;">&times; Kategoriyi Sil</button>
+            </div>
+            <ul class="prestige-cat-gallery-list">
+                <?php foreach ($ids_array as $item_id):
+                    if (empty($item_id)) continue;
+                    $mime = get_post_mime_type($item_id);
+                    $is_video = strpos($mime, 'video') !== false;
+                    $img_url = wp_get_attachment_image_url($item_id, 'thumbnail');
+                ?>
+                <li data-id="<?php echo esc_attr($item_id); ?>">
+                    <?php if ($is_video): ?>
+                        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#222;color:#fff;">
+                            <span class="dashicons dashicons-video-alt3" style="font-size:36px;width:36px;height:36px;"></span>
+                        </div>
+                    <?php elseif ($img_url): ?>
+                        <img src="<?php echo esc_url($img_url); ?>" />
+                    <?php else: ?>
+                        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#eee;">
+                            <span class="dashicons dashicons-media-document" style="font-size:36px;width:36px;height:36px;"></span>
+                        </div>
+                    <?php endif; ?>
+                    <a href="#" class="prestige-cat-remove-img">&times;</a>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+            <input type="hidden" class="prestige-cat-ids" name="prestige_gallery_cats[<?php echo $idx; ?>][ids]"
+                   value="<?php echo esc_attr($cat_ids); ?>" />
+            <button type="button" class="button button-primary prestige-add-cat-images">Görsel / Video Ekle</button>
+        </div>
+        <?php endforeach; ?>
     </div>
 
+    <button type="button" class="button button-primary button-large" id="prestige-add-category">+ Yeni Kategori Ekle</button>
+
     <script>
-        jQuery(document).ready(function ($) {
-            console.log('Gallery JS Initialized');
-            var frame;
-            $('#prestige-manage-gallery').on('click', function (e) {
-                e.preventDefault();
-                console.log('Add Button Clicked');
+    jQuery(document).ready(function($) {
 
-                if (frame) {
-                    frame.open();
-                    return;
-                }
-
-                frame = wp.media({
-                    title: 'Galeri İçeriğini Yönet',
-                    button: { text: 'Galeriye Aktar' },
-                    library: { type: ['image', 'video'] },
-                    multiple: 'add'
-                });
-
-                frame.on('open', function () {
-                    var selection = frame.state().get('selection');
-                    var ids = $('#prestige_gallery_data').val().split(',');
-                    ids.forEach(function (id) {
-                        if (id) {
-                            var attachment = wp.media.attachment(id);
-                            attachment.fetch();
-                            selection.add(attachment ? [attachment] : []);
-                        }
-                    });
-                });
-
-                frame.on('select', function () {
-                    var selection = frame.state().get('selection');
-                    var ids = [];
-                    var $list = $('#prestige-gallery-list');
-                    $list.empty();
-
-                    selection.map(function (attachment) {
-                        attachment = attachment.toJSON();
-                        ids.push(attachment.id);
-
-                        var html = '<li data-id="' + attachment.id + '" style="position:relative; width:100px; height:100px; border:1px solid #ddd; background:#eee; cursor:move;">';
-                        if (attachment.type === 'video') {
-                            html += '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#222; color:#fff;"><span class="dashicons dashicons-video-alt3" style="font-size:40px; width:40px; height:40px;"></span></div>';
-                        } else {
-                            var thumb = (attachment.sizes && attachment.sizes.thumbnail) ? attachment.sizes.thumbnail.url : attachment.url;
-                            html += '<img src="' + thumb + '" style="width:100%; height:100%; object-fit:cover;">';
-                        }
-                        html += '<a href="#" class="prestige-remove-gallery-img" style="position:absolute; top:-8px; right:-8px; background:#f00; color:#fff; border-radius:50%; width:24px; height:24px; line-height:22px; text-align:center; text-decoration:none; font-size:16px; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2); z-index:10;">&times;</a>';
-                        html += '</li>';
-                        $list.append(html);
-                    });
-
-                    $('#prestige_gallery_data').val(ids.join(','));
-                    console.log('Selection Saved. IDs:', ids.join(','));
-                });
-
-                frame.open();
-            });
-
-            $(document).on('click', '.prestige-remove-gallery-img', function (e) {
-                e.preventDefault();
-                $(this).parent().remove();
-                updateIds();
-            });
-
-            function updateIds() {
-                var ids = [];
-                $('#prestige-gallery-list li').each(function () {
-                    ids.push($(this).data('id'));
-                });
-                $('#prestige_gallery_data').val(ids.join(','));
-                console.log('Remaining IDs:', ids.join(','));
+        /* ---- Helper: render a single thumbnail <li> ---- */
+        function renderThumb(id, type, thumbUrl) {
+            var html = '<li data-id="' + id + '">';
+            if (type === 'video') {
+                html += '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#222;color:#fff;"><span class="dashicons dashicons-video-alt3" style="font-size:36px;width:36px;height:36px;"></span></div>';
+            } else {
+                html += '<img src="' + thumbUrl + '" />';
             }
+            html += '<a href="#" class="prestige-cat-remove-img">&times;</a></li>';
+            return html;
+        }
 
-            if ($.fn.sortable) {
-                $('#prestige-gallery-list').sortable({
-                    update: updateIds
+        /* ---- Helper: update hidden IDs field for a category ---- */
+        function updateCatIds($cat) {
+            var ids = [];
+            $cat.find('.prestige-cat-gallery-list li').each(function() {
+                ids.push($(this).data('id'));
+            });
+            $cat.find('.prestige-cat-ids').val(ids.join(','));
+        }
+
+        /* ---- Helper: reindex all categories ---- */
+        function reindexCategories() {
+            $('#prestige-gallery-categories .prestige-gallery-cat').each(function(idx) {
+                $(this).attr('data-index', idx);
+                $(this).find('input, select, textarea').each(function() {
+                    var n = $(this).attr('name');
+                    if (n) $(this).attr('name', n.replace(/\[\d+\]/, '[' + idx + ']'));
                 });
+            });
+        }
+
+        /* ---- Add new category block ---- */
+        $('#prestige-add-category').on('click', function() {
+            var idx = $('#prestige-gallery-categories .prestige-gallery-cat').length;
+            var block = '<div class="prestige-gallery-cat" data-index="' + idx + '">' +
+                '<div class="cat-header">' +
+                '<input type="text" name="prestige_gallery_cats[' + idx + '][name]" value="" placeholder="Kategori Adı (Örn: İç Mekan)" />' +
+                '<button type="button" class="button prestige-remove-cat" style="color:#a00;">&times; Kategoriyi Sil</button>' +
+                '</div>' +
+                '<ul class="prestige-cat-gallery-list"></ul>' +
+                '<input type="hidden" class="prestige-cat-ids" name="prestige_gallery_cats[' + idx + '][ids]" value="" />' +
+                '<button type="button" class="button button-primary prestige-add-cat-images">Görsel / Video Ekle</button>' +
+                '</div>';
+            $('#prestige-gallery-categories').append(block);
+
+            // Init sortable on the new list
+            var $newList = $('#prestige-gallery-categories .prestige-gallery-cat').last().find('.prestige-cat-gallery-list');
+            if ($.fn.sortable) {
+                $newList.sortable({ update: function() { updateCatIds($newList.closest('.prestige-gallery-cat')); } });
             }
         });
-    </script>
-    <style>
-        #prestige-gallery-list li:hover {
-            border-color: #007cba;
-        }
 
-        .prestige-remove-gallery-img:hover {
-            background: #d00 !important;
+        /* ---- Remove category ---- */
+        $(document).on('click', '.prestige-remove-cat', function() {
+            if (!confirm('Bu kategoriyi ve içindeki tüm görselleri silmek istediğinize emin misiniz?')) return;
+            $(this).closest('.prestige-gallery-cat').remove();
+            reindexCategories();
+        });
+
+        /* ---- Add images to a specific category ---- */
+        $(document).on('click', '.prestige-add-cat-images', function(e) {
+            e.preventDefault();
+            var $cat = $(this).closest('.prestige-gallery-cat');
+            var $list = $cat.find('.prestige-cat-gallery-list');
+
+            var frame = wp.media({
+                title: 'Görselleri Seç',
+                button: { text: 'Galeriye Ekle' },
+                library: { type: ['image', 'video'] },
+                multiple: 'add'
+            });
+
+            frame.on('select', function() {
+                var selection = frame.state().get('selection');
+                selection.map(function(attachment) {
+                    attachment = attachment.toJSON();
+                    // Don't add duplicates
+                    if ($list.find('li[data-id="' + attachment.id + '"]').length > 0) return;
+                    var thumb = (attachment.sizes && attachment.sizes.thumbnail) ? attachment.sizes.thumbnail.url : attachment.url;
+                    $list.append(renderThumb(attachment.id, attachment.type, thumb));
+                });
+                updateCatIds($cat);
+            });
+
+            frame.open();
+        });
+
+        /* ---- Remove single image ---- */
+        $(document).on('click', '.prestige-cat-remove-img', function(e) {
+            e.preventDefault();
+            var $cat = $(this).closest('.prestige-gallery-cat');
+            $(this).closest('li').remove();
+            updateCatIds($cat);
+        });
+
+        /* ---- Init sortable on existing lists ---- */
+        if ($.fn.sortable) {
+            $('.prestige-cat-gallery-list').each(function() {
+                var $cat = $(this).closest('.prestige-gallery-cat');
+                $(this).sortable({ update: function() { updateCatIds($cat); } });
+            });
         }
-    </style>
+    });
+    </script>
     <?php
 }
 
 /**
- * Save Gallery Meta
+ * Save Categorized Gallery Meta
  */
 function prestige_save_gallery_meta($post_id)
 {
-    // Minimal verification for maximum compatibility
     if (!isset($_POST['prestige_gallery_nonce']) || !wp_verify_nonce($_POST['prestige_gallery_nonce'], 'prestige_save_gallery')) {
         return;
     }
-
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
     if (!current_user_can('edit_post', $post_id)) return;
 
-    if (isset($_POST['prestige_gallery_data'])) {
-        $val = sanitize_text_field($_POST['prestige_gallery_data']);
-        update_post_meta($post_id, '_prestige_project_gallery', $val);
+    $categories = array();
+    $all_ids = array();
+
+    if (isset($_POST['prestige_gallery_cats']) && is_array($_POST['prestige_gallery_cats'])) {
+        foreach ($_POST['prestige_gallery_cats'] as $cat) {
+            $name = sanitize_text_field($cat['name']);
+            $ids  = sanitize_text_field($cat['ids']);
+            if (!empty($name) || !empty($ids)) {
+                $categories[] = array('name' => $name, 'ids' => $ids);
+                if (!empty($ids)) {
+                    $all_ids = array_merge($all_ids, explode(',', $ids));
+                }
+            }
+        }
     }
+
+    update_post_meta($post_id, '_prestige_gallery_categories', $categories);
+    // Backward compat: save combined IDs to legacy field
+    update_post_meta($post_id, '_prestige_project_gallery', implode(',', array_unique(array_filter($all_ids))));
 }
 add_action('save_post', 'prestige_save_gallery_meta');
 

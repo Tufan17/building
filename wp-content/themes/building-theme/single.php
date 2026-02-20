@@ -92,58 +92,240 @@ while (have_posts()):
             </div>
         </section>
 
-        <!-- Project Gallery Section -->
+        <!-- Project Gallery Section (Tabbed) -->
         <?php
-        $gallery_ids = get_post_meta(get_the_ID(), '_prestige_project_gallery', true);
-        if ($gallery_ids):
-            $ids_array = explode(',', $gallery_ids);
-            ?>
-            <section class="bg-navy-dark py-24 md:py-32 relative overflow-hidden">
+        $gallery_categories = get_post_meta(get_the_ID(), '_prestige_gallery_categories', true);
+        $has_categories = !empty($gallery_categories) && is_array($gallery_categories);
+
+        // Fallback: old flat gallery
+        if (!$has_categories) {
+            $old_ids = get_post_meta(get_the_ID(), '_prestige_project_gallery', true);
+            if (!empty($old_ids)) {
+                $gallery_categories = array(array('name' => 'Genel', 'ids' => $old_ids));
+                $has_categories = true;
+            }
+        }
+
+        if ($has_categories && count($gallery_categories) > 0):
+            // Build a flat "all" list + per-category arrays
+            $all_items = array(); // [{id, cat_slug, cat_name}]
+            $cat_names = array();
+            foreach ($gallery_categories as $ci => $cat) {
+                $cat_name = !empty($cat['name']) ? $cat['name'] : 'Kategori ' . ($ci + 1);
+                $cat_slug = 'cat-' . $ci;
+                $cat_names[$cat_slug] = $cat_name;
+                $ids = !empty($cat['ids']) ? array_filter(explode(',', $cat['ids'])) : array();
+                foreach ($ids as $item_id) {
+                    $all_items[] = array('id' => $item_id, 'cat_slug' => $cat_slug);
+                }
+            }
+            if (count($all_items) > 0):
+        ?>
+            <section class="bg-navy-dark py-24 md:py-32 relative overflow-hidden" id="gallery">
                 <!-- Subtle Pattern Background -->
                 <div class="absolute inset-0 opacity-5"
                     style="background-image: radial-gradient(#cdab56 1px, transparent 1px); background-size: 32px 32px;"></div>
                 <div class="max-w-[1440px] mx-auto px-6 relative z-10">
-                    <div class="flex flex-col gap-16">
+                    <div class="flex flex-col gap-12">
+                        <!-- Section Header -->
                         <div class="flex flex-col items-center text-center space-y-4">
                             <span class="text-primary text-sm font-medium tracking-[0.3em] uppercase">Proje Galerisi</span>
                         </div>
-                        
-                        <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-                            <?php
-                            foreach ($ids_array as $item_id):
+
+                        <!-- Tab Navigation -->
+                        <?php if (count($cat_names) > 1): ?>
+                        <div class="flex flex-wrap justify-center gap-2 md:gap-4">
+                            <button type="button" class="gallery-tab active px-6 py-3 text-xs uppercase tracking-[0.2em] font-semibold border border-white/10 rounded-sm transition-all duration-500 text-primary bg-primary/5 border-primary/30"
+                                    data-category="all">
+                                Tüm Resimler
+                            </button>
+                            <?php foreach ($cat_names as $slug => $name): ?>
+                            <button type="button" class="gallery-tab px-6 py-3 text-xs uppercase tracking-[0.2em] font-semibold border border-white/10 rounded-sm transition-all duration-500 text-gray-400 hover:text-primary hover:border-primary/20"
+                                    data-category="<?php echo esc_attr($slug); ?>">
+                                <?php echo esc_html($name); ?>
+                            </button>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php endif; ?>
+
+                        <!-- Gallery Grid -->
+                        <div id="gallery-grid" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+                            <?php foreach ($all_items as $item):
+                                $item_id = $item['id'];
                                 if (empty($item_id)) continue;
                                 $mime = get_post_mime_type($item_id);
                                 $is_video = strpos($mime, 'video') !== false;
-                                ?>
-                                <div class="break-inside-avoid overflow-hidden rounded-lg group relative bg-black/20">
-                                    <?php if ($is_video): ?>
-                                        <div class="aspect-video w-full">
-                                            <video controls class="w-full h-full object-cover rounded-lg" poster="<?php echo esc_url(wp_get_attachment_image_url($item_id, 'large')); ?>">
-                                                <source src="<?php echo esc_url(wp_get_attachment_url($item_id)); ?>" type="<?php echo esc_attr($mime); ?>">
-                                                Your browser does not support the video tag.
-                                            </video>
+                            ?>
+                            <div class="gallery-item break-inside-avoid overflow-hidden rounded-lg group relative bg-black/20 transition-all duration-500"
+                                 data-category="<?php echo esc_attr($item['cat_slug']); ?>">
+                                <?php if ($is_video): ?>
+                                    <div class="aspect-video w-full">
+                                        <video controls class="w-full h-full object-cover rounded-lg" poster="<?php echo esc_url(wp_get_attachment_image_url($item_id, 'large')); ?>">
+                                            <source src="<?php echo esc_url(wp_get_attachment_url($item_id)); ?>" type="<?php echo esc_attr($mime); ?>">
+                                        </video>
+                                    </div>
+                                <?php else: ?>
+                                    <?php
+                                    $full_url = wp_get_attachment_image_url($item_id, 'full');
+                                    $thumb_url = wp_get_attachment_image_url($item_id, 'large');
+                                    ?>
+                                    <a href="<?php echo esc_url($full_url); ?>" class="block overflow-hidden rounded-lg gallery-lightbox">
+                                        <img src="<?php echo esc_url($thumb_url); ?>"
+                                             alt="<?php the_title(); ?>"
+                                             class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                                             loading="lazy">
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-white text-3xl">fullscreen</span>
                                         </div>
-                                    <?php else: ?>
-                                        <?php 
-                                        $full_url = wp_get_attachment_image_url($item_id, 'full');
-                                        $thumb_url = wp_get_attachment_image_url($item_id, 'large');
-                                        ?>
-                                        <a href="<?php echo esc_url($full_url); ?>" class="block overflow-hidden rounded-lg">
-                                            <img src="<?php echo esc_url($thumb_url); ?>" 
-                                                 alt="<?php the_title(); ?>" 
-                                                 class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105">
-                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                                                <span class="material-symbols-outlined text-white text-3xl">fullscreen</span>
-                                            </div>
-                                        </a>
-                                    <?php endif; ?>
-                                </div>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
             </section>
-        <?php endif; ?>
+
+            <!-- Lightbox Overlay -->
+            <div id="gallery-lightbox-overlay" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.95); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);">
+                <!-- Close Button -->
+                <button id="lightbox-close" style="position:absolute; top:20px; right:20px; z-index:10002; background:none; border:1px solid rgba(255,255,255,0.15); color:#fff; width:48px; height:48px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s;">
+                    <span class="material-symbols-outlined" style="font-size:24px;">close</span>
+                </button>
+                <!-- Counter -->
+                <div id="lightbox-counter" style="position:absolute; top:28px; left:50%; transform:translateX(-50%); z-index:10002; color:rgba(255,255,255,0.5); font-size:13px; letter-spacing:0.15em; text-transform:uppercase; font-weight:500;"></div>
+                <!-- Prev Arrow -->
+                <button id="lightbox-prev" style="position:absolute; left:16px; top:50%; transform:translateY(-50%); z-index:10002; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; width:52px; height:52px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s;">
+                    <span class="material-symbols-outlined" style="font-size:28px;">chevron_left</span>
+                </button>
+                <!-- Next Arrow -->
+                <button id="lightbox-next" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); z-index:10002; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; width:52px; height:52px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s;">
+                    <span class="material-symbols-outlined" style="font-size:28px;">chevron_right</span>
+                </button>
+                <!-- Image Container -->
+                <div id="lightbox-image-wrap" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:80px 80px 60px; cursor:zoom-out;">
+                    <img id="lightbox-img" src="" alt="" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:4px; opacity:0; transition:opacity 0.35s ease;" />
+                </div>
+            </div>
+
+            <!-- Gallery Tab Filtering + Lightbox Script -->
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                /* ========== TAB FILTERING ========== */
+                var tabs = document.querySelectorAll('.gallery-tab');
+                var items = document.querySelectorAll('.gallery-item');
+
+                if (tabs.length > 0) {
+                    tabs.forEach(function(tab) {
+                        tab.addEventListener('click', function() {
+                            var category = this.getAttribute('data-category');
+                            tabs.forEach(function(t) {
+                                t.classList.remove('active', 'text-primary', 'bg-primary/5', 'border-primary/30');
+                                t.classList.add('text-gray-400');
+                            });
+                            this.classList.add('active', 'text-primary', 'bg-primary/5', 'border-primary/30');
+                            this.classList.remove('text-gray-400');
+                            items.forEach(function(item) {
+                                var itemCat = item.getAttribute('data-category');
+                                if (category === 'all' || itemCat === category) {
+                                    item.style.opacity = '0';
+                                    item.style.display = '';
+                                    setTimeout(function() { item.style.opacity = '1'; }, 50);
+                                } else {
+                                    item.style.opacity = '0';
+                                    setTimeout(function() { item.style.display = 'none'; }, 400);
+                                }
+                            });
+                        });
+                    });
+                }
+
+                /* ========== LIGHTBOX CAROUSEL ========== */
+                var overlay   = document.getElementById('gallery-lightbox-overlay');
+                var lbImg     = document.getElementById('lightbox-img');
+                var lbCounter = document.getElementById('lightbox-counter');
+                var btnClose  = document.getElementById('lightbox-close');
+                var btnPrev   = document.getElementById('lightbox-prev');
+                var btnNext   = document.getElementById('lightbox-next');
+                var lbWrap    = document.getElementById('lightbox-image-wrap');
+
+                var currentIndex = 0;
+                var visibleLinks = [];
+
+                function getVisibleLinks() {
+                    var links = [];
+                    document.querySelectorAll('.gallery-item').forEach(function(item) {
+                        if (item.style.display === 'none') return;
+                        var a = item.querySelector('a.gallery-lightbox');
+                        if (a) links.push(a);
+                    });
+                    return links;
+                }
+
+                function showImage(index) {
+                    if (index < 0 || index >= visibleLinks.length) return;
+                    currentIndex = index;
+                    lbImg.style.opacity = '0';
+                    setTimeout(function() {
+                        lbImg.src = visibleLinks[currentIndex].getAttribute('href');
+                        lbImg.onload = function() { lbImg.style.opacity = '1'; };
+                    }, 150);
+                    lbCounter.textContent = (currentIndex + 1) + ' / ' + visibleLinks.length;
+                    btnPrev.style.opacity = currentIndex === 0 ? '0.3' : '1';
+                    btnNext.style.opacity = currentIndex === visibleLinks.length - 1 ? '0.3' : '1';
+                }
+
+                function openLightbox(link) {
+                    visibleLinks = getVisibleLinks();
+                    currentIndex = visibleLinks.indexOf(link);
+                    if (currentIndex === -1) currentIndex = 0;
+                    overlay.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    showImage(currentIndex);
+                }
+
+                function closeLightbox() {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                    lbImg.src = '';
+                    lbImg.style.opacity = '0';
+                }
+
+                // Open on image click
+                document.addEventListener('click', function(e) {
+                    var link = e.target.closest('a.gallery-lightbox');
+                    if (link) { e.preventDefault(); openLightbox(link); }
+                });
+
+                // Close
+                btnClose.addEventListener('click', closeLightbox);
+                lbWrap.addEventListener('click', function(e) {
+                    if (e.target === lbWrap) closeLightbox();
+                });
+
+                // Nav
+                btnPrev.addEventListener('click', function(e) { e.stopPropagation(); if (currentIndex > 0) showImage(currentIndex - 1); });
+                btnNext.addEventListener('click', function(e) { e.stopPropagation(); if (currentIndex < visibleLinks.length - 1) showImage(currentIndex + 1); });
+
+                // Keyboard
+                document.addEventListener('keydown', function(e) {
+                    if (overlay.style.display !== 'block') return;
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowLeft' && currentIndex > 0) showImage(currentIndex - 1);
+                    if (e.key === 'ArrowRight' && currentIndex < visibleLinks.length - 1) showImage(currentIndex + 1);
+                });
+
+                // Hover styles for buttons
+                [btnClose, btnPrev, btnNext].forEach(function(btn) {
+                    btn.addEventListener('mouseenter', function() { btn.style.borderColor = 'rgba(198,168,90,0.5)'; btn.style.color = '#C6A85A'; });
+                    btn.addEventListener('mouseleave', function() { btn.style.borderColor = 'rgba(255,255,255,0.15)'; btn.style.color = '#fff'; });
+                });
+            });
+            </script>
+        <?php
+            endif;
+        endif;
+        ?>
 
         <!-- Closing / CTA -->
         <section class="bg-background-dark py-32 md:py-48 px-6 border-t border-white/5">

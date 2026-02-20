@@ -1,16 +1,16 @@
 
 # BEGIN WordPress
-# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
-# dynamically generated, and should only be modified via WordPress filters.
-# Any changes to the directives between these markers will be overwritten.
+# "BEGIN WordPress" ve "END WordPress" arasındaki yönergeler (satırlar)
+# dinamik olarak oluşturulmuştur ve yalnızca WordPress süzgeçleri ile düzenlenmelidir.
+# Bu imler arasındaki yönergelerde yapılan değişikliklerin üzerine yazılır.
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /build.com/
+RewriteBase /building/
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /build.com/index.php [L]
+RewriteRule . /building/index.php [L]
 </IfModule>
 
 # END WordPress
