@@ -32,7 +32,7 @@ get_header();
                 <span class="block mt-2">MİSYON</span>
             </h1>
             <p class="text-white/70 text-lg md:text-xl font-light max-w-2xl leading-relaxed">
-                Zamansız tasarım ve kalıcı yapılarla yarının mirasını bugünden inşa ediyoruz.
+                Adana'da prestijli yaşam alanları inşa ederek geleceğin mirasını bugünden oluşturuyoruz.
             </p>
             <div class="pt-8">
                 <span
@@ -46,12 +46,12 @@ get_header();
         <div class="max-w-4xl mx-auto text-center">
             <div class="w-px h-24 bg-primary mx-auto mb-10"></div>
             <h2 class="text-3xl md:text-5xl font-serif-heading leading-tight mb-8">
-                "Ufuk çizgisini nefes alan, kalıcı ve ilham verici yapılarla yeniden şekillendirmek."
+                "Adana'nın ufuk çizgisini, yaşanabilir, kalıcı ve ilham verici yaşam alanlarıyla yeniden şekillendirmek."
             </h2>
             <div class="w-24 h-[2px] bg-primary mx-auto mb-8"></div>
             <p class="text-navy-dark/70 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto">
-                Zamana meydan okuyan mekanlar yaratmaya, insan deneyimini yükseltmek için sanatı işlevsellikle
-                birleştirmeye inanıyoruz.
+                Rezidans ve villa projelerimizle ailelerin güvenle, konforla ve prestijle yaşayabileceği mekanlar
+                yaratmaya inanıyoruz.
             </p>
         </div>
     </section>
@@ -73,12 +73,12 @@ get_header();
             <!-- Right: Content -->
             <div class="p-10 md:p-20 flex flex-col justify-center bg-background-dark">
                 <p class="text-xl md:text-2xl font-light leading-relaxed text-white/90 mb-8 font-serif-heading">
-                    Tavizsiz kaliteye ve sürdürülebilir inovasyona odaklanıyoruz. Misyonumuz, insan deneyimini
-                    zenginleştiren, çevreleriyle uyum içinde gelişen topluluklar ve yaşam tarzları oluşturmaktır.
+                    Tavizsiz kaliteye ve müşteri memnuniyetine odaklanıyoruz. Misyonumuz, Adana'nın Sarıçam ve Çukurova bölgelerinde
+                    ailelerin güvenle yaşayabileceği, modern ve konforlu yaşam alanları inşa etmektir.
                 </p>
                 <p class="text-white/50 leading-relaxed mb-10 text-sm">
-                    Her proje bir dürüstlük ve mükemmellik vaadidir. Her taslağa sadece bir inşaat planı olarak değil,
-                    taş, çelik ve camla yazılan bir miras olarak yaklaşıyoruz. Bağlılığımız, fiziksel yapının ötesine
+                    Her projemiz bir kalite ve güven vaadidir. Rezidans ve villa projelerimizde sadece yapı değil,
+                    içinde yaşanacak mutlu hikayeler inşa ediyoruz. Bağlılığımız, fiziksel yapının ötesine
                     geçerek sakinlerine sunduğu kalıcı değere kadar uzanır.
                 </p>
                 <?php

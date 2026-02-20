@@ -44,9 +44,7 @@
                     <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider"
                             href="<?php echo esc_url(home_url('/hakkimizda')); ?>">Hakkımızda</a></li>
                     <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider"
-                            href="<?php echo esc_url(home_url('/vizyon')); ?>">Vizyon</a></li>
-                    <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider"
-                            href="<?php echo esc_url(home_url('/misyon')); ?>">Misyon</a></li>
+                            href="<?php echo esc_url(home_url('/misyon')); ?>">Misyon & Vizyon</a></li>
                     <li><a class="text-gray-400 hover:text-primary transition-colors text-xs tracking-wider"
                             href="<?php echo esc_url(home_url('/projeler')); ?>">Projeler</a></li>
                 </ul>

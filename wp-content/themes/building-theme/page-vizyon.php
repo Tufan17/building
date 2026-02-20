@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Vizyon Sayfası
- * 
+ *
  * @package Building_Theme
  */
 
@@ -22,15 +22,14 @@ get_header();
         <div class="relative z-10 container mx-auto px-6 text-center max-w-5xl pt-20">
             <span
                 class="block text-primary text-sm md:text-base font-noto tracking-[0.2em] uppercase mb-6 opacity-0 animate-[fadeIn_1s_ease-out_0.5s_forwards]">Kuruluş
-                1985</span>
+                2021 • Adana</span>
             <h1
                 class="text-5xl md:text-7xl lg:text-9xl font-newsreader font-medium text-white leading-[0.9] tracking-tight mb-8 opacity-0 animate-[fadeInUp_1s_ease-out_0.8s_forwards]">
-                VİZYONLA <br /><span class="italic font-light">İNŞA EDİYORUZ</span>
+                PRESTİJLE <br /><span class="italic font-light">İNŞA EDİYORUZ</span>
             </h1>
             <p
                 class="text-white/80 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed opacity-0 animate-[fadeIn_1s_ease-out_1.2s_forwards]">
-                Kırk yıllık inovasyonla şekillenen, zamansız tasarım ve sarsılmaz hassasiyetle silüetleri dönüştüren bir
-                mimari mükemmellik mirası.
+                2021'den bu yana Adana'nın Sarıçam ve Çukurova bölgelerinde prestijli rezidans ve villa projeleriyle modern yaşamın konforunu sunuyoruz.
             </p>
             <div class="mt-12 flex justify-center opacity-0 animate-[fadeIn_1s_ease-out_1.5s_forwards]">
                 <div class="w-[1px] h-24 bg-gradient-to-b from-primary to-transparent"></div>
@@ -53,20 +52,16 @@ get_header();
                     </h2>
                     <div class="space-y-6 text-lg text-[#b3aea2] font-light leading-relaxed">
                         <p>
-                            1985 yılında kurulan stüdyomuz tek bir vizyonla yola çıktı: İlham veren mekanlar yaratmak.
-                            Mimarinin sadece barınma değil, ışık, malzeme ve oran aracılığıyla insan deneyimini
-                            şekillendirmek olduğuna inanıyoruz.
+                            2021 yılında Adana'da kurulan Capital Yaşam İnşaat, modern mimari ve kaliteli malzeme anlayışıyla
+                            Sarıçam ve Çukurova bölgelerinde prestijli konut projeleri geliştirmektedir.
                         </p>
                         <p>
-                            Her proje, çevre ile inşa edilen form arasındaki bir diyalogdur. Her işe, ön yargılardan
-                            arınmış, temiz bir sayfa ile yaklaşıyor ve sahanın kendine özgü özelliklerinin mimari
-                            anlatıyı bilgilendirmesine izin veriyoruz.
+                            Rezidans ve villa projelerimizde, ailelerin güvenle ve konforla yaşayabileceği mekanlar inşa ediyoruz.
+                            Her projemizde müşteri memnuniyetini ön planda tutarak, yaşam standartlarını yükselten alanlar oluşturuyoruz.
                         </p>
                     </div>
                     <div class="pt-8">
-                        <img alt="Kurucu imzası" class="h-16 object-contain filter invert opacity-80"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZQj8aW6RJoZH38zk66QFVxScbfeB3EuuutCn7ZeB6h0jyq7wIQxVsgr8PC1AiBpja_BYJXJU_uqsHqHTE-BY585trgJBgCId6gQJFd-KnYM6G932tEEMj_PV6D2n0SZaThU1Oet87RUvAz3set5fuNt4166JakaUx98qaHfFvkDMQ5AJAbknQmHA5O61KIMOEZS371whrB-AdmhK1kjiUYYzBz7QnHkT2aGOkjgptmy_J0YogrxoDT-MaeHsQEKNUMB4e2U9Z5a6j" />
-                        <p class="text-sm text-[#b3aea2] mt-2 font-noto">Alexander Thorne, Kurucu</p>
+                        <p class="text-sm text-[#b3aea2] font-noto">Capital Yaşam İnşaat — Adana</p>
                     </div>
                 </div>
                 <!-- Image Column -->
@@ -127,10 +122,10 @@ get_header();
                         </div>
                         <div class="pt-2 md:pt-12">
                             <span
-                                class="text-5xl font-newsreader text-white/20 group-hover:text-primary/40 transition-colors block mb-4">1985</span>
-                            <h3 class="text-xl text-white font-medium mb-2">Başlangıç</h3>
+                                class="text-5xl font-newsreader text-white/20 group-hover:text-primary/40 transition-colors block mb-4">2021</span>
+                            <h3 class="text-xl text-white font-medium mb-2">Kuruluş</h3>
                             <p class="text-[#b3aea2] text-sm leading-relaxed">
-                                Alexander Thorne, Chicago'da konut renovasyonlarına odaklanan ilk stüdyosunu açtı.
+                                Capital Yaşam İnşaat, Adana'da modern yaşam alanları inşa etmek vizyonuyla kuruldu.
                             </p>
                         </div>
                     </div>
@@ -141,11 +136,10 @@ get_header();
                         </div>
                         <div class="pt-2 md:pt-12">
                             <span
-                                class="text-5xl font-newsreader text-white/20 group-hover:text-primary/40 transition-colors block mb-4">1998</span>
-                            <h3 class="text-xl text-white font-medium mb-2">İlk Gökdelen</h3>
+                                class="text-5xl font-newsreader text-white/20 group-hover:text-primary/40 transition-colors block mb-4">2022</span>
+                            <h3 class="text-xl text-white font-medium mb-2">Sun City 1</h3>
                             <p class="text-[#b3aea2] text-sm leading-relaxed">
-                                Şehir silüetini yeniden tanımlayan 40 katlı bir konut kulesi olan "The Vertex" için
-                                görevlendirildik.
+                                Sarıçam'da ilk projemiz Sun City 1 ile modern yaşam alanları sunmaya başladık.
                             </p>
                         </div>
                     </div>
@@ -156,10 +150,10 @@ get_header();
                         </div>
                         <div class="pt-2 md:pt-12">
                             <span
-                                class="text-5xl font-newsreader text-white/20 group-hover:text-primary/40 transition-colors block mb-4">2010</span>
-                            <h3 class="text-xl text-white font-medium mb-2">Küresel Büyüme</h3>
+                                class="text-5xl font-newsreader text-white/20 group-hover:text-primary/40 transition-colors block mb-4">2023</span>
+                            <h3 class="text-xl text-white font-medium mb-2">Sun City 2</h3>
                             <p class="text-[#b3aea2] text-sm leading-relaxed">
-                                Felsefemizi uluslararası pazarlara taşıyan Londra ve Tokyo ofislerimizi açtık.
+                                Sun City projesinin ikinci etabıyla Sarıçam'daki yatırımlarımızı genişlettik.
                             </p>
                         </div>
                     </div>
@@ -170,10 +164,10 @@ get_header();
                         </div>
                         <div class="pt-2 md:pt-12">
                             <span
-                                class="text-5xl font-newsreader text-white/20 group-hover:text-primary/40 transition-colors block mb-4">2023</span>
-                            <h3 class="text-xl text-white font-medium mb-2">Sürdürülebilirlik Ödülü</h3>
+                                class="text-5xl font-newsreader text-white/20 group-hover:text-primary/40 transition-colors block mb-4">2025</span>
+                            <h3 class="text-xl text-white font-medium mb-2">Sun City 3</h3>
                             <p class="text-[#b3aea2] text-sm leading-relaxed">
-                                Lüks projelerde öncü karbon-nötr inşaat tekniklerimizle küresel çapta tanındık.
+                                En yeni projemiz Sun City 3 ile Adana'da prestijli yaşamın standartlarını belirliyoruz.
                             </p>
                         </div>
                     </div>
