@@ -45,8 +45,16 @@ while (have_posts()):
         <!-- Hero Section -->
         <header class="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden">
             <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed scale-105 animate-[pulse_10s_ease-in-out_infinite]"
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat md:bg-fixed scale-105 md:animate-[pulse_10s_ease-in-out_infinite]"
                 style="background-image: url('<?php echo esc_url($thumbnail_url); ?>');">
+            <style>
+                /* iOS Safari bg-fixed fix: force scroll on touch devices */
+                @supports (-webkit-touch-callout: none) {
+                    .bg-fixed, .md\:bg-fixed {
+                        background-attachment: scroll !important;
+                    }
+                }
+            </style>
             </div>
             <!-- Overlays -->
             <div class="absolute inset-0 bg-black/40 mix-blend-multiply"></div>

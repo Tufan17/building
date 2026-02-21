@@ -190,6 +190,9 @@
 (function() {
     // Wait for DOM
     document.addEventListener('DOMContentLoaded', function() {
+        // Detect mobile/touch device
+        var isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth < 768);
+
         // Selectors for elements to animate
         var selectors = [
             'main section',
@@ -198,12 +201,17 @@
             'main h3',
             '.project-item',
             '.fp-project-item',
-            '.gallery-item',
             'footer .grid > div',
             'main a.group',
-            'main .flex.flex-col.gap-32 > div',
-            'main img[loading="lazy"]'
+            'main .flex.flex-col.gap-32 > div'
         ];
+
+        // Only add gallery-item and lazy images to scroll reveal on desktop
+        // On mobile, these cause invisible image bugs due to IO + GPU compositing issues
+        if (!isMobile) {
+            selectors.push('.gallery-item');
+            selectors.push('main img[loading="lazy"]');
+        }
 
         var elements = document.querySelectorAll(selectors.join(', '));
         if (!elements.length) return;
@@ -248,6 +256,16 @@
         document.querySelectorAll('.sr-hidden').forEach(function(el) {
             observer.observe(el);
         });
+
+        // SAFETY FALLBACK: On mobile, if any sr-hidden elements haven't been
+        // revealed after 3 seconds, force them visible to prevent blank pages
+        if (isMobile) {
+            setTimeout(function() {
+                document.querySelectorAll('.sr-hidden:not(.sr-visible)').forEach(function(el) {
+                    el.classList.add('sr-visible');
+                });
+            }, 3000);
+        }
     });
 })();
 </script>
