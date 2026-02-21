@@ -235,8 +235,8 @@ while (have_posts()):
                     <span class="material-symbols-outlined" style="font-size:28px;">chevron_right</span>
                 </button>
                 <!-- Image Container -->
-                <div id="lightbox-image-wrap" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:80px 80px 60px; cursor:zoom-out;">
-                    <img id="lightbox-img" src="" alt="" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:4px; opacity:0; transition:opacity 0.35s ease;" />
+                <div id="lightbox-image-wrap" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:60px 16px 50px; cursor:zoom-out;">
+                    <!-- img is created dynamically per image to avoid GPU ghost rendering -->
                 </div>
             </div>
 
@@ -274,12 +274,12 @@ while (have_posts()):
 
                 /* ========== LIGHTBOX CAROUSEL ========== */
                 var overlay   = document.getElementById('gallery-lightbox-overlay');
-                var lbImg     = document.getElementById('lightbox-img');
                 var lbCounter = document.getElementById('lightbox-counter');
                 var btnClose  = document.getElementById('lightbox-close');
                 var btnPrev   = document.getElementById('lightbox-prev');
                 var btnNext   = document.getElementById('lightbox-next');
                 var lbWrap    = document.getElementById('lightbox-image-wrap');
+                var currentImg = null; // track current <img> element
 
                 var currentIndex = 0;
                 var visibleLinks = [];
@@ -295,35 +295,50 @@ while (have_posts()):
                     return links;
                 }
 
+                // Create a fresh <img> element — destroys old GPU layer completely
+                function createFreshImg() {
+                    var img = document.createElement('img');
+                    img.alt = '';
+                    img.style.cssText = 'max-width:100%; max-height:100%; object-fit:contain; border-radius:4px; opacity:0; transition:opacity 0.3s ease;';
+                    return img;
+                }
+
                 function showImage(index) {
                     if (index < 0 || index >= visibleLinks.length) return;
                     if (isAnimating) return;
                     isAnimating = true;
                     currentIndex = index;
 
-                    // Step 1: Fade out current image
-                    lbImg.style.opacity = '0';
+                    var oldImg = currentImg;
 
-                    // Step 2: After fade-out completes, clear old image and load new one
+                    // Fade out old image if exists
+                    if (oldImg) {
+                        oldImg.style.opacity = '0';
+                    }
+
+                    // After fade-out, REMOVE old img and create new one
                     setTimeout(function() {
-                        // Clear old image completely to prevent ghost rendering on mobile
-                        lbImg.removeAttribute('src');
-                        lbImg.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+                        // Destroy old element completely — kills GPU cached layer
+                        if (oldImg && oldImg.parentNode) {
+                            oldImg.parentNode.removeChild(oldImg);
+                        }
 
-                        // Small delay to let browser clear the old render
-                        setTimeout(function() {
-                            var newSrc = visibleLinks[currentIndex].getAttribute('href');
-                            lbImg.onload = function() {
-                                lbImg.style.opacity = '1';
-                                isAnimating = false;
-                            };
-                            lbImg.onerror = function() {
-                                lbImg.style.opacity = '1';
-                                isAnimating = false;
-                            };
-                            lbImg.src = newSrc;
-                        }, 50);
-                    }, 350); // Match CSS transition duration
+                        // Create brand new img element
+                        var newImg = createFreshImg();
+                        currentImg = newImg;
+                        lbWrap.appendChild(newImg);
+
+                        var newSrc = visibleLinks[currentIndex].getAttribute('href');
+                        newImg.onload = function() {
+                            newImg.style.opacity = '1';
+                            isAnimating = false;
+                        };
+                        newImg.onerror = function() {
+                            newImg.style.opacity = '1';
+                            isAnimating = false;
+                        };
+                        newImg.src = newSrc;
+                    }, oldImg ? 300 : 0);
 
                     lbCounter.textContent = (currentIndex + 1) + ' / ' + visibleLinks.length;
                     btnPrev.style.opacity = currentIndex === 0 ? '0.3' : '1';
@@ -336,32 +351,17 @@ while (have_posts()):
                     if (currentIndex === -1) currentIndex = 0;
                     overlay.style.display = 'block';
                     document.body.style.overflow = 'hidden';
-
-                    // For first open, load directly without fade-out delay
-                    lbImg.style.opacity = '0';
-                    lbImg.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-                    var newSrc = visibleLinks[currentIndex].getAttribute('href');
-                    lbImg.onload = function() {
-                        lbImg.style.opacity = '1';
-                        isAnimating = false;
-                    };
-                    lbImg.onerror = function() {
-                        lbImg.style.opacity = '1';
-                        isAnimating = false;
-                    };
-                    lbImg.src = newSrc;
-
-                    lbCounter.textContent = (currentIndex + 1) + ' / ' + visibleLinks.length;
-                    btnPrev.style.opacity = currentIndex === 0 ? '0.3' : '1';
-                    btnNext.style.opacity = currentIndex === visibleLinks.length - 1 ? '0.3' : '1';
+                    showImage(currentIndex);
                 }
 
                 function closeLightbox() {
                     overlay.style.display = 'none';
                     document.body.style.overflow = '';
-                    lbImg.style.opacity = '0';
-                    lbImg.removeAttribute('src');
-                    lbImg.src = '';
+                    // Destroy current img completely
+                    if (currentImg && currentImg.parentNode) {
+                        currentImg.parentNode.removeChild(currentImg);
+                    }
+                    currentImg = null;
                     isAnimating = false;
                 }
 
