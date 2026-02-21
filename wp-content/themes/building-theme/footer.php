@@ -201,17 +201,12 @@
             'main h3',
             '.project-item',
             '.fp-project-item',
+            '.gallery-item',
             'footer .grid > div',
             'main a.group',
-            'main .flex.flex-col.gap-32 > div'
+            'main .flex.flex-col.gap-32 > div',
+            'main img[loading="lazy"]'
         ];
-
-        // Only add gallery-item and lazy images to scroll reveal on desktop
-        // On mobile, these cause invisible image bugs due to IO + GPU compositing issues
-        if (!isMobile) {
-            selectors.push('.gallery-item');
-            selectors.push('main img[loading="lazy"]');
-        }
 
         var elements = document.querySelectorAll(selectors.join(', '));
         if (!elements.length) return;
