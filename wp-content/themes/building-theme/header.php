@@ -181,7 +181,7 @@
         }
 
         // Dismiss after animations complete (min 2.6s) or on window load + delay
-        var minTime = 2600;
+        var minTime = 1200;
         var startTime = Date.now();
 
         window.addEventListener('load', function() {
@@ -190,10 +190,10 @@
             setTimeout(dismissSplash, remaining);
         });
 
-        // Safety fallback: always dismiss after 4s
+        // Safety fallback: always dismiss after 2.5s
         setTimeout(function() {
             if (splash.parentNode) dismissSplash();
-        }, 4000);
+        }, 2500);
     })();
     </script>
 

@@ -48,8 +48,7 @@ function building_theme_scripts()
     // Core WordPress style
     wp_enqueue_style('building-theme-style', get_stylesheet_uri(), array(), '1.0.0');
 
-    // Tailwind CSS via CDN
-    wp_enqueue_script('tailwind-cdn', 'https://cdn.tailwindcss.com?plugins=forms,container-queries', array(), null, false);
+    // Tailwind CSS loaded async (non-render-blocking) — see building_optimized_tailwind()
 
     // Google Fonts: Manrope, Playfair Display, Newsreader, Noto Sans
     wp_enqueue_style('google-fonts-prestige', 'https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Noto+Sans:wght@300;400;500;700&display=swap', array(), null);
@@ -65,12 +64,31 @@ function building_theme_scripts()
 add_action('wp_enqueue_scripts', 'building_theme_scripts');
 
 /**
- * Add Tailwind Config to the header
+ * ═══════════════════════════════════════════════════════
+ * PERFORMANCE OPTIMIZATIONS (PageSpeed 90+ Target)
+ * ═══════════════════════════════════════════════════════
  */
-function building_theme_tailwind_config()
+
+/**
+ * Performance: Resource Hints — preconnect to external origins
+ */
+function building_resource_hints()
+{
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />' . "\n";
+    echo '<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />' . "\n";
+}
+add_action('wp_head', 'building_resource_hints', 0);
+
+/**
+ * Performance: Load Tailwind CSS async (non-render-blocking)
+ * Config declared inline (synchronous) before async CDN script.
+ * Splash preloader masks any FOUC while Tailwind processes the DOM.
+ */
+function building_optimized_tailwind()
 {
     ?>
-    <script id="tailwind-config">
+    <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -90,32 +108,88 @@ function building_theme_tailwind_config()
                         "noto": ["Noto Sans", "sans-serif"],
                     },
                     borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
-                    spacing: {
-                        '128': '32rem',
-                    }
+                    spacing: { '128': '32rem' }
                 },
             },
         }
     </script>
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
+    <script async src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <?php
+}
+add_action('wp_head', 'building_optimized_tailwind', 2);
 
-        .font-serif-heading {
-            font-family: 'Playfair Display', serif;
-        }
-
+/**
+ * Performance: Critical inline CSS
+ * Renders splash screen, nav, and basic layout instantly before Tailwind/fonts load.
+ */
+function building_critical_css()
+{
+    ?>
+    <style id="critical-css">
+        html { scroll-behavior: smooth; }
+        body { margin: 0; background: #0b1120; }
+        .font-serif-heading { font-family: 'Playfair Display', serif; }
         .glass-nav {
             background: rgba(11, 17, 32, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(198, 168, 90, 0.15);
         }
+        img { max-width: 100%; height: auto; }
     </style>
     <?php
 }
-add_action('wp_head', 'building_theme_tailwind_config');
+add_action('wp_head', 'building_critical_css', 3);
+
+/**
+ * Performance: Preload hero image on front page for faster LCP
+ */
+function building_preload_hero_image()
+{
+    if (is_front_page()) {
+        $hero_bg_type = get_option('prestige_hero_bg_type', 'image');
+        $hero_media = get_option('prestige_hero_media', '');
+        if ($hero_media && $hero_bg_type !== 'video') {
+            echo '<link rel="preload" as="image" href="' . esc_url($hero_media) . '" fetchpriority="high" />' . "\n";
+        }
+    }
+}
+add_action('wp_head', 'building_preload_hero_image', 4);
+
+/**
+ * Performance: Make Google Fonts & Material Icons non-render-blocking
+ * Uses media="print" onload trick — browser downloads CSS without blocking render.
+ */
+function building_async_styles($tag, $handle, $href, $media)
+{
+    $async_handles = array('google-fonts-prestige', 'material-icons', 'material-symbols');
+    if (in_array($handle, $async_handles)) {
+        $tag = str_replace("media='all'", "media='print' onload=\"this.media='all'\"", $tag);
+        $tag .= '<noscript><link rel="stylesheet" href="' . esc_url($href) . '" /></noscript>' . "\n";
+    }
+    return $tag;
+}
+add_filter('style_loader_tag', 'building_async_styles', 10, 4);
+
+/**
+ * Performance: Remove unnecessary WordPress default assets
+ */
+function building_remove_wp_bloat()
+{
+    wp_dequeue_style('wp-block-library');
+    wp_dequeue_style('wp-block-library-theme');
+    wp_dequeue_style('global-styles');
+    wp_dequeue_style('classic-theme-styles');
+    wp_deregister_script('wp-embed');
+}
+add_action('wp_enqueue_scripts', 'building_remove_wp_bloat', 100);
+
+// Remove unnecessary wp_head output
+remove_action('wp_head', 'wlwmanifest_link');
+remove_action('wp_head', 'rsd_link');
+remove_action('wp_head', 'wp_shortlink_wp_head');
+remove_action('wp_head', 'rest_output_link_wp_head');
+remove_action('wp_head', 'wp_oembed_add_discovery_links');
 
 /**
  * Desktop Nav Walker - hover dropdown for sub-menus

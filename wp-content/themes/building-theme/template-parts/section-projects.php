@@ -147,7 +147,7 @@ if ($projects_query->have_posts()):
                     <a href="<?php the_permalink(); ?>" class="block aspect-[16/9] lg:aspect-[21/9] overflow-hidden grayscale-[30%] hover:grayscale-0 transition-all duration-1000">
                         <img alt="<?php the_title_attribute(); ?>"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out"
-                            src="<?php echo esc_url($thumb); ?>" />
+                            src="<?php echo esc_url($thumb); ?>" loading="lazy" decoding="async" />
                     </a>
                 </div>
             </div>
@@ -158,7 +158,7 @@ if ($projects_query->have_posts()):
                     <a href="<?php the_permalink(); ?>" class="block aspect-[16/9] lg:aspect-[21/9] overflow-hidden grayscale-[30%] hover:grayscale-0 transition-all duration-1000">
                         <img alt="<?php the_title_attribute(); ?>"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out"
-                            src="<?php echo esc_url($thumb); ?>" />
+                            src="<?php echo esc_url($thumb); ?>" loading="lazy" decoding="async" />
                     </a>
                 </div>
                 <div class="lg:col-span-12 mt-[-10%] lg:mt-0 lg:mr-[40%] lg:w-[60%] z-10">

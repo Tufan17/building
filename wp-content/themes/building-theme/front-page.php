@@ -28,13 +28,13 @@ get_header();
             <?php if ($hero_bg_type === 'video' && $hero_media): ?>
                 <!-- Fallback image behind video -->
                 <img alt="Hero Background" class="absolute w-full h-full object-cover"
-                    src="<?php echo esc_url(prestige_get_default('prestige_hero_media')); ?>" />
+                    src="<?php echo esc_url(prestige_get_default('prestige_hero_media')); ?>" fetchpriority="high" />
                 <video autoplay muted loop playsinline class="absolute w-full h-full object-cover"
                     poster="<?php echo esc_url(prestige_get_default('prestige_hero_media')); ?>">
                     <source src="<?php echo esc_url($hero_media); ?>" type="video/mp4">
                 </video>
             <?php else: ?>
-                <img alt="Hero Background" class="w-full h-full object-cover" src="<?php echo esc_url($hero_media); ?>" />
+                <img alt="Hero Background" class="w-full h-full object-cover" src="<?php echo esc_url($hero_media); ?>" fetchpriority="high" />
             <?php endif; ?>
             <div class="absolute inset-0 bg-gradient-to-b from-navy-dark/80 via-navy-dark/40 to-background-dark"></div>
         </div>
@@ -96,7 +96,7 @@ get_header();
             <?php if ($brand_signature): ?>
                 <div class="mt-12 flex justify-center">
                     <img alt="CEO Signature" class="h-16 opacity-60 grayscale"
-                        src="<?php echo esc_url($brand_signature); ?>" />
+                        src="<?php echo esc_url($brand_signature); ?>" loading="lazy" decoding="async" />
                 </div>
             <?php endif; ?>
         </div>
@@ -322,8 +322,8 @@ get_header();
     <!-- Pre-Footer CTA -->
     <section class="py-24 relative overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img alt="Detail of luxury marble staircase" class="w-full h-full object-cover opacity-20 grayscale"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-JUjlqt7HFKrLzFo49NkXpMzi1kUb8SUyTcq57MndgH4Cr29Ro8lED-UrQIeEWQbyZAU37Q-av8BAtSjENC0E8WVBN_H8vshgtN39tO5cBOfjBGDgjkntmkzlrZ-doNmqlnQyr-DVEGch7t6tIOh_0WZOy1pecKmKO09F8uBlOcIaVS4XBwzAgx6LHfgM7g4MSMVgjHnMKhzlf-LI8hdIRzvRIWXgCUwac0MWI7BEqagg-SSd-6rHI-nMk462QLf7YobK2FQVe6s8" />
+                <img alt="Detail of luxury marble staircase" class="w-full h-full object-cover opacity-20 grayscale"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-JUjlqt7HFKrLzFo49NkXpMzi1kUb8SUyTcq57MndgH4Cr29Ro8lED-UrQIeEWQbyZAU37Q-av8BAtSjENC0E8WVBN_H8vshgtN39tO5cBOfjBGDgjkntmkzlrZ-doNmqlnQyr-DVEGch7t6tIOh_0WZOy1pecKmKO09F8uBlOcIaVS4XBwzAgx6LHfgM7g4MSMVgjHnMKhzlf-LI8hdIRzvRIWXgCUwac0MWI7BEqagg-SSd-6rHI-nMk462QLf7YobK2FQVe6s8" loading="lazy" decoding="async" />
             <div class="absolute inset-0 bg-background-dark/80"></div>
         </div>
         <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">

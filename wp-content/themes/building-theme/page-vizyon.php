@@ -68,7 +68,7 @@ get_header();
                 <div class="relative order-1 lg:order-2 h-[600px] w-full group overflow-hidden rounded-lg">
                     <img alt="Minimal mimari detay"
                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVw0cvSlPqeiwkMK1eb-MsyAjAWlmQmIHM49autqeOJUNhq8IqfMNppOG5OSm_wb2qreUF5_V5TPyTdpCpHIJgtf2MixLg0FzJX8fuCjWzbz0efFiePzOdZEUcWjTDrh-bcLjxpnQDtk664ZEm4A-4e-Absa10bPmY6kULV1ku7NsQrW_UhC-qTGPx-PYuN0CtjaZrbL57WWq_vC-fZvWS79a3BmL9W8cOdnl-iIh0lUg3O3r-IM181WInj1Jk64wDVgAeUit-nZeu" />
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVw0cvSlPqeiwkMK1eb-MsyAjAWlmQmIHM49autqeOJUNhq8IqfMNppOG5OSm_wb2qreUF5_V5TPyTdpCpHIJgtf2MixLg0FzJX8fuCjWzbz0efFiePzOdZEUcWjTDrh-bcLjxpnQDtk664ZEm4A-4e-Absa10bPmY6kULV1ku7NsQrW_UhC-qTGPx-PYuN0CtjaZrbL57WWq_vC-fZvWS79a3BmL9W8cOdnl-iIh0lUg3O3r-IM181WInj1Jk64wDVgAeUit-nZeu" loading="lazy" decoding="async" />
                     <div class="absolute inset-0 bg-black/10"></div>
                 </div>
             </div>
@@ -187,7 +187,7 @@ get_header();
                 <!-- Card 1 -->
                 <div class="group zoom-card relative h-[500px] w-full overflow-hidden rounded-lg cursor-pointer">
                     <img alt="Mermer dokusu detayı"
-                        class="zoom-image absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        class="zoom-image absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" loading="lazy" decoding="async"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuANbxa7HcLD0jMMuDa2MghF8JKV7fEIJhijAIiEE6YSLIxkUYQ7rNc9ZcoubbVNowX-HH7swUfDwydFPhw2REBZuCa2aL5vjAl_0KPFFyoKmD6QYGmIDeqoQbXeQgfoLTTrkbgTQS5wAVcHY-HYZfSM9yYuJu9Q-Vpb1zZOkXwr8BnvenRNZNN0l-FGXndHmeUBcxIpIOKO7NKkPEcm6nuHGkXjFamZ8z_77KO9sygXnqFuFYjidps5KkeWWcQVem8TyvRXkPnMusYt" />
                     <div
                         class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity">
@@ -208,7 +208,7 @@ get_header();
                 <!-- Card 2 -->
                 <div class="group zoom-card relative h-[500px] w-full overflow-hidden rounded-lg cursor-pointer">
                     <img alt="Çelik yapı iskeleti"
-                        class="zoom-image absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        class="zoom-image absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" loading="lazy" decoding="async"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyNhSk1ceNKWFz44v7NukUnTqRFjuydU89aaOpVnlaXvHQSXqAGByWxSvHr_fQzXijpoNfGFq5h8MzJv0lhKIXavrwz4dST8fPnzdYvw2Sbo9wbNA6rsMfEQztstPXWqimjnv215d9MguoFDL-Z8LRAIrzrX0m8YphSzIEyX_xCI6reOMcjfZHrwXPIP2dv2qOxKmeyaHsQmrPNOd9Dr7IZkra3cJ-DGA9b43zbFwxJ4qHVlGV8V1WKbFcxGYqyCbAmyuAUrhpGVGw" />
                     <div
                         class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity">
@@ -229,7 +229,7 @@ get_header();
                 <!-- Card 3 -->
                 <div class="group zoom-card relative h-[500px] w-full overflow-hidden rounded-lg cursor-pointer">
                     <img alt="Doğa yansımasıyla cam cephe"
-                        class="zoom-image absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        class="zoom-image absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" loading="lazy" decoding="async"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIi5LSmx6Uf66GjRsZwPuvKVpE3RDpx8DUBWC4Y0tTKKSmIWSmKmEBG_9ICkjIa3ia64uhQ7Nnyb0WgkfHYlV82WHZeijRzqaIDNiMte6GrWy6opDdyJaC1Bi_17We87wIvNYxQ6ke9nPXxS-FnCwvooVcjRs1Aq-fM8QqJogqOIwuXkUHyPzo_KED3ZmMCLEZPotdQSoCk8Kgar535mpTqG0b8ynfBx_yCjYsmWx9v0vsNwMN-B8e0rxNozfSlz7NlvqmXYb_oPxh" />
                     <div
                         class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity">

@@ -166,7 +166,7 @@ $projects_query = new WP_Query(array(
                                 <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10"></div>
                                 <img alt="<?php the_title_attribute(); ?>"
                                     class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                                    src="<?php echo esc_url($thumb); ?>" />
+                                    src="<?php echo esc_url($thumb); ?>" loading="lazy" decoding="async" />
                                 <div
                                     class="absolute bottom-6 right-6 z-20 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
                                     <div
