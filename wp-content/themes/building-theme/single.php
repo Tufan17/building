@@ -40,7 +40,7 @@ while (have_posts()):
     ?>
 
     <main id="primary"
-        class="site-main bg-background-dark text-white font-display antialiased overflow-x-hidden selection:bg-primary selection:text-black">
+        class="site-main bg-background-dark text-white font-display antialiased selection:bg-primary selection:text-black">
 
         <!-- Hero Section -->
         <header class="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden">

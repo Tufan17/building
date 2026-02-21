@@ -235,7 +235,7 @@
             }
         });
 
-        // Intersection Observer
+        // Primary: Intersection Observer
         var observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
@@ -244,22 +244,42 @@
                 }
             });
         }, {
-            threshold: 0.08,
-            rootMargin: '0px 0px -60px 0px'
+            threshold: 0.05,
+            rootMargin: '0px 0px -40px 0px'
         });
 
         document.querySelectorAll('.sr-hidden').forEach(function(el) {
             observer.observe(el);
         });
 
-        // SAFETY FALLBACK: On mobile, if any sr-hidden elements haven't been
-        // revealed after 3 seconds, force them visible to prevent blank pages
+        // MOBILE FALLBACK: Scroll-based reveal using getBoundingClientRect
+        // iOS Safari sometimes fails IntersectionObserver with nested overflow containers
         if (isMobile) {
-            setTimeout(function() {
-                document.querySelectorAll('.sr-hidden:not(.sr-visible)').forEach(function(el) {
-                    el.classList.add('sr-visible');
+            var scrollTimer = null;
+            function revealOnScroll() {
+                var hiddenEls = document.querySelectorAll('.sr-hidden:not(.sr-visible)');
+                if (hiddenEls.length === 0) {
+                    // All revealed, remove listener
+                    window.removeEventListener('scroll', onScroll, { passive: true });
+                    return;
+                }
+                var wh = window.innerHeight;
+                hiddenEls.forEach(function(el) {
+                    var rect = el.getBoundingClientRect();
+                    // Element is in viewport (with some buffer)
+                    if (rect.top < wh - 30 && rect.bottom > 0) {
+                        el.classList.add('sr-visible');
+                        try { observer.unobserve(el); } catch(e) {}
+                    }
                 });
-            }, 3000);
+            }
+            function onScroll() {
+                if (scrollTimer) cancelAnimationFrame(scrollTimer);
+                scrollTimer = requestAnimationFrame(revealOnScroll);
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            // Also check on load in case elements are already visible
+            setTimeout(revealOnScroll, 500);
         }
     });
 })();

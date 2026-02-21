@@ -9,7 +9,7 @@ get_header();
 ?>
 
 <main id="primary"
-    class="site-main bg-background-dark text-white font-display overflow-x-hidden antialiased selection:bg-primary selection:text-navy-dark">
+    class="site-main bg-background-dark text-white font-display antialiased selection:bg-primary selection:text-navy-dark">
 
     <!-- Hero Section -->
     <section
