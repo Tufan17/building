@@ -5,6 +5,58 @@
  *
  * @package Building_Theme
  */
+?>
+<style>
+    /* Premium project card hover effects */
+    .project-info-card {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-info-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            105deg,
+            transparent 40%,
+            rgba(198, 168, 90, 0.06) 45%,
+            rgba(198, 168, 90, 0.12) 50%,
+            rgba(198, 168, 90, 0.06) 55%,
+            transparent 60%
+        );
+        transition: left 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 1;
+        pointer-events: none;
+    }
+    .project-info-card:hover::before {
+        left: 100%;
+    }
+    .project-info-card:hover {
+        transform: translateY(-4px);
+        box-shadow:
+            0 8px 40px rgba(198, 168, 90, 0.12),
+            0 0 0 1px rgba(198, 168, 90, 0.15),
+            inset 0 1px 0 rgba(198, 168, 90, 0.08);
+        background: rgba(11, 17, 32, 0.98);
+    }
+    .project-info-card > * {
+        position: relative;
+        z-index: 2;
+    }
+    .project-info-card:hover h3 {
+        color: #c6a85a;
+        transition: color 0.5s ease;
+    }
+    .project-info-card:hover p {
+        opacity: 1;
+        transition: opacity 0.5s ease;
+    }
+</style>
+<?php
 
 $projects_query = new WP_Query(array(
     'posts_per_page' => -1,
@@ -63,7 +115,7 @@ if ($projects_query->have_posts()):
             <!-- Alternating Layout (even) -->
             <div class="fp-project-item group grid grid-cols-1 lg:grid-cols-12 gap-12 items-center transition-all duration-500" data-status="<?php echo esc_attr($durum_attr_fp); ?>">
                 <div class="lg:col-span-12 lg:order-1 order-2 mt-[-10%] lg:mt-0 lg:ml-[40%] lg:w-[60%] z-10">
-                    <div class="bg-navy-dark/95 backdrop-blur-xl p-10 lg:p-16 border-l border-primary/20 shadow-2xl relative">
+                    <div class="project-info-card bg-navy-dark/95 backdrop-blur-xl p-10 lg:p-16 border-l border-primary/20 shadow-2xl relative cursor-pointer" onclick="window.location.href='<?php echo esc_url(get_permalink()); ?>'">
                         <div class="absolute -left-10 top-1/2 -translate-y-1/2 w-20 h-px bg-primary/30 hidden lg:block"></div>
                         <div class="flex items-center gap-3 mb-4">
                             <?php if ($durum_name_fp): ?>
@@ -110,7 +162,7 @@ if ($projects_query->have_posts()):
                     </a>
                 </div>
                 <div class="lg:col-span-12 mt-[-10%] lg:mt-0 lg:mr-[40%] lg:w-[60%] z-10">
-                    <div class="bg-navy-dark/95 backdrop-blur-xl p-10 lg:p-16 border-r border-primary/20 shadow-2xl relative text-right ml-auto">
+                    <div class="project-info-card bg-navy-dark/95 backdrop-blur-xl p-10 lg:p-16 border-r border-primary/20 shadow-2xl relative text-right ml-auto cursor-pointer" onclick="window.location.href='<?php echo esc_url(get_permalink()); ?>'">
                         <div class="absolute -right-10 top-1/2 -translate-y-1/2 w-20 h-px bg-primary/30 hidden lg:block"></div>
                         <div class="flex items-center justify-end gap-3 mb-4">
                             <?php if ($durum_name_fp): ?>
