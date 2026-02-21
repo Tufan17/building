@@ -283,6 +283,7 @@ while (have_posts()):
 
                 var currentIndex = 0;
                 var visibleLinks = [];
+                var isAnimating = false; // prevent rapid clicks
 
                 function getVisibleLinks() {
                     var links = [];
@@ -296,12 +297,34 @@ while (have_posts()):
 
                 function showImage(index) {
                     if (index < 0 || index >= visibleLinks.length) return;
+                    if (isAnimating) return;
+                    isAnimating = true;
                     currentIndex = index;
+
+                    // Step 1: Fade out current image
                     lbImg.style.opacity = '0';
+
+                    // Step 2: After fade-out completes, clear old image and load new one
                     setTimeout(function() {
-                        lbImg.src = visibleLinks[currentIndex].getAttribute('href');
-                        lbImg.onload = function() { lbImg.style.opacity = '1'; };
-                    }, 150);
+                        // Clear old image completely to prevent ghost rendering on mobile
+                        lbImg.removeAttribute('src');
+                        lbImg.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
+                        // Small delay to let browser clear the old render
+                        setTimeout(function() {
+                            var newSrc = visibleLinks[currentIndex].getAttribute('href');
+                            lbImg.onload = function() {
+                                lbImg.style.opacity = '1';
+                                isAnimating = false;
+                            };
+                            lbImg.onerror = function() {
+                                lbImg.style.opacity = '1';
+                                isAnimating = false;
+                            };
+                            lbImg.src = newSrc;
+                        }, 50);
+                    }, 350); // Match CSS transition duration
+
                     lbCounter.textContent = (currentIndex + 1) + ' / ' + visibleLinks.length;
                     btnPrev.style.opacity = currentIndex === 0 ? '0.3' : '1';
                     btnNext.style.opacity = currentIndex === visibleLinks.length - 1 ? '0.3' : '1';
@@ -313,14 +336,33 @@ while (have_posts()):
                     if (currentIndex === -1) currentIndex = 0;
                     overlay.style.display = 'block';
                     document.body.style.overflow = 'hidden';
-                    showImage(currentIndex);
+
+                    // For first open, load directly without fade-out delay
+                    lbImg.style.opacity = '0';
+                    lbImg.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+                    var newSrc = visibleLinks[currentIndex].getAttribute('href');
+                    lbImg.onload = function() {
+                        lbImg.style.opacity = '1';
+                        isAnimating = false;
+                    };
+                    lbImg.onerror = function() {
+                        lbImg.style.opacity = '1';
+                        isAnimating = false;
+                    };
+                    lbImg.src = newSrc;
+
+                    lbCounter.textContent = (currentIndex + 1) + ' / ' + visibleLinks.length;
+                    btnPrev.style.opacity = currentIndex === 0 ? '0.3' : '1';
+                    btnNext.style.opacity = currentIndex === visibleLinks.length - 1 ? '0.3' : '1';
                 }
 
                 function closeLightbox() {
                     overlay.style.display = 'none';
                     document.body.style.overflow = '';
-                    lbImg.src = '';
                     lbImg.style.opacity = '0';
+                    lbImg.removeAttribute('src');
+                    lbImg.src = '';
+                    isAnimating = false;
                 }
 
                 // Open on image click
@@ -335,9 +377,43 @@ while (have_posts()):
                     if (e.target === lbWrap) closeLightbox();
                 });
 
-                // Nav
+                // Nav buttons
                 btnPrev.addEventListener('click', function(e) { e.stopPropagation(); if (currentIndex > 0) showImage(currentIndex - 1); });
                 btnNext.addEventListener('click', function(e) { e.stopPropagation(); if (currentIndex < visibleLinks.length - 1) showImage(currentIndex + 1); });
+
+                // Touch swipe support for mobile
+                var touchStartX = 0;
+                var touchStartY = 0;
+                var touchMoved = false;
+
+                lbWrap.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].clientX;
+                    touchStartY = e.changedTouches[0].clientY;
+                    touchMoved = false;
+                }, { passive: true });
+
+                lbWrap.addEventListener('touchmove', function(e) {
+                    touchMoved = true;
+                }, { passive: true });
+
+                lbWrap.addEventListener('touchend', function(e) {
+                    if (!touchMoved) return; // tap, not swipe
+                    var touchEndX = e.changedTouches[0].clientX;
+                    var touchEndY = e.changedTouches[0].clientY;
+                    var diffX = touchStartX - touchEndX;
+                    var diffY = Math.abs(touchStartY - touchEndY);
+
+                    // Only trigger if horizontal swipe is dominant (not vertical scroll)
+                    if (Math.abs(diffX) > 50 && diffY < 100) {
+                        if (diffX > 0 && currentIndex < visibleLinks.length - 1) {
+                            // Swipe left → next
+                            showImage(currentIndex + 1);
+                        } else if (diffX < 0 && currentIndex > 0) {
+                            // Swipe right → prev
+                            showImage(currentIndex - 1);
+                        }
+                    }
+                }, { passive: true });
 
                 // Keyboard
                 document.addEventListener('keydown', function(e) {
