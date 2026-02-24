@@ -44,12 +44,15 @@ get_header(); ?>
                 <?php while ($apps_query->have_posts()) : $apps_query->the_post();
                     $index++;
                     $video_url = get_post_meta(get_the_ID(), '_application_video_url', true);
+                    if (!empty($video_url)) {
+                        $video_url = str_replace('http://', 'https://', $video_url);
+                    }
                     $is_video = preg_match('/\.(mp4|webm|ogg)$/i', $video_url) || strpos($video_url, 'youtube.com') !== false || strpos($video_url, 'youtu.be') !== false || strpos($video_url, 'vimeo.com') !== false;
 
                     // Store for lightbox
                     $all_app_media[] = array(
                         'title' => get_the_title(),
-                        'url'   => !empty($video_url) ? $video_url : get_the_post_thumbnail_url(get_the_ID(), 'full'),
+                        'url'   => !empty($video_url) ? $video_url : str_replace('http://', 'https://', get_the_post_thumbnail_url(get_the_ID(), 'full')),
                         'type'  => (!empty($video_url) && $is_video) ? 'video' : 'image',
                         'desc'  => get_the_content()
                     );

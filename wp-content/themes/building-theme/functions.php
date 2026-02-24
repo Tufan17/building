@@ -1229,6 +1229,8 @@ function prestige_custom_title($title)
 }
 add_filter('pre_get_document_title', 'prestige_custom_title');
 
+require get_template_directory() . '/inc/prestige-https-fix.php';
+
 /**
  * End functions.php
  */
