@@ -48,7 +48,8 @@ function building_theme_scripts()
     // Core WordPress style
     wp_enqueue_style('building-theme-style', get_stylesheet_uri(), array(), '1.0.0');
 
-    // Tailwind CSS loaded async (non-render-blocking) — see building_optimized_tailwind()
+    // Tailwind CSS generated file
+    wp_enqueue_style('tailwindcss', get_template_directory_uri() . '/assets/css/tailwind.css', array(), '1.0.0');
 
     // Google Fonts: Manrope, Playfair Display, Newsreader, Noto Sans
     wp_enqueue_style('google-fonts-prestige', 'https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Noto+Sans:wght@300;400;500;700&display=swap', array(), null);
@@ -76,47 +77,10 @@ function building_resource_hints()
 {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />' . "\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />' . "\n";
-    echo '<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />' . "\n";
 }
 add_action('wp_head', 'building_resource_hints', 0);
 
-/**
- * Performance: Load Tailwind CSS async (non-render-blocking)
- * Config declared inline (synchronous) before async CDN script.
- * Splash preloader masks any FOUC while Tailwind processes the DOM.
- */
-function building_optimized_tailwind()
-{
-    ?>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#C6A85A",
-                        "primary-dark": "#A68A4A",
-                        "background-light": "#f8f7f6",
-                        "background-dark": "#111827",
-                        "navy-dark": "#0B1120",
-                        "off-white": "#F9FAFB",
-                    },
-                    fontFamily: {
-                        "display": ["Manrope", "sans-serif"],
-                        "serif": ["Playfair Display", "serif"],
-                        "newsreader": ["Newsreader", "serif"],
-                        "noto": ["Noto Sans", "sans-serif"],
-                    },
-                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
-                    spacing: { '128': '32rem' }
-                },
-            },
-        }
-    </script>
-    <script async src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <?php
-}
-add_action('wp_head', 'building_optimized_tailwind', 2);
+
 
 /**
  * Performance: Critical inline CSS
@@ -323,6 +287,12 @@ require get_template_directory() . '/inc/partners-cpt.php';
  * Custom Admin Settings
  */
 require get_template_directory() . '/inc/admin-settings.php';
+
+/**
+ * Custom Applications CPT
+ */
+require get_template_directory() . '/inc/applications-cpt.php';
+require get_template_directory() . '/inc/blog-cpt.php';
 
 /**
  * Custom Taxonomy: Konum (Ülke > Şehir hiyerarşisi)
@@ -1191,8 +1161,22 @@ function prestige_seo_settings_page()
 // Output SEO meta tags in <head>
 function prestige_seo_meta_tags()
 {
-    $desc = get_option('prestige_meta_description', 'Capital Yaşam İnşaat — 2021\'den bu yana Adana\'da prestijli rezidans ve villa projeleri. Sarıçam ve Çukurova\'da modern yaşam alanları inşa ediyoruz.');
-    $keys = get_option('prestige_meta_keywords', '');
+    $default_desc = "Adana inşaat firmaları arasında öncü olan Capital Yaşam İnşaat, Adana villa ve rezidans projeleri ile prestijli yaşam alanları sunar. Adana inşaat sektöründe güvenilir çözüm ortağınız.";
+    $default_keys = "adana inşaat firmaları, adana villa, adana rezidans, adana inşaat, adanadaki inşaat firmaları, mersin inşaat, inşaat firması, gayrimenkul projeleri";
+
+    $desc = get_option('prestige_meta_description', $default_desc);
+    $keys = get_option('prestige_meta_keywords', $default_keys);
+
+    // Dynamic Description for Single Posts/Pages
+    if (is_singular()) {
+        global $post;
+        if (!empty($post->post_excerpt)) {
+            $desc = wp_strip_all_tags($post->post_excerpt);
+        } else {
+            $desc = wp_trim_words(wp_strip_all_tags($post->post_content), 30);
+        }
+    }
+
     $og_image = get_option('prestige_og_image', '');
     $favicon = get_option('prestige_favicon', '');
     $site_name = get_bloginfo('name');
@@ -1210,14 +1194,21 @@ function prestige_seo_meta_tags()
     // Open Graph tags
     echo '<meta property="og:type" content="website">' . "\n";
     echo '<meta property="og:site_name" content="' . esc_attr($site_name) . '">' . "\n";
-    echo '<meta property="og:url" content="' . esc_url($site_url) . '">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
     if ($desc) {
         echo '<meta property="og:description" content="' . esc_attr($desc) . '">' . "\n";
     }
-    if ($og_image) {
-        echo '<meta property="og:image" content="' . esc_url($og_image) . '">' . "\n";
+
+    // Dynamic OG Image
+    $current_og_image = $og_image;
+    if (is_singular() && has_post_thumbnail()) {
+        $current_og_image = get_the_post_thumbnail_url(get_the_ID(), 'large');
+    }
+
+    if ($current_og_image) {
+        echo '<meta property="og:image" content="' . esc_url($current_og_image) . '">' . "\n";
         echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
-        echo '<meta name="twitter:image" content="' . esc_url($og_image) . '">' . "\n";
+        echo '<meta name="twitter:image" content="' . esc_url($current_og_image) . '">' . "\n";
     }
 
     // Favicon
@@ -1241,3 +1232,4 @@ add_filter('pre_get_document_title', 'prestige_custom_title');
 /**
  * End functions.php
  */
+
