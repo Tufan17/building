@@ -67,7 +67,10 @@ get_header(); ?>
                         <div class="overflow-hidden rounded-lg aspect-[4/3] relative bg-navy-dark">
                             <?php if ($is_video && !empty($video_url)) : ?>
                                 <?php if (preg_match('/\.(mp4|webm|ogg)$/i', $video_url)) : ?>
-                                    <video src="<?php echo esc_url($video_url); ?>" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" muted loop playsinline></video>
+                                    <video src="<?php echo esc_url($video_url); ?>"
+                                           <?php if($thumb) echo 'poster="'.esc_url($thumb).'"'; ?>
+                                           class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
+                                           muted loop playsinline autoplay preload="metadata"></video>
                                 <?php else : ?>
                                     <?php if ($thumb) : ?>
                                         <img src="<?php echo esc_url($thumb); ?>" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105">
