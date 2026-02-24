@@ -91,7 +91,8 @@ function prestige_render_application_video_meta($post) {
             });
             frame.on('select', function() {
                 var attachment = frame.state().get('selection').first().toJSON();
-                $('#application_video_url').val(attachment.url);
+                var attachmentUrl = attachment.url.replace(/^http:\/\//i, 'https://');
+                $('#application_video_url').val(attachmentUrl);
             });
             frame.open();
         });
@@ -111,7 +112,9 @@ function prestige_save_application_video_meta($post_id) {
         return;
     }
     if (isset($_POST['application_video_url'])) {
-        update_post_meta($post_id, '_application_video_url', esc_url_raw($_POST['application_video_url']));
+        $safe_url = esc_url_raw($_POST['application_video_url']);
+        $safe_url = str_replace('http://', 'https://', $safe_url);
+        update_post_meta($post_id, '_application_video_url', $safe_url);
     }
 }
 add_action('save_post', 'prestige_save_application_video_meta');
