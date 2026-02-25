@@ -960,18 +960,7 @@ function prestige_remove_admin_menus()
     remove_submenu_page('index.php', 'update-core.php');         // Güncellemeler
     remove_menu_page('tools.php');                               // Araçlar
     remove_menu_page('edit-comments.php');                       // Yorumlar
-    remove_menu_page('themes.php');                              // Görünüm (tamamen kaldır)
-
-    // Menüler'i bağımsız üst menü olarak ekle
-    add_menu_page(
-        'Menüler',
-        'Menüler',
-        'edit_theme_options',
-        'nav-menus.php',
-        '',
-        'dashicons-menu',
-        61
-    );
+    // remove_menu_page('themes.php');                           // Görünüm (geri getirildi)
 }
 add_action('admin_menu', 'prestige_remove_admin_menus', 999);
 
