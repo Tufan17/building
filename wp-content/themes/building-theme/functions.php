@@ -956,7 +956,7 @@ add_action('wp_dashboard_setup', 'prestige_remove_dashboard_widgets');
 // Hide WP-related menus from admin
 function prestige_remove_admin_menus()
 {
-    remove_menu_page('plugins.php');                             // Eklentiler
+    // remove_menu_page('plugins.php');                             // Eklentiler (geri getirildi)
     remove_submenu_page('index.php', 'update-core.php');         // Güncellemeler
     remove_menu_page('tools.php');                               // Araçlar
     remove_menu_page('edit-comments.php');                       // Yorumlar
