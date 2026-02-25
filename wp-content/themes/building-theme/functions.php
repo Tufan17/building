@@ -691,6 +691,18 @@ function prestige_handle_contact_form()
     if (!isset($_POST['prestige_contact_submit'])) return;
     if (!wp_verify_nonce($_POST['prestige_contact_nonce'] ?? '', 'prestige_contact_form')) return;
 
+    // Bot Protection 1: Honeypot field (should be empty)
+    if (!empty($_POST['hp_user_description'])) {
+        wp_die('Bot detected. (Honeypot filled)');
+    }
+
+    // Bot Protection 2: Time check (robots fill form too fast, < 4 seconds)
+    $submit_time = intval($_POST['prestige_form_ts'] ?? 0);
+    $current_time = time();
+    if ($submit_time > 0 && ($current_time - $submit_time) < 4) {
+        wp_die('Bot detected. (Submitted too fast)');
+    }
+
     $first_name = sanitize_text_field($_POST['contact_first_name'] ?? '');
     $last_name = sanitize_text_field($_POST['contact_last_name'] ?? '');
     $email = sanitize_email($_POST['contact_email'] ?? '');

@@ -121,6 +121,12 @@ get_header();
                 <form class="flex flex-col gap-6" method="post" action="">
                     <?php wp_nonce_field('prestige_contact_form', 'prestige_contact_nonce'); ?>
 
+                    <!-- Anti-bot protection -->
+                    <div style="display:none !important;" aria-hidden="true">
+                        <input type="text" name="hp_user_description" tabindex="-1" value="" autocomplete="off" />
+                        <input type="hidden" name="prestige_form_ts" value="<?php echo time(); ?>" />
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-xs font-bold uppercase tracking-wider text-gray-400 ml-1">Ad</label>
