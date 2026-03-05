@@ -42,13 +42,13 @@ loadEnv(__DIR__ . '/.env');
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', getenv('DB_NAME') ?: 'capitaly_12124654');
+define('DB_NAME', getenv('DB_NAME') ?: '');
 
 /** Database username */
-define('DB_USER', getenv('DB_USER') ?: 'capitaly_deneme');
+define('DB_USER', getenv('DB_USER') ?: '');
 
 /** Database password */
-define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '0_v5Rd]hwJ@(.f0&');
+define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '');
 
 /** Database hostname */
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');

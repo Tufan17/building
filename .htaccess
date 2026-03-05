@@ -1,16 +1,21 @@
 
 # BEGIN WordPress
-# "BEGIN WordPress" ve "END WordPress" arasındaki yönergeler (satırlar)
-# dinamik olarak oluşturulmuştur ve yalnızca WordPress süzgeçleri ile düzenlenmelidir.
-# Bu imler arasındaki yönergelerde yapılan değişikliklerin üzerine yazılır.
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /building/
+RewriteBase /build.com/
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /building/index.php [L]
+RewriteRule . index.php [L]
 </IfModule>
-
 # END WordPress
+
+# Security Tweaks
+Options -Indexes
+
+# Block direct access to sensitive files
+<FilesMatch "(\.(env|settings|gitignore|htaccess)|wp-config\.php|xmlrpc\.php|license\.txt|readme\.html)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
